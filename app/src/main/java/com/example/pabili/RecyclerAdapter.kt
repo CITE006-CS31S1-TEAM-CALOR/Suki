@@ -9,18 +9,24 @@ import android.widget.EditText
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 
 class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+
     var isNotifyChange: Boolean = false
     var title = ArrayList<String>()
     init {
+    
         title.add("12 rhandy")
         title.add("12 qweq")
         title.add("12 qwewweq")
         title.add("")
         
     }
+    
+   
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -60,7 +66,7 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 		        	
 				notifyItemChanged(position-1)		
 	        		
-				Toast.makeText(holder.etOrder.getContext(), title.get(position), Toast.LENGTH_SHORT).show()
+				//Toast.makeText(holder.etOrder.getContext(), title.get(position), Toast.LENGTH_SHORT).show()
         		}
         		
         	}
@@ -88,5 +94,5 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         return title.size
     }
 
-
+	
 }
