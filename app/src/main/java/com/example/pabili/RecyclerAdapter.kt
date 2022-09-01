@@ -1,26 +1,37 @@
 package com.example.pabili
 
-import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.ImageView
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Button
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
+import android.content.Intent
+import City
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.recyclerview.widget.RecyclerView
-
 
 class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+
+var title = ArrayList<String>()	
     var isNotifyChange: Boolean = false
-    var title = ArrayList<String>()
     init {
-        title.add("12 rhandy")
-        title.add("12 qweq")
-        title.add("12 qwewweq")
-        title.add("")
-        
+    	//Toast.makeText(this@RecyclerAdapter,"test",Toast.LENGTH_SH)
+            title.add("")
     }
+    
+   	
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -29,6 +40,7 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         init {
             etOrder = itemView.findViewById(R.id.etOrder)
             ivRemove = itemView.findViewById(R.id.ivRemove)
+
         }
     }
 
@@ -45,23 +57,26 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             }
         }
         
+          Toast.makeText(holder.etOrder.getContext(), title.joinToString(), Toast.LENGTH_SHORT).show()
+          
 	val textWatcher:TextWatcher = object:TextWatcher {
         	override fun afterTextChanged(s: Editable){
         		val strOrder:String = s.toString()
         		val pattern = "\\d [A-Za-z]*\\n".toRegex()
         		val found = pattern.find(strOrder)
         		val m = found?.value
-        		
         		if (m != null){
+	            		holder.etOrder.setText(strOrder.trim())	
 	        		title.set(position,strOrder.trim())
-				if (!title.get(title.size-1).equals("")){								
+				if (!title.get(title.size-1).equals("")){									
 					title.add("")					
 		        	}
 		        	
-				notifyItemChanged(position-1)		
+				//notifyItemChanged(position-1)		
 	        		
-				Toast.makeText(holder.etOrder.getContext(), title.get(position), Toast.LENGTH_SHORT).show()
+			
         		}
+        		
         		
         	}
         	
@@ -87,6 +102,6 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
         return title.size
     }
-
-
 }
+
+

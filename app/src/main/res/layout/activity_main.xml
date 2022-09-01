@@ -10,6 +10,13 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <Button
+        	android:id="@+id/btnScanner"
+        	android:layout_height="wrap_content"
+        	android:layout_width="match_parent"
+        	android:text="Scanner"
+        	app:layout_constraintBottom_toBottomOf="parent"/>
+
         
 
 </androidx.constraintlayout.widget.ConstraintLayout>
