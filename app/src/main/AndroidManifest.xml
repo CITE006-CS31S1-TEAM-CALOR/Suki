@@ -20,6 +20,7 @@
         <activity android:name=".SignupActivity" android:exported="true">
         </activity>
         <activity android:name=".MainActivity" android:exported="true"></activity>
-    </application>
+        <activity android:name=".ClaimingActivity" android:exported="true"></activity>
+</application>
 
 </manifest>
