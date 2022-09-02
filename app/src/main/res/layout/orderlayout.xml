@@ -4,22 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp">
+    
     <AutoCompleteTextView
         android:id="@+id/etOrder"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="13 Datu Puti"/>
+        android:hint="Example, 10 suka"/>
 
     <ImageView
         android:id="@+id/ivRemove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_remove"/>
-    <ImageView
-        android:id="@+id/ivEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit"/>
-
 </LinearLayout>

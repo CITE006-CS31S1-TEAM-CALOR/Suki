@@ -22,11 +22,7 @@ import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
 
-
-
 class MainActivity : AppCompatActivity() {
-
-    
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter:RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
     private var customer_id: Int? = null;
@@ -35,25 +31,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-	val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+    	val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+		val storeName = intent.getStringExtra("storename")
 	
-	Toast.makeText(this@MainActivity,"Hello $currentUser",Toast.LENGTH_SHORT).show()
-        layoutManager = LinearLayoutManager(this)
+        val tvStorename = findViewById<TextView>(R.id.tvStorename)
+        tvStorename.text = storeName
+
+    	layoutManager = LinearLayoutManager(this)
         
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
         adapter = RecyclerAdapter()
         recyclerView.adapter = adapter
-        
-        
-    	var btnScanner = findViewById<Button>(R.id.btnScanner)
-    	btnScanner.setOnClickListener {
+                
+    	var btnAddStore = findViewById<ImageView>(R.id.btnAddStore)
+    	btnAddStore.setOnClickListener {
+            val intent = Intent(this, ScannerActivity::class.java)
+            startActivity(intent)	    	
+    	}
 
-		val intent = Intent(this, ScannerActivity::class.java).apply {
-	        }
-		 startActivity(intent)	    	
-    	
-    	
+        var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
+    	btnSubmitOrder.setOnClickListener {
+            val intent = Intent(this, ClaimingActivity::class.java)
+            startActivity(intent)	    	
     	}
     }
 }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"	>
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -10,8 +10,7 @@
     <EditText
     	android:id="@+id/etUsername"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="enter 'User' or 'store'"/>
+        android:layout_height="wrap_content"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,21 +18,23 @@
     <EditText
     	android:id="@+id/etPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="enter 'User' or 'store'"/>
-    <Button
-    	android:id="@+id/btnCustomerLogin"
+        android:layout_height="wrap_content"/>
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login as Customer"/>
+        android:text="Verify Password"/>
+    <EditText
+    	android:id="@+id/etVerifyPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <Button
-    	android:id="@+id/btnStoreLogin"
+    	android:id="@+id/btnCustomerSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login as Store"/>
+        android:text="Signup as Customer"/>
     <Button
-    	android:id="@+id/btnSignup"
+    	android:id="@+id/btnStoreSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Signup"/>          
+        android:text="Signup as Store"/>     
 </LinearLayout>
