@@ -34,6 +34,15 @@ import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
 import androidx.databinding.DataBindingUtil
+
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
+
+
+import android.content.Intent
+
 typealias LumaListener = (luma: Double) -> Unit
 
 
@@ -67,7 +76,6 @@ class ScannerActivity : AppCompatActivity() {
 
        // Set up the listeners for take photo and video capture buttons
        viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
-       viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
 
        cameraExecutor = Executors.newSingleThreadExecutor()
    }
@@ -116,7 +124,6 @@ class ScannerActivity : AppCompatActivity() {
   // Get a stable reference of the modifiable image capture use case
    
    val imageCapture = imageCapture?: return
-            
    // Create time stamped name and MediaStore entry.
    val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
               .format(System.currentTimeMillis())
@@ -146,9 +153,15 @@ class ScannerActivity : AppCompatActivity() {
                Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
            }
 
-           override fun onImageSaved(output: ImageCapture.OutputFileResults){
+           override fun onImageSaved(
+            output: ImageCapture.OutputFileResults){
                val msg = "Photo capture succeeded: ${output.savedUri}"
-               Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+
+               var image = InputImage.fromFilePath(baseContext, output.savedUri?:return)
+               scanBarcodes(image)
+   //          Toast.makeText(baseContext,output.savedU,Toast.LENGTH_SHORT).show()
+            
+//               Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                Log.d(TAG, msg)
            }
        }
@@ -196,5 +209,65 @@ class ScannerActivity : AppCompatActivity() {
             finish()
         }
     }
+    }
+
+      private fun scanBarcodes(image: InputImage) {
+
+                        Toast.makeText(baseContext,"Rhandy",Toast.LENGTH_SHORT).show()
+        // [START set_detector_options]
+        val options = BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(
+                        Barcode.FORMAT_QR_CODE,
+                        Barcode.FORMAT_AZTEC)
+                .build()
+        // [END set_detector_options]
+
+        // [START get_detector]
+        val scanner = BarcodeScanning.getClient()
+        // Or, to specify the formats to recognize:
+        // val scanner = BarcodeScanning.getClient(options)
+        // [END get_detector]
+
+        // [START run_detector]
+        val result = scanner.process(image)
+                .addOnSuccessListener { barcodes ->
+                    // Task completed successfully
+                    // [START_EXCLUDE]
+                    // [START get_barcodes]
+                    for (barcode in barcodes) {
+                        val bounds = barcode.boundingBox
+                        val corners = barcode.cornerPoints
+
+                        val rawValue = barcode.rawValue
+
+                        val valueType = barcode.valueType
+                        // See API reference for complete list of supported types
+                        when (valueType) {
+                            Barcode.TYPE_WIFI -> {
+                                val ssid = barcode.wifi!!.ssid
+                                val password = barcode.wifi!!.password
+                                val type = barcode.wifi!!.encryptionType
+                            }
+                            Barcode.TYPE_URL -> {
+                                val title = barcode.url!!.title
+                                val url = barcode.url!!.url
+                            }
+                        }
+                        Toast.makeText(baseContext,barcode.rawValue.toString(),Toast.LENGTH_SHORT).show()
+                        val intent = Intent(baseContext, MainActivity::class.java).apply {
+		    			    putExtra("storename", barcode.rawValue.toString())
+                        }
+                        startActivity(intent)
+
+                        
+                    }
+                    // [END get_barcodes]
+                    // [END_EXCLUDE]
+                }
+                .addOnFailureListener {
+                    // Task failed with an exception
+                    // ...
+                }
+        // [END run_detector]
     }
 }
