@@ -17,13 +17,13 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         	
 	//try {]	
-		
-		val db = FirebaseFirestore.getInstance()
 		val etUsername: EditText = findViewById(R.id.etUsername)
 		val etPassword: EditText = findViewById(R.id.etPassword)
 		val btnCustomerLogin: Button = findViewById(R.id.btnCustomerLogin)
 		val btnStoreLogin: Button = findViewById(R.id.btnStoreLogin)
 		val btnSignup: Button = findViewById(R.id.btnSignup)
+
+		val db = FirebaseFirestore.getInstance()
 
 		btnCustomerLogin.setOnClickListener {
 			var username = etUsername.text.toString()

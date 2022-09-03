@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
-import City
+import TagPrice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -24,23 +24,29 @@ import android.text.TextWatcher
 
 class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-var title = ArrayList<String>()	
+    var title = ArrayList<String>()	
     var isNotifyChange: Boolean = false
+    val TagPrices = ArrayList<TagPrice>()
+    val db = FirebaseFirestore.getInstance()
+    val docRef = db.collection("products").document()
     init {
-    	//Toast.makeText(this@RecyclerAdapter,"test",Toast.LENGTH_SH)
             title.add("")
+            TagPrices.add(TagPrice("toyo",15))
+            TagPrices.add(TagPrice("suka",125))
+            TagPrices.add(TagPrice("patis",135))
+            TagPrices.add(TagPrice("tt",150))
+            TagPrices.add(TagPrice("pp",150))
     }
-    
-   	
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         var etOrder: EditText
         var ivRemove: ImageView
+        var tvComputedPrice: TextView
         init {
             etOrder = itemView.findViewById(R.id.etOrder)
             ivRemove = itemView.findViewById(R.id.ivRemove)
-
+            tvComputedPrice = itemView.findViewById(R.id.tvComputedPrice)
         }
     }
 
@@ -49,9 +55,7 @@ var title = ArrayList<String>()
         holder.ivRemove.setOnClickListener {
             if (title.size!=1 && position<(title.size - 1)){
             		title.removeAt(position)
-
                		notifyDataSetChanged()
-               		
             	} else {
             		holder.etOrder.setText("")	
             }
@@ -66,15 +70,19 @@ var title = ArrayList<String>()
         		val found = pattern.find(strOrder)
         		val m = found?.value
         		if (m != null){
-	            		holder.etOrder.setText(strOrder.trim())	
+	            	holder.etOrder.setText(strOrder.trim())	
 	        		title.set(position,strOrder.trim())
-				if (!title.get(title.size-1).equals("")){									
-					title.add("")					
+
+                    val lsOrder = strOrder.split(" ")
+                    val productName: String = lsOrder.get(1)
+                    val qty: Int = lsOrder.get(0).toInt()
+                    val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
+                    val computedPrice = (unitPrice!! * qty)
+                    holder.tvComputedPrice.text = computedPrice.toString()
+				    if (!title.get(title.size-1).equals("")){									
+					    title.add("")					
 		        	}
-		        	
-				//notifyItemChanged(position-1)		
-	        		
-			
+				//notifyItemChanged(position-1)			
         		}
         		
         		
