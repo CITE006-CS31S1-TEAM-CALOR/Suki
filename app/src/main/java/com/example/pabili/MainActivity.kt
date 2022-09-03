@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
-import City
+import TagPrice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
