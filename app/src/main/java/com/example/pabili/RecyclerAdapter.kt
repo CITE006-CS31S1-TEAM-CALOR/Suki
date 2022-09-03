@@ -22,15 +22,18 @@ import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
 
-class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    var title = ArrayList<String>()	
+
+class RecyclerAdapter (private val callbackInterface: ViewHolder.CallbackInterface   ): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+
+    var computedPrices = ArrayList<Int>()
+    var orderList = ArrayList<String>()	
     var isNotifyChange: Boolean = false
     val TagPrices = ArrayList<TagPrice>()
     val db = FirebaseFirestore.getInstance()
     val docRef = db.collection("products").document()
     init {
-            title.add("")
+            orderList.add("")
             TagPrices.add(TagPrice("toyo",15))
             TagPrices.add(TagPrice("suka",125))
             TagPrices.add(TagPrice("patis",135))
@@ -38,8 +41,8 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             TagPrices.add(TagPrice("pp",150))
     }
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
+    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var etOrder: EditText
         var ivRemove: ImageView
         var tvComputedPrice: TextView
@@ -48,59 +51,74 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             ivRemove = itemView.findViewById(R.id.ivRemove)
             tvComputedPrice = itemView.findViewById(R.id.tvComputedPrice)
         }
+        
+        interface CallbackInterface {   
+            fun passResultCallback(totalPrice: String)
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.etOrder.setText(title.get(position))
+         
+        holder.etOrder.setText(orderList.get(position))
         holder.ivRemove.setOnClickListener {
-            if (title.size!=1 && position<(title.size - 1)){
-            		title.removeAt(position)
+            if (orderList.size!=1 && position<(orderList.size - 1)){
+            		orderList.removeAt(position)
                		notifyDataSetChanged()
             	} else {
             		holder.etOrder.setText("")	
             }
         }
         
-          Toast.makeText(holder.etOrder.getContext(), title.joinToString(), Toast.LENGTH_SHORT).show()
           
-	val textWatcher:TextWatcher = object:TextWatcher {
-        	override fun afterTextChanged(s: Editable){
-        		val strOrder:String = s.toString()
-        		val pattern = "\\d [A-Za-z]*\\n".toRegex()
-        		val found = pattern.find(strOrder)
-        		val m = found?.value
-        		if (m != null){
-	            	holder.etOrder.setText(strOrder.trim())	
-	        		title.set(position,strOrder.trim())
+        val textWatcher:TextWatcher = object:TextWatcher {
+                override fun afterTextChanged(s: Editable){
+                    val strOrder:String = s.toString()
+                    val pattern = "\\d [A-Za-z]*\\n".toRegex()
+                    val found = pattern.find(strOrder)
+                    val m = found?.value
 
-                    val lsOrder = strOrder.split(" ")
-                    val productName: String = lsOrder.get(1)
-                    val qty: Int = lsOrder.get(0).toInt()
-                    val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
-                    val computedPrice = (unitPrice!! * qty)
-                    holder.tvComputedPrice.text = computedPrice.toString()
-				    if (!title.get(title.size-1).equals("")){									
-					    title.add("")					
-		        	}
-				//notifyItemChanged(position-1)			
-        		}
-        		
-        		
-        	}
-        	
-        	override fun beforeTextChanged(s:CharSequence, start: Int,count: Int, after: Int){
-        	
-        	}
-        	
-        	override fun onTextChanged(s:CharSequence, start:Int,before:Int,count:Int){
+                    if (m != null){
+                        holder.etOrder.setText(strOrder.trim())	
+                        orderList.set(position,strOrder.trim())
 
-        	}
-        	
+                        val lsOrder = strOrder.split(" ")
+                        val productName: String = lsOrder.get(1)
+                        val qty: Int = lsOrder.get(0).toInt()
+                        val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
+                        val computedPrice = (unitPrice!! * qty)
+                        if (computedPrice == 0){
+                            holder.tvComputedPrice.text = "Unavailable"
+                        } else {
+                            holder.tvComputedPrice.text = computedPrice.toString()
+                        }
+
+
+                        if (orderList.get(orderList.size-1).equals("")){       
+                            computedPrices.set(position, computedPrice)
+                        } else {	
+                            orderList.add("")			
+                            computedPrices.add(computedPrice)
+                        }
+                      Toast.makeText(holder.etOrder.getContext(), computedPrices.joinToString(), Toast.LENGTH_SHORT).show()
+                        val totalPrice = computedPrices.sum()
+                      callbackInterface.passResultCallback(totalPrice.toString())  
+                    //notifyItemChanged(position-1)			
+                    }
+                    
+                    
+                }
+                
+                override fun beforeTextChanged(s:CharSequence, start: Int,count: Int, after: Int){
+                }
+                
+                override fun onTextChanged(s:CharSequence, start:Int,before:Int,count:Int){
+                }
+                
+            }
+            
+            holder.etOrder.addTextChangedListener(textWatcher)
+            
         }
-        
-        holder.etOrder.addTextChangedListener(textWatcher)
-        
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.orderlayout, parent, false)
@@ -108,7 +126,7 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return title.size
+        return orderList.size
     }
 }
 

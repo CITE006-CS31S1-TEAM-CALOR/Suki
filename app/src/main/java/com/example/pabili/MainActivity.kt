@@ -35,14 +35,19 @@ class MainActivity : AppCompatActivity() {
 		val storeName = intent.getStringExtra("storename")
 	
         val tvStorename = findViewById<TextView>(R.id.tvStorename)
+        val tvTotal = findViewById<TextView>(R.id.tvTotal)
+
         tvStorename.text = storeName
 
     	layoutManager = LinearLayoutManager(this)
         
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
-        adapter = RecyclerAdapter()
-        recyclerView.adapter = adapter
+        recyclerView.adapter = RecyclerAdapter( object : RecyclerAdapter.ViewHolder.CallbackInterface {
+            override fun passResultCallback(totalPrice: String) {
+                tvTotal.text = totalPrice
+            }
+        } ) 
                 
     	var btnAddStore = findViewById<ImageView>(R.id.btnAddStore)
     	btnAddStore.setOnClickListener {
@@ -55,6 +60,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ClaimingActivity::class.java)
             startActivity(intent)	    	
     	}
-    }
+
+        }
+
+//    override fun passResultCallback(message: String) {
+  //       Toast.makeText(this@MainActivity,("rrasd"),Toast.LENGTH_SHORT).show()
+    //}
 }
 

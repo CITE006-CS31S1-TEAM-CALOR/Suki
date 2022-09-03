@@ -213,7 +213,7 @@ class ScannerActivity : AppCompatActivity() {
 
       private fun scanBarcodes(image: InputImage) {
 
-                        Toast.makeText(baseContext,"Rhandy",Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(baseContext,"Rhandy",Toast.LENGTH_SHORT).show()
         // [START set_detector_options]
         val options = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
@@ -265,8 +265,8 @@ class ScannerActivity : AppCompatActivity() {
                     // [END_EXCLUDE]
                 }
                 .addOnFailureListener {
-                    // Task failed with an exception
-                    // ...
+                    Toast.makeText(baseContext,"Please Try Again",Toast.LENGTH_SHORT).show()
+                        
                 }
         // [END run_detector]
     }
