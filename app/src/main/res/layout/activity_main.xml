@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+        
+        <!--
         <LinearLayout 
         android:id="@+id/lnStoreDetail"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -32,13 +34,15 @@
             android:layout_width="wrap_content"
             android:src="@drawable/ic_edit"/>
         </LinearLayout>
+        -->
         
         <androidx.recyclerview.widget.RecyclerView
-            android:nestedScrollingEnabled="false"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/lblTotal"/>
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/tvTotal"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
         <TextView
@@ -48,16 +52,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitOrder"
+            app:layout_constraintTop_toTopOf="parent"
         />
         <TextView
             android:id="@+id/tvTotal"
+            android:text="0"
             android:textSize="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
-            android:text="0.00"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitOrder"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lblTotal"
         />
         <Button 
@@ -66,6 +69,5 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="Submit Order"/>
-        
 
 </androidx.constraintlayout.widget.ConstraintLayout>

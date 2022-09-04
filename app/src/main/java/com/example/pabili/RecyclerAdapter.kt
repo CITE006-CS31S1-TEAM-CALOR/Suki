@@ -24,7 +24,7 @@ import android.text.TextWatcher
 
 
 
-class RecyclerAdapter (private val callbackInterface: ViewHolder.CallbackInterface   ): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter (private val callbackInterface: CallbackInterface   ): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     var computedPrices = ArrayList<Int>()
     var orderList = ArrayList<String>()	
@@ -33,7 +33,9 @@ class RecyclerAdapter (private val callbackInterface: ViewHolder.CallbackInterfa
     val db = FirebaseFirestore.getInstance()
     val docRef = db.collection("products").document()
     init {
-            orderList.add("")
+            orderList.add("0")
+            notifyItemInserted(0);
+            
             TagPrices.add(TagPrice("toyo",15))
             TagPrices.add(TagPrice("suka",125))
             TagPrices.add(TagPrice("patis",135))
@@ -41,8 +43,11 @@ class RecyclerAdapter (private val callbackInterface: ViewHolder.CallbackInterfa
             TagPrices.add(TagPrice("pp",150))
     }
 
+        interface CallbackInterface {   
+            fun passResultCallback(totalPrice: String, strOrderList: String, computedPrices: String)
+        }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var etOrder: EditText
         var ivRemove: ImageView
         var tvComputedPrice: TextView
@@ -52,22 +57,44 @@ class RecyclerAdapter (private val callbackInterface: ViewHolder.CallbackInterfa
             tvComputedPrice = itemView.findViewById(R.id.tvComputedPrice)
         }
         
-        interface CallbackInterface {   
-            fun passResultCallback(totalPrice: String)
-        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          
-        holder.etOrder.setText(orderList.get(position))
+         if (holder.getAdapterPosition() == orderList.size - 1){
+         	holder.etOrder.setText("")
+         	holder.tvComputedPrice.text = ""
+         	holder.etOrder.requestFocus()
+         }
+	//holder.etOrder.setText(holder.getAdapterPosition().toString())
         holder.ivRemove.setOnClickListener {
-            if (orderList.size!=1 && position<(orderList.size - 1)){
-            		orderList.removeAt(position)
-               		notifyDataSetChanged()
-            	} else {
-            		holder.etOrder.setText("")	
-            }
+        
+            	//	orderList.removeLast()
+		//	notifyItemRemoved(holder.getAdapterPosition())               		
+              // 		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
+            
+            if (holder.getAdapterPosition() == orderList.size-1) {
+            	holder.etOrder.setText("")
+            } 
+            
+            
+            if (holder.getAdapterPosition() != orderList.size-1) {
+          		computedPrices.removeAt(holder.getAdapterPosition())
+	    		val totalPrice = computedPrices.sum()	
+	              	callbackInterface.passResultCallback(totalPrice.toString(),orderList.joinToString(),computedPrices.joinToString())  
+	       		orderList.removeAt(holder.getAdapterPosition())
+	       		notifyItemRemoved(holder.getAdapterPosition())
+	       		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
+            } 
+            
         }
+        /*
+        holder.tvComputedPrice.setOnClickListener {
+            		orderList.add((orderList.size).toString())
+            		notifyItemInserted(holder.getAdapterPosition()+1);
+               			
+               		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
+        }*/
         
           
         val textWatcher:TextWatcher = object:TextWatcher {
@@ -79,7 +106,7 @@ class RecyclerAdapter (private val callbackInterface: ViewHolder.CallbackInterfa
 
                     if (m != null){
                         holder.etOrder.setText(strOrder.trim())	
-                        orderList.set(position,strOrder.trim())
+                        orderList.set(holder.getAdapterPosition(),strOrder.trim())
 
                         val lsOrder = strOrder.split(" ")
                         val productName: String = lsOrder.get(1)
@@ -87,21 +114,26 @@ class RecyclerAdapter (private val callbackInterface: ViewHolder.CallbackInterfa
                         val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
                         val computedPrice = (unitPrice!! * qty)
                         if (computedPrice == 0){
-                            holder.tvComputedPrice.text = "Unavailable"
+                            holder.tvComputedPrice.text = "unavailable"
                         } else {
-                            holder.tvComputedPrice.text = computedPrice.toString()
+                            holder.tvComputedPrice.text =  computedPrice.toString()
                         }
 
 
                         if (orderList.get(orderList.size-1).equals("")){       
-                            computedPrices.set(position, computedPrice)
+                            computedPrices.set(holder.getAdapterPosition(), computedPrice)
+                            
+	            		
                         } else {	
-                            orderList.add("")			
+                            orderList.add("")
+                 	    notifyItemInserted(orderList.size - 1);
+               					
                             computedPrices.add(computedPrice)
                         }
-                      Toast.makeText(holder.etOrder.getContext(), computedPrices.joinToString(), Toast.LENGTH_SHORT).show()
+                      Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
                         val totalPrice = computedPrices.sum()
-                      callbackInterface.passResultCallback(totalPrice.toString())  
+                      callbackInterface.passResultCallback(totalPrice.toString(), orderList.joinToString(), computedPrices.joinToString())  
+                  	holder.etOrder.clearFocus()
                     //notifyItemChanged(position-1)			
                     }
                     
