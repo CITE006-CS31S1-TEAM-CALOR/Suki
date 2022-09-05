@@ -7,4 +7,72 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <TextView
+      android:id="@+id/lblWelcome"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="173dp"
+      android:layout_marginTop="28dp"
+      android:layout_marginEnd="168dp"
+      android:layout_marginBottom="684dp"
+      android:text="WELCOME!"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0" />
+
+  <TextView
+      android:id="@+id/lblName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="28dp"
+      android:layout_marginTop="76dp"
+      android:layout_marginBottom="636dp"
+      android:text="Name:"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0" />
+
+  <TextView
+      android:id="@+id/txtName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="24dp"
+      android:layout_marginTop="76dp"
+      android:layout_marginEnd="296dp"
+      android:layout_marginBottom="636dp"
+      android:text="null"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@+id/lblName"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0" />
+
+  <Button
+      android:id="@+id/btnSelectStore"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="185dp"
+      android:layout_marginBottom="451dp"
+      android:text="Select Store"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/lblWelcome"
+      app:layout_constraintVertical_bias="1.0" />
+
+  <Button
+      android:id="@+id/btnHistory"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="137dp"
+      android:layout_marginBottom="265dp"
+      android:text="Order History"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/btnSelectStore" />
+</androidx.constraintlayout.widget.ConstraintLayout>
