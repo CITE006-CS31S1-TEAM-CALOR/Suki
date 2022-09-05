@@ -17,6 +17,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         	
 	//try {]	
+	
+    		
 		val etUsername: EditText = findViewById(R.id.etUsername)
 		val etPassword: EditText = findViewById(R.id.etPassword)
 		val btnCustomerLogin: Button = findViewById(R.id.btnCustomerLogin)
@@ -28,24 +30,25 @@ class LoginActivity : AppCompatActivity() {
 		btnCustomerLogin.setOnClickListener {
 			var username = etUsername.text.toString()
 			var password = etPassword.text.toString()
-			var access = false
 			db.collection("users")
 			.whereEqualTo("username", username).whereEqualTo("password", password)
 			.get()
 			.addOnSuccessListener { documents ->
-			    for (document in documents) {
-				access=true
-				Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
-				 val intent = Intent(this, HomeActivity::class.java).apply {
-					    putExtra(EXTRA_MESSAGE, username)
-				 }
-				 startActivity(intent)				
-			    }
+				if (documents.isEmpty()) {
+					Toast.makeText(this@LoginActivity,("Access Denied"),Toast.LENGTH_SHORT).show()
+				} else {
+				
+					for (document in documents) {
+					Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
+					 val intent = Intent(this, HomeActivity::class.java).apply {
+							 putExtra(EXTRA_MESSAGE, username)
+					 }
+					 startActivity(intent)				
+					 }
+				
+				}
+			    
 			} 
-			
-			if (access==false){
-				Toast.makeText(this@LoginActivity,("Access Denied"), Toast.LENGTH_SHORT).show()
-			}
 			
 		}
 		

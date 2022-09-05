@@ -33,8 +33,10 @@ class MainActivity : AppCompatActivity() {
 
     	val db = FirebaseFirestore.getInstance()
     	val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-	//val storeName = intent.getStringExtra("storename")
+	   val storeId = intent.getStringExtra("storeId")
 	
+        //tvStorename.text = storeName
+
       //  val tvStorename = findViewById<TextView>(R.id.tvStorename)
         val tvTotal = findViewById<TextView>(R.id.tvTotal)
 
@@ -43,20 +45,21 @@ class MainActivity : AppCompatActivity() {
     	layoutManager = LinearLayoutManager(this)
         
         var order: HashMap <String, String> = hashMapOf("null" to "null")
+        val transactionId = generateTransactionId()
         
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
         recyclerView.adapter = RecyclerAdapter( object : RecyclerAdapter.CallbackInterface {
             override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
                 order = hashMapOf(
-						"store" to "TestStore",
-						"transactionID" to "testID",
+						"store" to storeId!!,
+						"transactionID" to transactionId,
 						"timestamp" to LocalDateTime.now().toString(),
 						"totalPrice" to totalPrice,
 						"status" to "pending",
 						"orderList" to strOrderList,
-						"computedPrices" to strComputedPrices
-						
+						"computedPrices" to strComputedPrices,
+						"username" to currentUser!!
 					)
 					
                 tvTotal.text = totalPrice
@@ -72,20 +75,37 @@ class MainActivity : AppCompatActivity() {
 
        var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
     	btnSubmitOrder.setOnClickListener {
+    		if (order == hashMapOf("null" to "null")) {
+						Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
+    		} else {
     		db.collection("orders")
 					.add(order)
 					.addOnSuccessListener { 
 						documentReference ->
 						Toast.makeText(this@MainActivity,"Order Received",Toast.LENGTH_SHORT).show()
-				      val intent = Intent(this, ClaimingActivity::class.java)
-				      startActivity(intent)	
+				      val intent = Intent(this, ClaimingActivity::class.java).apply {
+				      		 putExtra("transactionId", transactionId)
+				      }
+				      startActivity(intent)
 					}
 					.addOnFailureListener{
 						Toast.makeText(this@MainActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
 					}    	
     	}
+    		
+    		}
+    		
 
         }
+        
+		fun generateTransactionId():String {
+			 var charPool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIKLMNOPQRSTUVWXYZ1234567890123456789001234567890"
+			  var transactionId = ""
+			  for (i in 1..30) {
+				    transactionId += charPool.random()
+			  }
+			  return transactionId
+		}
 
 //    override fun passResultCallback(message: String) {
   //       Toast.makeText(this@MainActivity,("rrasd"),Toast.LENGTH_SHORT).show()

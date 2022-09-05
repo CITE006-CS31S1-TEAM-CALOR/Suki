@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 
+import android.content.Intent
+
 class HomeActivity : AppCompatActivity() {
 
 
@@ -17,9 +19,24 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val db = FirebaseFirestore.getInstance()
         val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
 
+
+		//remove this button below after implementation of startactivity in alert dialog
+		val tempbutton = findViewById<Button>(R.id.btnTempStore)
+		tempbutton.setOnClickListener {
+		
+        val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+		   	 val intent = Intent(this, MainActivity::class.java).apply {
+		     						 putExtra(EXTRA_MESSAGE, currentUser)
+		     						 putExtra("storeId", "12345")
+		     }
+		     startActivity(intent)
+		} 
+		
+		
+
+        val db = FirebaseFirestore.getInstance()
         findViewById<TextView>(R.id.txtName).apply{
             text = currentUser
         }
