@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 			    for (document in documents) {
 				access=true
 				Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
-				 val intent = Intent(this, MainActivity::class.java).apply {
+				 val intent = Intent(this, HomeActivity::class.java).apply {
 					    putExtra(EXTRA_MESSAGE, username)
 				 }
 				 startActivity(intent)				
