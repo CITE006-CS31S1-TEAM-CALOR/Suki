@@ -21,7 +21,6 @@ class HomeActivity : AppCompatActivity() {
 
         val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
 
-
 		//remove this button below after implementation of startactivity in alert dialog
 		val tempbutton = findViewById<Button>(R.id.btnTempStore)
 		tempbutton.setOnClickListener {
