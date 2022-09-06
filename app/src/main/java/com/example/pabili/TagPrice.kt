@@ -1,4 +1,4 @@
 data class TagPrice(
-    val name: String? = null,
-    val price: Int? = null,
+    var name: String? = null,
+    var price: Int? = null,
 )

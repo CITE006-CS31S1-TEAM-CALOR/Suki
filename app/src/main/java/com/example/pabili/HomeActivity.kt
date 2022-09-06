@@ -28,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
         val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
 		   	 val intent = Intent(this, MainActivity::class.java).apply {
 		     						 putExtra(EXTRA_MESSAGE, currentUser)
-		     						 putExtra("storeId", "12345")
+		     						 putExtra("storeId", "1")
 		     }
 		     startActivity(intent)
 		} 
