@@ -24,14 +24,13 @@ class HomeActivity : AppCompatActivity() {
 		//remove this button below after implementation of startactivity in alert dialog
 		val tempbutton = findViewById<Button>(R.id.btnTempStore)
 		tempbutton.setOnClickListener {
-		
-        val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-		   	 val intent = Intent(this, MainActivity::class.java).apply {
-		     						 putExtra(EXTRA_MESSAGE, currentUser)
-		     						 putExtra("storeId", "12345")
-		     }
-		     startActivity(intent)
-		} 
+            val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+                 val intent = Intent(this, MainActivity::class.java).apply {
+                                         putExtra(EXTRA_MESSAGE, currentUser)
+                                         putExtra("storeId", "12345")
+                 }
+                 startActivity(intent)
+            }
 		
 		
 
@@ -51,11 +50,11 @@ class HomeActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if(task.isSuccessful){
                         for (document in task.result) {
-                            var storeName = document.data["username"].toString()
+                            val storeName = document.data["username"].toString()
                             storeList.add(storeName)
                         }
                     }
-                    var storeArray = storeList.toTypedArray()
+                    val storeArray = storeList.toTypedArray()
                     mAlertDialogBuilder.setTitle("STORE")
                     mAlertDialogBuilder.setCancelable(true)
                     mAlertDialogBuilder.setItems(storeArray, DialogInterface.OnClickListener{ dialog, which ->  })

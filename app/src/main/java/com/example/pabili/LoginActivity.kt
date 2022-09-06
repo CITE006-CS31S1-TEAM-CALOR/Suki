@@ -28,8 +28,8 @@ class LoginActivity : AppCompatActivity() {
 		val db = FirebaseFirestore.getInstance()
 
 		btnCustomerLogin.setOnClickListener {
-			var username = etUsername.text.toString()
-			var password = etPassword.text.toString()
+			val username = etUsername.text.toString()
+			val password = etPassword.text.toString()
 			db.collection("users")
 			.whereEqualTo("username", username).whereEqualTo("password", password)
 			.get()
@@ -53,16 +53,28 @@ class LoginActivity : AppCompatActivity() {
 		}
 		
 		btnStoreLogin.setOnClickListener {
-			var username = etUsername.text.toString()
-			var password = etPassword.text.toString()
+			val username = etUsername.text.toString()
+			val password = etPassword.text.toString()
 			db.collection("stores")
-			.whereEqualTo("username", username).whereEqualTo("password", password)
-			.get()
-			.addOnSuccessListener { documents ->
-			    for (document in documents) {
-				Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
-			    }
-			}
+				.whereEqualTo("username", username).whereEqualTo("password", password)
+				.get()
+				.addOnSuccessListener { documents ->
+					if (documents.isEmpty()) {
+						Toast.makeText(this@LoginActivity,("Access Denied"),Toast.LENGTH_SHORT).show()
+					} else {
+
+						for (document in documents) {
+							Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
+							val intent = Intent(this, StoreQueueActivity::class.java).apply {
+								putExtra(EXTRA_MESSAGE, username)
+							}
+							startActivity(intent)
+						}
+
+					}
+
+				}
+
 		}
 
 		btnSignup.setOnClickListener {
