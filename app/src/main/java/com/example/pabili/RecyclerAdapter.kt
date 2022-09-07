@@ -47,7 +47,7 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
     }
 
         interface CallbackInterface {   
-            fun passResultCallback(totalPrice: String, strOrderList: String, computedPrices: String)
+            fun passResultCallback(totalPrice: String, strOrderList: String, strComputedPrices: String)
         }
 	
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -63,6 +63,7 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    		
          if (holder.getAdapterPosition() == orderList.size - 1){
          	holder.etOrder.setText("")
          	holder.tvComputedPrice.text = ""
@@ -136,6 +137,7 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
                         val totalPrice = computedPrices.sum()
                       callbackInterface.passResultCallback(totalPrice.toString(), orderList.joinToString(), computedPrices.joinToString())  
                   	holder.etOrder.clearFocus()
+                  	
                     //notifyItemChanged(position-1)			
                     }
                     

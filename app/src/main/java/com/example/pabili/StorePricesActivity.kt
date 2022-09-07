@@ -26,41 +26,43 @@ import android.text.Editable
 import android.text.TextWatcher
 import java.util.Random
 
-class MainActivity : AppCompatActivity() {
+class StorePricesActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter:RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
-    private var customer_id: Int? = null
-	 private var order = HashMap <String, String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_store_prices)
+
+
 
     	val db = FirebaseFirestore.getInstance()
-    	val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-	   val storeId = intent.getStringExtra("storeId")
+    	val storeId = "1"
+	  // val storeId = intent.getStringExtra("storeId")
 	
         //tvStorename.text = storeName
 
       //  val tvStorename = findViewById<TextView>(R.id.tvStorename)
-        val tvTotal = findViewById<TextView>(R.id.tvTotal)
 
         //tvStorename.text = storeName
 
     	layoutManager = LinearLayoutManager(this)
         
-        val transactionId = generateTransactionId()
         
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        val recyclerView = findViewById<RecyclerView>(R.id.rvPrices)
         recyclerView.layoutManager  = layoutManager
-        recyclerView.adapter = RecyclerAdapter( object : RecyclerAdapter.CallbackInterface {
-            override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
-                
+        recyclerView.adapter = RecyclerPrices( object : RecyclerPrices.CallbackInterface {
+           override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
+           }
+           },"sf")
+           
+                /*
     		 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
 			 val currentDate = sdf.format(Date())
 			 
     		order.put("timestamp",currentDate)
     		
-    				if (totalPrice.equals("0")){
+    				if (totalPrice.equals("0")){	
     					order = hashMapOf()
     				} else {
                 order = hashMapOf (
@@ -74,8 +76,10 @@ class MainActivity : AppCompatActivity() {
                 )
                 }
                 tvTotal.setText(totalPrice)
-            }
-        },storeId!!) 
+                */
+     //       }
+   //     },storeId) 
+        
          /*       
     	var btnAddStore = findViewById<ImageView>(R.id.btnAddStore)
     	btnAddStore.setOnClickListener {
@@ -84,41 +88,22 @@ class MainActivity : AppCompatActivity() {
     	}*/
 
 
-       var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
-    	btnSubmitOrder.setOnClickListener {
-    		if (order.isEmpty()) {
-						Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
-    		} else {
-    		
-    		db.collection("orders")
-					.add(order)
-					.addOnSuccessListener { 
-						documentReference ->
-						Toast.makeText(this@MainActivity,"Order Received",Toast.LENGTH_SHORT).show()
-				      val intent = Intent(this, ClaimingActivity::class.java).apply {
-				      		 putExtra("transactionId", transactionId)
-				      }
-				      startActivity(intent)
-					}
-					.addOnFailureListener{
-						Toast.makeText(this@MainActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
-					}    	
-    	}
+       var btnSetPrice = findViewById<Button>(R.id.btnSetPrice)
+    	btnSetPrice.setOnClickListener {
     		
     		}
     		
-
-        }
+    		    var btnSeeOrders = findViewById<Button>(R.id.btnSeeOrders)
+    	btnSeeOrders.setOnClickListener {
+    							 val intent = Intent(this, StoreQueueActivity::class.java).apply {
+							 putExtra("storeId", "1")
+					 }
+					 startActivity(intent)	
+    		}
+    		
+}
         
-		fun generateTransactionId():String {
-				 var charPool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIKLMNOPQRSTUVWXYZ1234567890123456789001234567890"
-			 	var transactionId = ""
-				 for (i in 0..30){
-					transactionId += charPool[Random().nextInt(82)]
-				 }
-			        Toast.makeText(this@MainActivity,transactionId.toString(),Toast.LENGTH_SHORT).show()
-			  return transactionId
-		}
+        
 		 fun fillStr(value:String):String {
                 	if (value != ""){
                 		return value
