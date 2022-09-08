@@ -121,12 +121,12 @@ fun registerCustomer(){
 			"password" to password
 		)
 
-		db.collection("store")
+		db.collection("stores")
 			.whereEqualTo("username", username)
 			.get()
 			.addOnSuccessListener { documents ->
 				if (documents.isEmpty){
-					db.collection("store")
+					db.collection("stores")
 						.add(account)
 						.addOnSuccessListener { documentReference ->
 							Toast.makeText(this@SignupActivity,"Store Crated",Toast.LENGTH_SHORT).show()

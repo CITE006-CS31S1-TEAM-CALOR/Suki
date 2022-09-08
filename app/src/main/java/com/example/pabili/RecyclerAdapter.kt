@@ -24,29 +24,32 @@ import android.text.TextWatcher
 
 
 
-class RecyclerAdapter (private val callbackInterface: CallbackInterface   ): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter (private val callbackInterface: CallbackInterface, private val storeId:String): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     var computedPrices = ArrayList<Int>()
     var orderList = ArrayList<String>()	
     var isNotifyChange: Boolean = false
     val TagPrices = ArrayList<TagPrice>()
     val db = FirebaseFirestore.getInstance()
-    val docRef = db.collection("products").document()
     init {
+    		   val docRef = db.collection("products").document("store"+storeId).collection("prices")
+			docRef.get().addOnSuccessListener { 
+				result ->
+				for (document in result){
+					val product = document.toObject<TagPrice>(TagPrice::class.java)!!
+					 TagPrices.add(product)
+					}
+				}
+				  
             orderList.add("0")
             notifyItemInserted(0);
             
-            TagPrices.add(TagPrice("toyo",15))
-            TagPrices.add(TagPrice("suka",125))
-            TagPrices.add(TagPrice("patis",135))
-            TagPrices.add(TagPrice("tt",150))
-            TagPrices.add(TagPrice("pp",150))
     }
 
         interface CallbackInterface {   
-            fun passResultCallback(totalPrice: String, strOrderList: String, computedPrices: String)
+            fun passResultCallback(totalPrice: String, strOrderList: String, strComputedPrices: String)
         }
-
+	
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var etOrder: EditText
         var ivRemove: ImageView
@@ -60,7 +63,7 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface   ): Rec
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         
+    		
          if (holder.getAdapterPosition() == orderList.size - 1){
          	holder.etOrder.setText("")
          	holder.tvComputedPrice.text = ""
@@ -134,6 +137,7 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface   ): Rec
                         val totalPrice = computedPrices.sum()
                       callbackInterface.passResultCallback(totalPrice.toString(), orderList.joinToString(), computedPrices.joinToString())  
                   	holder.etOrder.clearFocus()
+                  	
                     //notifyItemChanged(position-1)			
                     }
                     
