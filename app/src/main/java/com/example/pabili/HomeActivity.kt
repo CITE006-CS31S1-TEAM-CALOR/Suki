@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 import android.content.Intent
 
+
 class HomeActivity : AppCompatActivity() {
 
 
@@ -22,16 +23,16 @@ class HomeActivity : AppCompatActivity() {
         val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
 
 		//remove this button below after implementation of startactivity in alert dialog
-		val tempbutton = findViewById<Button>(R.id.btnTempStore)
-		tempbutton.setOnClickListener {
-		
-        val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-		   	 val intent = Intent(this, MainActivity::class.java).apply {
-		     						 putExtra(EXTRA_MESSAGE, currentUser)
-		     						 putExtra("storeId", "1")
-		     }
-		     startActivity(intent)
-		} 
+//		val tempbutton = findViewById<Button>(R.id.btnTempStore)
+//		tempbutton.setOnClickListener {
+//
+//        val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+//		   	 val intent = Intent(this, MainActivity::class.java).apply {
+//		     						 putExtra(EXTRA_MESSAGE, currentUser)
+//		     						 putExtra("storeId", "1")
+//		     }
+//		     startActivity(intent)
+//		}
 		
 		
 
@@ -55,10 +56,16 @@ class HomeActivity : AppCompatActivity() {
                             storeList.add(storeName)
                         }
                     }
-                    var storeArray = storeList.toTypedArray()
+                    val storeArray = storeList.toTypedArray()
                     mAlertDialogBuilder.setTitle("STORE")
                     mAlertDialogBuilder.setCancelable(true)
-                    mAlertDialogBuilder.setItems(storeArray, DialogInterface.OnClickListener{ dialog, which ->  })
+                    mAlertDialogBuilder.setItems(storeArray, DialogInterface.OnClickListener{ dialog, index ->
+
+                        val intent = Intent(this, MainActivity::class.java).apply {
+                            putExtra("storeId", storeArray.get(index));
+                        }
+                        startActivity(intent)
+                    })
                     mAlertDialogBuilder.setNegativeButton("Cancel") { dialog, which ->
                         Toast.makeText(applicationContext,
                             "Canceled", Toast.LENGTH_SHORT).show()

@@ -37,8 +37,12 @@ class MainActivity : AppCompatActivity() {
 
     	val db = FirebaseFirestore.getInstance()
     	val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-	   val storeId = intent.getStringExtra("storeId")
-	
+	    val storeId = intent.getStringExtra("storeId")
+
+
+		findViewById<TextView>(R.id.txtStoreName).apply{
+			text = storeId
+		}
         //tvStorename.text = storeName
 
       //  val tvStorename = findViewById<TextView>(R.id.tvStorename)
