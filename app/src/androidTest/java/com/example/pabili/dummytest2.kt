@@ -106,7 +106,7 @@ class dummytest2 {
         )
         materialButton2.perform(click())
 
-        Thread.sleep(5000)
+        Thread.sleep(10000)
 
         val appCompatEditText4 = onView(
             allOf(

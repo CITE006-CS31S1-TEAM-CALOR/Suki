@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/PrivateProperty/Coding/Mobile2/Pabili-Appv2/app/src/main/res/layout/activity_store_queue.xml" value="0.17760416666666667" />
+        <entry key="..\:/PrivateProperty/Coding/Mobile2/Pabili-Appv2/app/src/main/res/layout/store_queue_layout.xml" value="0.19166666666666668" />
         <entry key="..\:/PrivateProperty/Coding/Mobile2/PabiliApp/app/src/main/res/layout/activity_login.xml" value="0.15982776089159068" />
         <entry key="..\:/PrivateProperty/Coding/Mobile2/PabiliApp/app/src/main/res/layout/activity_signup.xml" value="0.33" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/ic_remove.xml" value="0.1" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/main_button_1.xml" value="0.13" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/RA/Desktop/TIP Files/Programming/AppDev/Pabili-App/app/src/main/res/layout/activity_home.xml" value="0.4" />
-        <entry key="..\:/Users/RA/Desktop/TIP Files/Programming/AppDev/Pabili-App/app/src/main/res/layout/activity_main.xml" value="0.6" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/orderlayout.xml" value="0.6" />
       </map>
