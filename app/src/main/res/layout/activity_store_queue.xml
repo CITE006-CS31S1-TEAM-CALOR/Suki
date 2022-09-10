@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".StoreQueueActivity">
 
+
     <TextView
         android:id="@+id/StoreNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="16dp"
         android:text="Store Name"
         app:layout_constraintBottom_toTopOf="@+id/storeCustomerQueue"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,34 +23,37 @@
         android:id="@+id/storeCustomerQueue"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/StoreNameText" />
-    
-             
-          <LinearLayout
-          android:layout_width="match_parent"
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/storeCustomerQueue">
+
+        <Button
+
+            android:id="@+id/btnSeeOrders"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-               app:layout_constraintBottom_toBottomOf="parent"
-            >
-      
-                  <Button
-                  
-         	 android:id="@+id/btnSeeOrders"
-         android:layout_height="wrap_content"
-         android:layout_width="0dp"
             android:layout_weight="1"
             android:text="See Orders"
-     />    
-        <Button
-         	 android:id="@+id/btnSetPrice"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="Set Price"
-            />
+            app:backgroundTintMode="screen" />
 
-			</LinearLayout>
+        <Button
+            android:id="@+id/btnSetPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Set Price" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
