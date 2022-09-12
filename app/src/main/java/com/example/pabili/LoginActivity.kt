@@ -63,14 +63,15 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity,("Access Denied"),Toast.LENGTH_SHORT).show()
                     } else {
 
-                        for (document in documents) {
-                            Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, StoreQueueActivity::class.java).apply {
-                                putExtra(EXTRA_MESSAGE, username)
-                            }
-                            startActivity(intent)
-                        }
-
+                      for (document in documents) {
+							Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
+							val storeID = document.data["id"].toString()
+							val intent = Intent(this, StoreQueueActivity::class.java).apply {
+								putExtra(EXTRA_MESSAGE, username)
+								putExtra("ID",storeID)
+							}
+							startActivity(intent)
+						}
 
                     }
 
