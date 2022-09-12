@@ -30,7 +30,6 @@ class RecyclerQueue (private val context: Context, private val mList: List<DataR
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
-        val db = FirebaseFirestore.getInstance()
         val DataRecyclerQueue = mList[position]
 
         val cName = DataRecyclerQueue.name

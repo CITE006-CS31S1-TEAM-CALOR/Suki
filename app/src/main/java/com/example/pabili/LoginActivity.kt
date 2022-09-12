@@ -65,8 +65,10 @@ class LoginActivity : AppCompatActivity() {
 
 						for (document in documents) {
 							Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
+							val storeID = document.getString("id").toString()
 							val intent = Intent(this, StoreQueueActivity::class.java).apply {
 								putExtra(EXTRA_MESSAGE, username)
+								putExtra("ID",storeID)
 							}
 							startActivity(intent)
 						}

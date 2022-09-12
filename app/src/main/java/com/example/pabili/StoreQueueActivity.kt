@@ -18,6 +18,7 @@ class StoreQueueActivity : AppCompatActivity() {
 
 
         val storeName = intent.getStringExtra(EXTRA_MESSAGE)
+        val storeID = intent.getStringExtra("ID")
         val storeNameDisplay = findViewById<TextView>(R.id.StoreNameText)
         val db = FirebaseFirestore.getInstance()
 
@@ -27,9 +28,8 @@ class StoreQueueActivity : AppCompatActivity() {
 
         storeNameDisplay.setText(storeName)
 
-        //TODO change "12345" to storeName
         db.collection("orders")
-            .whereEqualTo("store","12345").whereEqualTo("status", "pending")
+            .whereEqualTo("store",storeID).whereEqualTo("status", "pending")
             .get()
             .addOnSuccessListener { result ->
                 for(document in result) {

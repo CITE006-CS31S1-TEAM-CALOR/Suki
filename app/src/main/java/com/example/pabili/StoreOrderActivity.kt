@@ -4,8 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 
 class StoreOrderActivity : AppCompatActivity() {
 
@@ -15,6 +16,7 @@ class StoreOrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_order)
 
+        /*
         val computedPricesView: TextView = findViewById(R.id.computedPricesTXT)
         val orderListView: TextView = findViewById(R.id.orderListTXT)
         val statusView: TextView = findViewById(R.id.statusTXT)
@@ -23,8 +25,16 @@ class StoreOrderActivity : AppCompatActivity() {
         val totalPriceView: TextView = findViewById(R.id.totalPriceTXT)
         val transactionIDView: TextView = findViewById(R.id.transactionIDTXT)
         val usernameView: TextView = findViewById(R.id.usernameTXT)
+         */
+
         val cDoc = intent.getStringExtra("cDoc")
         val db = FirebaseFirestore.getInstance()
+        val data = ArrayList<DataOrderList>()
+
+        val customerNameTxt = findViewById<TextView>(R.id.orderCustomerName)
+        val customerOrderTotal = findViewById<TextView>(R.id.orderTotal)
+        val recyclerview = findViewById<RecyclerView>(R.id.storeCustomerOrder)
+        recyclerview.layoutManager = LinearLayoutManager(this)
 
         db.collection("orders")
             .document(cDoc!!)
@@ -40,6 +50,31 @@ class StoreOrderActivity : AppCompatActivity() {
                     result.getString("transactionID").toString(),
                     result.getString("username").toString()
                 )
+
+                customerNameTxt.text = "Name: " + cInfo.username
+                customerOrderTotal.text = "Total: " + cInfo.totalPrice
+
+
+
+                val computedPricesArray = cInfo.computedPrices!!.split(", ")
+                val orderListArray = cInfo.orderList!!.split(", ")
+                for ((refComp, order) in orderListArray!!.withIndex()){
+                    if(refComp != orderListArray.size-1){
+                        val name = order.replace("\\d+".toRegex(),"")
+                        val qty = order.replace(" [a-z]+".toRegex(),"")
+                        val com = computedPricesArray[refComp]
+
+                        data.add(DataOrderList(name,"x"+qty,"P"+com))
+                    }
+
+                }
+
+                val adapter = RecyclerOrder(data)
+                recyclerview.adapter = adapter
+/*
+                data.add(cInfo)
+                val adapter = RecyclerOrder(data)
+                recyclerview.adapter = adapter
 
                 Log.d("TAG",cInfo.computedPrices + " | "
                         + cInfo.orderList + " | "
@@ -58,6 +93,7 @@ class StoreOrderActivity : AppCompatActivity() {
                 totalPriceView.setText(cInfo.totalPrice)
                 transactionIDView.setText(cInfo.transactionID)
                 usernameView.setText(cInfo.username)
+                 */
             }
 
 
