@@ -35,6 +35,8 @@ class ClaimingActivity: AppCompatActivity() {
 		     val bitmap = encoder.encodeBitmap(transactionId, BarcodeFormat.QR_CODE, 400, 400)
 		     imageView.setImageBitmap(bitmap)
 			imageView.setImageBitmap(bitmap)
+
+
     }
 }
 	//try {]	
