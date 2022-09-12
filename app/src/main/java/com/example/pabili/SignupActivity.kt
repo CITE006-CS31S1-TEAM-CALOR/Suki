@@ -157,7 +157,7 @@ fun registerCustomer(){
 						.addOnSuccessListener { documentReference ->
 							Toast.makeText(this@SignupActivity,"Store Crated",Toast.LENGTH_SHORT).show()
 							val intent = Intent(this, LoginActivity::class.java)
-							//startActivity(intent)
+							startActivity(intent)
 						}
 						.addOnFailureListener{
 							Toast.makeText(this@SignupActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
