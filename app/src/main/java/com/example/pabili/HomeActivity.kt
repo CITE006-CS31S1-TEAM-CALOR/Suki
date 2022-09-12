@@ -47,6 +47,8 @@ class HomeActivity : AppCompatActivity() {
             val mAlertDialogBuilder = AlertDialog.Builder(this)
 
             val storeList = ArrayList<String>()
+            val storeIDList = ArrayList<String>()
+
             db.collection("stores")
                 .get()
                 .addOnCompleteListener { task ->
@@ -54,15 +56,17 @@ class HomeActivity : AppCompatActivity() {
                         for (document in task.result) {
                             var storeName = document.data["username"].toString()
                             storeList.add(storeName)
+                            storeIDList.add(document.data["id"].toString())
                         }
                     }
                     val storeArray = storeList.toTypedArray()
                     mAlertDialogBuilder.setTitle("STORE")
                     mAlertDialogBuilder.setCancelable(true)
                     mAlertDialogBuilder.setItems(storeArray, DialogInterface.OnClickListener{ dialog, index ->
-
                         val intent = Intent(this, MainActivity::class.java).apply {
-                            putExtra("storeId", storeArray.get(index));
+                            val selectedStore=storeIDList.get(index).toString()
+                            putExtra("storeId,currentUser", "$selectedStore,$currentUser");
+                            
                         }
                         startActivity(intent)
                     })

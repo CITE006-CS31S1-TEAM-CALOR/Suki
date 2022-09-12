@@ -9,7 +9,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.content.Intent
 import android.util.Log
+import java.util.Random
 import android.view.View
+import TagPrice
 
 class SignupActivity : AppCompatActivity() {
 	private lateinit var db: FirebaseFirestore
@@ -59,11 +61,14 @@ fun registerCustomer(){
 		etVerifyPassword.requestFocus()
 		return
 	}
+
 	if(username.isEmpty()) {
 		Toast.makeText(this@SignupActivity, "Username is Empty", Toast.LENGTH_SHORT).show()
 		etUsername.requestFocus()
 		return
 	}
+
+
 
 	val account = hashMapOf(
 		"username" to username,
@@ -96,6 +101,10 @@ fun registerCustomer(){
 	}
 
 	fun registerStore(){
+		var id:Int = Random().nextInt(10000);
+
+		Toast.makeText(this@SignupActivity, "id:$id", Toast.LENGTH_SHORT).show()
+			
 		val username = etUsername.text.toString()
 		val password = etPassword.text.toString()
 		val verpassword = etVerifyPassword.text.toString()
@@ -118,8 +127,25 @@ fun registerCustomer(){
 
 		val account = hashMapOf(
 			"username" to username,
-			"password" to password
+			"password" to password,
+			"id" to id
 		)
+
+		db.collection("products/SRP/prices").get().addOnSuccessListener {
+			documents ->
+			if (documents.isEmpty){
+				Toast.makeText(this@SignupActivity,"empty document",Toast.LENGTH_SHORT).show()
+					
+			}
+				for(document in documents){
+					val tagPrice = document.toObject<TagPrice>(TagPrice::class.java)
+					db.collection("products/store$id/prices").add(tagPrice)
+					Toast.makeText(this@SignupActivity,tagPrice.name,Toast.LENGTH_SHORT).show()
+							
+				}
+		}
+
+
 
 		db.collection("stores")
 			.whereEqualTo("username", username)
@@ -131,7 +157,7 @@ fun registerCustomer(){
 						.addOnSuccessListener { documentReference ->
 							Toast.makeText(this@SignupActivity,"Store Crated",Toast.LENGTH_SHORT).show()
 							val intent = Intent(this, LoginActivity::class.java)
-							startActivity(intent)
+							//startActivity(intent)
 						}
 						.addOnFailureListener{
 							Toast.makeText(this@SignupActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
@@ -146,7 +172,6 @@ fun registerCustomer(){
 				Toast.makeText(this@SignupActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
 			}
 	}
-
 }
 
 

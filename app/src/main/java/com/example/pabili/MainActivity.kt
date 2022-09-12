@@ -30,15 +30,17 @@ class MainActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter:RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
     private var customer_id: Int? = null
-	 private var order = HashMap <String, String>()
+	private var order = HashMap <String, String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
     	val db = FirebaseFirestore.getInstance()
-    	val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-	    val storeId = intent.getStringExtra("storeId")
+    	val currentUser = intent.getStringExtra("storeId,currentUser")!!.split(',')[1]
+	    val storeId = intent.getStringExtra("storeId,currentUser")!!.split(',')[0]
 
+	      Toast.makeText(this@MainActivity, currentUser, Toast.LENGTH_SHORT).show()
+	    Toast.makeText(this@MainActivity,storeId,Toast.LENGTH_SHORT).show()
 
 		findViewById<TextView>(R.id.txtStoreName).apply{
 			text = storeId
@@ -58,28 +60,22 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager  = layoutManager
         recyclerView.adapter = RecyclerAdapter( object : RecyclerAdapter.CallbackInterface {
             override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
-                
-    		 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-			 val currentDate = sdf.format(Date())
-			 
-    		order.put("timestamp",currentDate)
-    		
     				if (totalPrice.equals("0")){
     					order = hashMapOf()
     				} else {
-                order = hashMapOf (
-				       "username" to fillStr(currentUser!!),
-				       "store" to fillStr(storeId!!),
-				       "transactionID" to fillStr(transactionId),
-				       "orderList" to fillStr(strOrderList),
-				       "computedPrices" to fillStr(strComputedPrices),
-				       "status" to "pending",
-				       "totalPrice" to fillStr(totalPrice),
-                )
+               		 order = hashMapOf (
+						       "username" to fillStr(currentUser),
+						       "store" to fillStr(storeId),
+						       "transactionID" to fillStr(transactionId),
+						       "orderList" to fillStr(strOrderList),
+						       "computedPrices" to fillStr(strComputedPrices),
+						       "status" to "pending",
+						       "totalPrice" to fillStr(totalPrice),
+		                )
                 }
                 tvTotal.setText(totalPrice)
             }
-        },storeId!!) 
+        },storeId) 
          /*       
     	var btnAddStore = findViewById<ImageView>(R.id.btnAddStore)
     	btnAddStore.setOnClickListener {
@@ -93,6 +89,11 @@ class MainActivity : AppCompatActivity() {
     		if (order.isEmpty()) {
 						Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
     		} else {
+    		               
+    		 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+			 val currentDate = sdf.format(Date())
+			 
+    		order.put("timestamp",currentDate)
     		
     		db.collection("orders")
 					.add(order)
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         
 		fun generateTransactionId():String {
 				 var charPool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIKLMNOPQRSTUVWXYZ1234567890123456789001234567890"
-			 	var transactionId = ""
+			 	 var transactionId = ""
 				 for (i in 0..30){
 					transactionId += charPool[Random().nextInt(82)]
 				 }

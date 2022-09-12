@@ -64,29 +64,29 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     		
-         if (holder.getAdapterPosition() == orderList.size - 1){
+         if (holder.getBindingAdapterPosition() == orderList.size - 1){
          	holder.etOrder.setText("")
          	holder.tvComputedPrice.text = ""
-         	holder.etOrder.requestFocus()
-         }
-	//holder.etOrder.setText(holder.getAdapterPosition().toString())
+            holder.etOrder.requestFocus()
+          }
+	//holder.etOrder.setText(holder.getBindingAdapterPosition().toString())
         holder.ivRemove.setOnClickListener {
         
             	//	orderList.removeLast()
-		//	notifyItemRemoved(holder.getAdapterPosition())               		
+		//	notifyItemRemoved(holder.getBindingAdapterPosition())               		
               // 		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
             
-            if (holder.getAdapterPosition() == orderList.size-1) {
+            if (holder.getBindingAdapterPosition() == orderList.size-1) {
             	holder.etOrder.setText("")
             } 
             
             
-            if (holder.getAdapterPosition() != orderList.size-1) {
-          		computedPrices.removeAt(holder.getAdapterPosition())
+            if (holder.getBindingAdapterPosition() != orderList.size-1) {
+          		computedPrices.removeAt(holder.getBindingAdapterPosition())
 	    		val totalPrice = computedPrices.sum()	
-	              	callbackInterface.passResultCallback(totalPrice.toString(),orderList.joinToString(),computedPrices.joinToString())  
-	       		orderList.removeAt(holder.getAdapterPosition())
-	       		notifyItemRemoved(holder.getAdapterPosition())
+	            callbackInterface.passResultCallback(totalPrice.toString(),orderList.joinToString(),computedPrices.joinToString())  
+	       		orderList.removeAt(holder.getBindingAdapterPosition())
+	       		notifyItemRemoved(holder.getBindingAdapterPosition())
 	       		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
             } 
             
@@ -94,7 +94,7 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
         /*
         holder.tvComputedPrice.setOnClickListener {
             		orderList.add((orderList.size).toString())
-            		notifyItemInserted(holder.getAdapterPosition()+1);
+            		notifyItemInserted(holder.getBindingAdapterPosition()+1);
                			
                		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
         }*/
@@ -109,7 +109,7 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
 
                     if (m != null){
                         holder.etOrder.setText(strOrder.trim())	
-                        orderList.set(holder.getAdapterPosition(),strOrder.trim())
+                        orderList.set(holder.getBindingAdapterPosition(),strOrder.trim())
 
                         val lsOrder = strOrder.split(" ")
                         val productName: String = lsOrder.get(1)
@@ -117,14 +117,16 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
                         val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
                         val computedPrice = (unitPrice!! * qty)
                         if (computedPrice == 0){
-                            holder.tvComputedPrice.text = "unavailable"
+                            Toast.makeText(holder.etOrder.getContext(),"Product Unavailable",Toast.LENGTH_SHORT).show()
+                            holder.etOrder.setSelection(holder.etOrder.text.length)
+                            return
                         } else {
                             holder.tvComputedPrice.text =  computedPrice.toString()
                         }
 
 
                         if (orderList.get(orderList.size-1).equals("")){       
-                            computedPrices.set(holder.getAdapterPosition(), computedPrice)
+                            computedPrices.set(holder.getBindingAdapterPosition(), computedPrice)
                             
 	            		
                         } else {	

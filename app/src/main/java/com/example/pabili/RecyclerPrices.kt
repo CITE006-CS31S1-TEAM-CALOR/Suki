@@ -77,26 +77,26 @@ class RecyclerPrices (private val callbackInterface: CallbackInterface, private 
     		}
     		
     		
-         if (holder.getAdapterPosition() == orderList.size - 1){
+         if (holder.getBindingAdapterPosition() == orderList.size - 1){
          	//holder.etOrder.setText(TagPrices.get(0).name?:"rhandys")
          //		holder.etPrice.setText("")
          }
-	//holder.etOrder.setText(holder.getAdapterPosition().toString())
+	//holder.etOrder.setText(holder.getBindingAdapterPosition().toString())
         holder.ivRemove.setOnClickListener {
         
             	//	orderList.removeLast()
-		//	notifyItemRemoved(holder.getAdapterPosition())               		
+		//	notifyItemRemoved(holder.getBindingAdapterPosition())               		
            		Toast.makeText(holder.etOrder.getContext(),TagPrices.size.toString(), Toast.LENGTH_SHORT).show()
             
-            if (holder.getAdapterPosition() == orderList.size-1) {
+            if (holder.getBindingAdapterPosition() == orderList.size-1) {
             	holder.etOrder.setText("")
             } 
             
             
-            if (holder.getAdapterPosition() != orderList.size-1) {
+            if (holder.getBindingAdapterPosition() != orderList.size-1) {
 	           //   	callbackInterface.passResultCallback(totalPrice.toString(),orderList.joinToString(),computedPrices.joinToString())  
-	       		orderList.removeAt(holder.getAdapterPosition())
-	       		notifyItemRemoved(holder.getAdapterPosition())
+	       		orderList.removeAt(holder.getBindingAdapterPosition())
+	       		notifyItemRemoved(holder.getBindingAdapterPosition())
 	       		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
             } 
             
@@ -104,7 +104,7 @@ class RecyclerPrices (private val callbackInterface: CallbackInterface, private 
         /*
         holder.tvComputedPrice.setOnClickListener {
             		orderList.add((orderList.size).toString())
-            		notifyItemInserted(holder.getAdapterPosition()+1);
+            		notifyItemInserted(holder.getBindingAdapterPosition()+1);
                			
                		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
         }*/
