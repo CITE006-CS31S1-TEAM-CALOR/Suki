@@ -4,43 +4,97 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.content.Intent
-import android.view.View
 
-import android.util.Log;
-import android.graphics.Bitmap;
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
  
 
 class ClaimingActivity: AppCompatActivity() {
+
+	private lateinit var cInfo: DataCustomerInfo
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_claiming)
- 
- 
-		   val transactionId = intent.getStringExtra("transactionId")
-		   
-			val tvTransactionId = findViewById<TextView>(R.id.tvTransactionId)
-			tvTransactionId.text = transactionId
-			//val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-			val imageView = findViewById<ImageView>(R.id.imageView)
-			val encoder = BarcodeEncoder()
-			val bitmap = encoder.encodeBitmap(transactionId, BarcodeFormat.QR_CODE, 400, 400)
-			imageView.setImageBitmap(bitmap)
-			imageView.setImageBitmap(bitmap)
-			// hi pi
+		super.onCreate(savedInstanceState)
+		setContentView(R.layout.activity_claiming)
+
+		val db = FirebaseFirestore.getInstance()
+
+
+		val transactionId = intent.getStringExtra("transactionId")
+		val cDoc = transactionId
+		val orders = db.collection("orders").document(cDoc!!)
+		val tvTransactionId = findViewById<TextView>(R.id.tvTransactionId)
+		tvTransactionId.text = transactionId
+		//val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+		val imageView = findViewById<ImageView>(R.id.imageView)
+		val encoder = BarcodeEncoder()
+		val bitmap = encoder.encodeBitmap(transactionId, BarcodeFormat.QR_CODE, 400, 400)
+		imageView.setImageBitmap(bitmap)
+		imageView.setImageBitmap(bitmap)
+		val recyclerView = findViewById<RecyclerView>(R.id.storeCustomerOrderClaiming)
+		recyclerView.layoutManager = LinearLayoutManager(this)
+		val data = ArrayList<DataOrderList>()
+
+
+		orders.get()
+			.addOnSuccessListener { result ->
+				cInfo = DataCustomerInfo(
+					result.getString("computedPrices").toString(),
+					result.getString("orderList").toString(),
+					result.getString("status").toString(),
+					result.getString("store").toString(),
+					result.getString("timestamp").toString(),
+					result.getString("totalPrice").toString(),
+					result.getString("transactionID").toString(),
+					result.getString("username").toString()
+				)
+
+				val computedPricesArray = cInfo.computedPrices!!.split(", ")
+				val orderListArray = cInfo.orderList!!.split(", ")
+				for ((refComp, order) in orderListArray!!.withIndex()) {
+					if (refComp != orderListArray.size - 1) {
+						val name = order.replace("\\d+".toRegex(), "")
+						val qty = order.replace(" [a-z]+".toRegex(), "")
+						val com = computedPricesArray[refComp]
+
+						data.add(DataOrderList(name, "x" + qty, "P" + com))
+					}
+				}
+				val adapter = RecyclerOrder(data)
+				recyclerView.adapter = adapter
+			}
+	}
 
 
 
-    }
 }
+
+
+
+//			db.collection("orders")
+//				.get()
+//				.addOnCompleteListener {
+//					task ->
+//						if(task.isSuccessful){
+//							for(document in task.result){
+//
+//							}
+//
+//
+//
+//							val adapter = RecyclerOrder(data)
+//							recyclerView.adapter = adapter
+//						}
+//					Log.d("TAG", "Orders: $oL")
+//					}
+
+
+
+
+
 	//try {]	
 		/*
 		val db = FirebaseFirestore.getInstance()

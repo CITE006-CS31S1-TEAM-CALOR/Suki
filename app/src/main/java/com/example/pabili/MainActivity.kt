@@ -100,8 +100,9 @@ class MainActivity : AppCompatActivity() {
 					.addOnSuccessListener { 
 						documentReference ->
 						Toast.makeText(this@MainActivity,"Order Received",Toast.LENGTH_SHORT).show()
-				      val intent = Intent(this, ClaimingActivity::class.java).apply {
+						     val intent = Intent(this, ClaimingActivity::class.java).apply {
 				      		 putExtra("transactionId", transactionId)
+
 				      }
 				      startActivity(intent)
 					}
