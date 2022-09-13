@@ -63,7 +63,7 @@ class ClaimingActivity: AppCompatActivity() {
 						data.add(DataOrderList(name, "x" + qty, "P" + com))
 					}
 				}
-				val adapter = RecyclerOrder(data)
+				val adapter = RecyclerOrder(this,"",data)
 				recyclerView.adapter = adapter
 			}
 	}

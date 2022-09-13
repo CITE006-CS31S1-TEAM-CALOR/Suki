@@ -92,7 +92,7 @@ class StoreOrderActivity : AppCompatActivity() {
 
                 }
 
-                val adapter = RecyclerOrder(data)
+                val adapter = RecyclerOrder(this, cDoc, data)
                 recyclerview.adapter = adapter
 /*
                 data.add(cInfo)
