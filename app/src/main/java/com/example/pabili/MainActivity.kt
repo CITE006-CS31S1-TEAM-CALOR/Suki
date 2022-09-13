@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     	val currentUser = intent.getStringExtra("storeId,currentUser")!!.split(',')[1]
 	    val storeId = intent.getStringExtra("storeId,currentUser")!!.split(',')[0]
 
-	      Toast.makeText(this@MainActivity, currentUser, Toast.LENGTH_SHORT).show()
+		Toast.makeText(this@MainActivity, currentUser, Toast.LENGTH_SHORT).show()
 	    Toast.makeText(this@MainActivity,storeId,Toast.LENGTH_SHORT).show()
 
 		findViewById<TextView>(R.id.txtStoreName).apply{

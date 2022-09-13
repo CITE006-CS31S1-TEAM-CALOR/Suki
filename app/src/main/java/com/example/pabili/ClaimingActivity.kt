@@ -38,6 +38,7 @@ class ClaimingActivity: AppCompatActivity() {
 			// hi pi
 
 
+
     }
 }
 	//try {]	

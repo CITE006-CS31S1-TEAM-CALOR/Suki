@@ -21,21 +21,6 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-
-		//remove this button below after implementation of startactivity in alert dialog
-//		val tempbutton = findViewById<Button>(R.id.btnTempStore)
-//		tempbutton.setOnClickListener {
-//
-//        val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
-//		   	 val intent = Intent(this, MainActivity::class.java).apply {
-//		     						 putExtra(EXTRA_MESSAGE, currentUser)
-//		     						 putExtra("storeId", "1")
-//		     }
-//		     startActivity(intent)
-//		}
-		
-		
-
         val db = FirebaseFirestore.getInstance()
         findViewById<TextView>(R.id.txtName).apply{
             text = currentUser
