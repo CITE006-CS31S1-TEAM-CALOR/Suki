@@ -27,14 +27,15 @@ class ClaimingActivity: AppCompatActivity() {
  
 		   val transactionId = intent.getStringExtra("transactionId")
 		   
- 			val tvTransactionId = findViewById<TextView>(R.id.tvTransactionId)
- 			tvTransactionId.text = transactionId
-    		//val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
- 			val imageView = findViewById<ImageView>(R.id.imageView)
-		     val encoder = BarcodeEncoder()
-		     val bitmap = encoder.encodeBitmap(transactionId, BarcodeFormat.QR_CODE, 400, 400)
-		     imageView.setImageBitmap(bitmap)
+			val tvTransactionId = findViewById<TextView>(R.id.tvTransactionId)
+			tvTransactionId.text = transactionId
+			//val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+			val imageView = findViewById<ImageView>(R.id.imageView)
+			val encoder = BarcodeEncoder()
+			val bitmap = encoder.encodeBitmap(transactionId, BarcodeFormat.QR_CODE, 400, 400)
 			imageView.setImageBitmap(bitmap)
+			imageView.setImageBitmap(bitmap)
+			// hi pi
 
 
     }
