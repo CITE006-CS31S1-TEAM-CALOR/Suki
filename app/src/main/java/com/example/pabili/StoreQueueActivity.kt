@@ -9,6 +9,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class StoreQueueActivity : AppCompatActivity() {
 
@@ -26,10 +27,11 @@ class StoreQueueActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         val data = ArrayList<DataRecyclerQueue>()
 
-        storeNameDisplay.setText(storeName)
+        storeNameDisplay.text = storeName
 
         db.collection("orders")
             .whereEqualTo("store",storeID).whereEqualTo("status", "pending")
+            .orderBy("timestamp")
             .get()
             .addOnSuccessListener { result ->
                 for(document in result) {
@@ -39,26 +41,24 @@ class StoreQueueActivity : AppCompatActivity() {
 
                     val stringUser = document.getString("username").toString()
                     val stringDate = document.getString("timestamp").toString()
-                    val stringStore = document.id.toString()
+                    val stringStore = document.id
 
                     Log.d(
                         "TAG",
-                        "Name: " + stringUser + " | Date: " + stringDate + " | ID: " + stringStore
+                        "Name: $stringUser | Date: $stringDate | ID: $stringStore"
                     )
                     data.add(DataRecyclerQueue(stringUser, stringDate, stringStore))
                 }
                 val adapter = RecyclerQueue(this,data)
                 recyclerview.adapter = adapter
             }.addOnFailureListener{ Exception ->
-                Log.d("TAG", "Fail to get from database \n" + Exception)
+                Log.d("TAG", "Fail to get from database \n$Exception")
             }
 
         //testing
         /*for (i in 1..20){
             data.add(DataRecyclerQueue("Name " + i, "Date " + (20 - i)))
         }
-
-
 
         val adapter = RecyclerQueue(data)
         recyclerview.adapter = adapter

@@ -9,17 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
-import java.util.*
-import kotlin.collections.ArrayList
 
 class RecyclerQueue (private val context: Context, private val mList: List<DataRecyclerQueue>) : RecyclerView.Adapter<RecyclerQueue.ViewHolder>(){
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView){
-        val name: TextView = itemView.findViewById(R.id.storeCustomerName)
-        val date: TextView = itemView.findViewById(R.id.storeCustomerDate)
-        val btn: Button = itemView.findViewById(R.id.storeCustomerAction)
+        val name: TextView = itemView.findViewById(R.id.HEADERstoreCustomerName)
+        val date: TextView = itemView.findViewById(R.id.HEADERstoreCustomerDate)
+        val btn: Button = itemView.findViewById(R.id.HEADERstoreCustomerAction)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
