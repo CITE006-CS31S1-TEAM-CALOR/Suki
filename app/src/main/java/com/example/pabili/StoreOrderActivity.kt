@@ -1,9 +1,12 @@
 package com.example.pabili
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,16 +32,36 @@ class StoreOrderActivity : AppCompatActivity() {
 
         val cDoc = intent.getStringExtra("cDoc")
         val db = FirebaseFirestore.getInstance()
+        val orders = db.collection("orders").document(cDoc!!)
         val data = ArrayList<DataOrderList>()
 
         val customerNameTxt = findViewById<TextView>(R.id.orderCustomerName)
         val customerOrderTotal = findViewById<TextView>(R.id.orderTotal)
         val recyclerview = findViewById<RecyclerView>(R.id.storeCustomerOrder)
+        val delBtn = findViewById<Button>(R.id.deleteBtn)
+        val scnBtn = findViewById<Button>(R.id.scannerBTN)
         recyclerview.layoutManager = LinearLayoutManager(this)
 
-        db.collection("orders")
-            .document(cDoc!!)
-            .get()
+        delBtn.setOnClickListener{
+            orders.update("status","canceled")
+                .addOnSuccessListener {
+                    Toast.makeText(this@StoreOrderActivity,("Order was canceled"), Toast.LENGTH_SHORT).show()
+                    orders.get().addOnSuccessListener { result ->
+                        val intent = Intent(this, StoreQueueActivity::class.java).apply {
+                            putExtra("ID", result.getString("store"))
+                        }
+                        startActivity(intent)
+                    }
+
+
+                }.addOnFailureListener{
+                    Toast.makeText(this@StoreOrderActivity, ("There was an issue in the server. Please try again"), Toast.LENGTH_LONG).show()
+                }
+        }
+
+
+
+        orders.get()
             .addOnSuccessListener { result ->
                 cInfo = DataCustomerInfo(
                     result.getString("computedPrices").toString(),
