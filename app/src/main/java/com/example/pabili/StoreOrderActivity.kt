@@ -1,5 +1,6 @@
 package com.example.pabili
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +17,7 @@ class StoreOrderActivity : AppCompatActivity() {
 
     private lateinit var cInfo: DataCustomerInfo
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_order)
@@ -31,10 +33,11 @@ class StoreOrderActivity : AppCompatActivity() {
         val usernameView: TextView = findViewById(R.id.usernameTXT)
          */
 
+
+        val data = ArrayList<DataOrderList>()
         val cDoc = intent.getStringExtra("cDoc")
         val db = FirebaseFirestore.getInstance()
         val orders = db.collection("orders").document(cDoc!!)
-        val data = ArrayList<DataOrderList>()
 
         val customerNameTxt = findViewById<TextView>(R.id.orderCustomerName)
         val customerOrderTotal = findViewById<TextView>(R.id.orderTotal)
@@ -44,7 +47,10 @@ class StoreOrderActivity : AppCompatActivity() {
         val swt = findViewById<Switch>(R.id.switchToClaim)
         recyclerview.layoutManager = LinearLayoutManager(this)
 
-        /*
+        orders.get().addOnSuccessListener { result ->
+            swt.isChecked = checkStatus(result.getString("status").toString())
+        }
+
         swt.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 orders.update("status", "ready")
@@ -52,26 +58,36 @@ class StoreOrderActivity : AppCompatActivity() {
                 orders.update("status", "pending")
             }
         }
-         */
 
         delBtn.setOnClickListener{
-            orders.update("status","canceled")
-                .addOnSuccessListener {
-                    Toast.makeText(this@StoreOrderActivity,("Order was canceled"), Toast.LENGTH_SHORT).show()
-                    orders.get().addOnSuccessListener { result ->
-                        val intent = Intent(this, StoreQueueActivity::class.java).apply {
-                            putExtra("ID", result.getString("store"))
-                        }
-                        startActivity(intent)
+            if(!swt.isChecked){
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("Are you sure you want to delete this customer?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes"){dialog,id->
+                        orders.update("status","canceled")
+                            .addOnSuccessListener {
+                                Toast.makeText(this@StoreOrderActivity,("Order was canceled"), Toast.LENGTH_SHORT).show()
+                                orders.get().addOnSuccessListener { result ->
+                                    val intent = Intent(this, StoreQueueActivity::class.java).apply {
+                                        putExtra("ID", result.getString("store"))
+                                    }
+                                    startActivity(intent)
+                                }
+
+
+                            }.addOnFailureListener{
+                                Toast.makeText(this@StoreOrderActivity, ("There was an issue in the server. Please try again"), Toast.LENGTH_LONG).show()
+                            }
                     }
-
-
-                }.addOnFailureListener{
-                    Toast.makeText(this@StoreOrderActivity, ("There was an issue in the server. Please try again"), Toast.LENGTH_LONG).show()
-                }
+                    .setNegativeButton("No"){dialog, id ->
+                        dialog.dismiss()
+                    }
+                builder.create().show()
+            }else{
+                Toast.makeText(this@StoreOrderActivity,"Order is ready to be Claimed. Can't cancel order.", Toast.LENGTH_SHORT).show()
+            }
         }
-
-
 
         orders.get()
             .addOnSuccessListener { result ->
@@ -133,5 +149,8 @@ class StoreOrderActivity : AppCompatActivity() {
 
 
 
+    }
+    private fun checkStatus(comp:String): Boolean{
+        return (comp == "ready")
     }
 }

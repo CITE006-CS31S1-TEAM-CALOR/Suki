@@ -81,9 +81,7 @@ class RecyclerOrder (private val context: Context, private val cDoc: String, pri
                             totaltxt!!.text = "total: P$sum"
                             mList.removeAt(holder.bindingAdapterPosition)
                             notifyItemRemoved(holder.bindingAdapterPosition)
-
-
-
+                            notifyDataSetChanged()
                         }
 
                 }
