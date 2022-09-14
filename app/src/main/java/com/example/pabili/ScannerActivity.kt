@@ -42,6 +42,7 @@ import com.google.mlkit.vision.common.InputImage
 
 
 import android.content.Intent
+import com.google.firebase.firestore.FirebaseFirestore
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -199,7 +200,8 @@ class ScannerActivity : AppCompatActivity() {
 
    override fun onRequestPermissionsResult(
    requestCode: Int, permissions: Array<String>, grantResults:IntArray) {
-    if (requestCode == REQUEST_CODE_PERMISSIONS) {
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+       if (requestCode == REQUEST_CODE_PERMISSIONS) {
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -234,6 +236,10 @@ class ScannerActivity : AppCompatActivity() {
                     // Task completed successfully
                     // [START_EXCLUDE]
                     // [START get_barcodes]
+                    val cDoc = intent.getStringExtra("cDoc")
+                    val db = FirebaseFirestore.getInstance()
+                    val cus = db.collection("orders").document(cDoc!!)
+
                     for (barcode in barcodes) {
                         val bounds = barcode.boundingBox
                         val corners = barcode.cornerPoints
@@ -254,12 +260,30 @@ class ScannerActivity : AppCompatActivity() {
                             }
                         }
                         Toast.makeText(baseContext,barcode.rawValue.toString(),Toast.LENGTH_SHORT).show()
-                        val intent = Intent(baseContext, MainActivity::class.java).apply {
-		    			    putExtra("storename", barcode.rawValue.toString())
-                        }
-                        startActivity(intent)
 
-                        
+                        cus.get().addOnSuccessListener { result ->
+                            val cusTransId = result.getString("transactionID")
+                            if(cusTransId == barcode.rawValue.toString()){
+                                cus.update("status","claimed").addOnSuccessListener {
+                                    Toast.makeText(baseContext, "Customer Status updated to CLAIM", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(baseContext, StoreQueueActivity::class.java).apply {
+                                        //putExtra("storename", barcode.rawValue.toString())
+                                        putExtra("username", LOGIN_NAME)
+                                        putExtra("ID",LOGIN_ID)
+                                    }
+                                    startActivity(intent)
+                                }.addOnFailureListener{ e ->
+                                    Toast.makeText(baseContext,"There was an error on updating. Check your Network", Toast.LENGTH_SHORT).show()
+                                    Log.d("ERROR", e.toString())
+                                }
+                            }else{
+                                Toast.makeText(baseContext, "Code didn't matched",Toast.LENGTH_SHORT).show()
+                                Log.d("MISMATCH", "$cusTransId != ${barcode.rawValue.toString()}")
+                            }
+                        }.addOnFailureListener{ e ->
+                            Toast.makeText(baseContext, "There was a connection error. Check your Network", Toast.LENGTH_SHORT).show()
+                            Log.d("ERROR", e.toString())
+                        }
                     }
                     // [END get_barcodes]
                     // [END_EXCLUDE]
