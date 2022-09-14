@@ -44,14 +44,12 @@ class LoginActivity : AppCompatActivity() {
                     when (event?.action) { MotionEvent.ACTION_UP -> {
                         btnCustomerLogin.startAnimation(scaleDown)
                     } MotionEvent.ACTION_DOWN -> {
-                        btnCustomerLogin.startAnimation(scaleUp)
+                            btnCustomerLogin.startAnimation(scaleUp)
+                        }
                     }
-                }
-
                 }
                 return v?.onTouchEvent(event) ?: true
             }
-
         })
 
         btnStoreLogin.setOnTouchListener(object:View.OnTouchListener {
@@ -61,13 +59,11 @@ class LoginActivity : AppCompatActivity() {
                         btnStoreLogin.startAnimation(scaleDown)
                     } MotionEvent.ACTION_DOWN -> {
                         btnStoreLogin.startAnimation(scaleUp)
+                        }
                     }
-                    }
-
                 }
                 return v?.onTouchEvent(event) ?: true
             }
-
         })
 
         btnSignup.setOnTouchListener(object:View.OnTouchListener {
@@ -77,13 +73,11 @@ class LoginActivity : AppCompatActivity() {
                         btnSignup.startAnimation(scaleDown)
                     } MotionEvent.ACTION_DOWN -> {
                         btnSignup.startAnimation(scaleUp)
+                        }
                     }
-                    }
-
                 }
                 return v?.onTouchEvent(event) ?: true
             }
-
         })
 
         btnCustomerLogin.setOnClickListener {
