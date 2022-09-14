@@ -2,6 +2,8 @@ package com.example.pabili
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.TextView
 import android.widget.ImageView
@@ -24,11 +26,8 @@ class ClaimingActivity: AppCompatActivity() {
 
 
 		val transactionId = intent.getStringExtra("transactionId")
-		val cDoc = transactionId
-		val orders = db.collection("orders").document(cDoc!!)
 		val tvTransactionId = findViewById<TextView>(R.id.tvTransactionId)
 		tvTransactionId.text = transactionId
-		//val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
 		val imageView = findViewById<ImageView>(R.id.imageView)
 		val encoder = BarcodeEncoder()
 		val bitmap = encoder.encodeBitmap(transactionId, BarcodeFormat.QR_CODE, 400, 400)
@@ -37,35 +36,49 @@ class ClaimingActivity: AppCompatActivity() {
 		val recyclerView = findViewById<RecyclerView>(R.id.storeCustomerOrderClaiming)
 		recyclerView.layoutManager = LinearLayoutManager(this)
 		val data = ArrayList<DataOrderList>()
+		val totaltxt = findViewById<TextView>(R.id.totalText)
+		val status = findViewById<TextView>(R.id.txtStatus)
+		val storeN = findViewById<TextView>(R.id.txtStore)
 
-
-		orders.get()
+		db.collection("orders").whereEqualTo("transactionID", transactionId)
+			.get()
 			.addOnSuccessListener { result ->
-				cInfo = DataCustomerInfo(
-					result.getString("computedPrices").toString(),
-					result.getString("orderList").toString(),
-					result.getString("status").toString(),
-					result.getString("store").toString(),
-					result.getString("timestamp").toString(),
-					result.getString("totalPrice").toString(),
-					result.getString("transactionID").toString(),
-					result.getString("username").toString()
-				)
-
-				val computedPricesArray = cInfo.computedPrices!!.split(", ")
-				val orderListArray = cInfo.orderList!!.split(", ")
-				for ((refComp, order) in orderListArray!!.withIndex()) {
-					if (refComp != orderListArray.size - 1) {
-						val name = order.replace("\\d+".toRegex(), "")
-						val qty = order.replace(" [a-z]+".toRegex(), "")
-						val com = computedPricesArray[refComp]
-
-						data.add(DataOrderList(name, "x" + qty, "P" + com))
+				if(result.isEmpty){
+					Log.d("FAIL", "No data")
+				} else{
+					for(document in result){
+						val cDoc = document.id
+						val total = document.data["totalPrice"].toString()
+						totaltxt.text = "Total: " + total
+						val store = document.data["store"].toString()
+						storeN.text = "Store: " + store
+						val s = document.data["status"].toString()
+						status.text = "Status: " + s
+						var computedPrices = document.data["computedPrices"].toString()
+						var oL = document.data["orderList"].toString()
+						val orderListArray = oL.split(", ")
+						val cPricesArray = computedPrices.split(", ")
+						for((refComp, order) in orderListArray!!.withIndex()){
+							if(refComp != orderListArray.size - 1){
+								val name = order.replace("\\d+".toRegex(), "")
+								val qty = order.replace(" [a-z]+".toRegex(), "")
+								val com = cPricesArray[refComp]
+								data.add(DataOrderList(name, "x" + qty, "P" + com))
+							}
+						}
+						val adapter = RecyclerOrder(this, cDoc, data, totaltxt)
+						recyclerView.adapter = adapter
 					}
 				}
-				val adapter = RecyclerOrder(this,"",data)
-				recyclerView.adapter = adapter
 			}
+
+			val editBtn = findViewById<Button>(R.id.btnEdit)
+
+			editBtn.setOnClickListener{
+				super.finish()
+			}
+
+
 	}
 
 

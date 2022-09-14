@@ -16,19 +16,55 @@
         android:layout_marginTop="50dp"
         android:contentDescription="QR Code"/>
 
- 	<TextView 
+ 	<TextView
  		android:id = "@+id/tvTransactionId"
  		android:layout_width = "match_parent"
  		android:layout_height = "wrap_content"
  		android:gravity = "center"
  	/>
 
+
+	<TextView
+		android:id="@+id/txtStore"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Store:" />
+
+	<TextView
+		android:id="@+id/txtStatus"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Status:" />
+
+	<TextView
+		android:id="@+id/totalText"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Total:" />
+
+
+
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/storeCustomerOrderClaiming"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="500dp"
+		app:layout_constraintTop_toBottomOf="@+id/totalText"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/tvTransactionId" />
+		app:layout_constraintBottom_toTopOf="@+id/btnEdit"
+		>
+
+	</androidx.recyclerview.widget.RecyclerView>
+
+	<Button
+		android:id="@+id/btnEdit"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Edit"
+		app:layout_constraintTop_toBottomOf="@+id/storeCustomerOrderClaiming"
+		/>
+
+
 
 </LinearLayout>
