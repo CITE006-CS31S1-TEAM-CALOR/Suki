@@ -30,7 +30,7 @@ class StoreQueueActivity : AppCompatActivity() {
         storeNameDisplay.text = storeName
 
         db.collection("orders")
-            .whereEqualTo("store",storeID).whereEqualTo("status", "pending")
+            .whereEqualTo("store",storeID).whereIn("status", listOf("pending","ready"))
             .orderBy("timestamp")
             .get()
             .addOnSuccessListener { result ->

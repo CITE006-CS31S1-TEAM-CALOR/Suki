@@ -2,6 +2,7 @@ package com.example.pabili
 
 import android.app.AlertDialog
 import android.content.Context
+import android.service.autofill.FieldClassification
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
+import kotlin.collections.ArrayList
 
-class RecyclerOrder (private val context: Context, private val cDoc: String, private val mList: List<DataOrderList>) : RecyclerView.Adapter<RecyclerOrder.ViewHolder>(){
+class RecyclerOrder (private val context: Context, private val cDoc: String, private val mList: ArrayList<DataOrderList>, private val totaltxt: TextView?) : RecyclerView.Adapter<RecyclerOrder.ViewHolder>(){
     class ViewHolder(ItemView : View) : RecyclerView.ViewHolder(ItemView){
         val name: TextView = itemView.findViewById(R.id.OrderName)
         val qty: TextView = itemView.findViewById(R.id.OrderQty)
@@ -49,6 +51,7 @@ class RecyclerOrder (private val context: Context, private val cDoc: String, pri
                     Log.d("TAG","$position")
                     orders.get()
                         .addOnSuccessListener { result ->
+                            //update computedPrices
                             var regex = "\\d+".toRegex()
                             var match: Sequence<MatchResult> = regex.findAll(result.getString("computedPrices").toString())
                             var array = LinkedList<String>()
@@ -58,8 +61,27 @@ class RecyclerOrder (private val context: Context, private val cDoc: String, pri
                             array.removeAt(position)
                             orders.update("computedPrices",array.toString().replace("[","").replace("]",""))
 
-                            //TODO update orderList and total Prices after deleting
-                            regex = "".toRegex()
+                            //update orderList
+                            regex = "\\d+ \\w+".toRegex()
+                            var mmatch: Sequence<MatchResult> = regex.findAll(result.getString("orderList").toString())
+                            var aaray = LinkedList<String>()
+                            for(i in mmatch){
+                                aaray.add(i.value)
+                            }
+                            aaray.removeAt(position)
+                            orders.update("orderList",aaray.toString().replace("[","").replace("]","")+", ")
+
+                            //update totalPrice
+                            var sum = 0
+                            for(i in array){
+                                sum += i.toInt()
+                            }
+                            orders.update("totalPrice", sum.toString())
+
+                            totaltxt!!.text = "total: P$sum"
+                            mList.removeAt(holder.bindingAdapterPosition)
+                            notifyItemRemoved(holder.bindingAdapterPosition)
+
 
 
                         }

@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     		} else {
     		               
     		 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-			 val currentDate = sdf.format(Date())
+			 val currentDate = sdf.format(Date()) //TODO change to TimeStamp format
 			 
     		order.put("timestamp",currentDate)
     		

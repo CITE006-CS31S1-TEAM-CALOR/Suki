@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,7 +41,18 @@ class StoreOrderActivity : AppCompatActivity() {
         val recyclerview = findViewById<RecyclerView>(R.id.storeCustomerOrder)
         val delBtn = findViewById<Button>(R.id.deleteBtn)
         val scnBtn = findViewById<Button>(R.id.scannerBTN)
+        val swt = findViewById<Switch>(R.id.switchToClaim)
         recyclerview.layoutManager = LinearLayoutManager(this)
+
+        /*
+        swt.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                orders.update("status", "ready")
+            } else {
+                orders.update("status", "pending")
+            }
+        }
+         */
 
         delBtn.setOnClickListener{
             orders.update("status","canceled")
@@ -92,7 +104,7 @@ class StoreOrderActivity : AppCompatActivity() {
 
                 }
 
-                val adapter = RecyclerOrder(this, cDoc, data)
+                val adapter = RecyclerOrder(this, cDoc, data, customerOrderTotal)
                 recyclerview.adapter = adapter
 /*
                 data.add(cInfo)
