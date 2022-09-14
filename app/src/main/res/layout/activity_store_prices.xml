@@ -60,22 +60,43 @@
             android:gravity="center"
      />
          </LinearLayout>
+
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/linRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/tableHeader"
+            app:layout_constraintBottom_toTopOf="@+id/linNav">
+
+
+          <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+
          <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPrices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-             app:layout_constraintTop_toBottomOf="@+id/tableHeader"/>
-            
+            android:overScrollMode="never"/>
+
             <Button
             android:id="@+id/btnAddProduct"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Add Price"
-            app:layout_constraintTop_toBottomOf="@+id/rvPrices"
-            />
+            android:text="Add Price"/>
+
+         </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+         
 
           <LinearLayout
+            android:id="@+id/linNav"
           android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
