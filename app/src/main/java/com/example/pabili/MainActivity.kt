@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 						Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
     		} else {
     		               
-    		 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+    		 val sdf = SimpleDateFormat("yyyy/mm/dd hh:mm:ss")
 			 val currentDate = sdf.format(Date()) //TODO change to TimeStamp format
 			 
     		order.put("timestamp",currentDate)

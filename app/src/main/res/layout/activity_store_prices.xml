@@ -66,7 +66,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
              app:layout_constraintTop_toBottomOf="@+id/tableHeader"/>
-                
+            
+            <Button
+            android:id="@+id/btnAddProduct"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Add Price"
+            app:layout_constraintTop_toBottomOf="@+id/rvPrices"
+            />
+
           <LinearLayout
           android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,15 +82,15 @@
                app:layout_constraintBottom_toBottomOf="parent"
             >
       
-                  <Button
-                  
+              <Button
          	 android:id="@+id/btnSeeOrders"
-         android:layout_height="wrap_content"
-         android:layout_width="0dp"
+             android:layout_height="wrap_content"
+              android:layout_width="0dp"
             android:layout_weight="1"
             android:text="See Orders"
-     />    
-        <Button
+              />   
+               
+           <Button
          	 android:id="@+id/btnSetPrice"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
@@ -90,6 +98,8 @@
             android:text="Set Price"
             />
 
+
 			</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -37,7 +37,7 @@ class StorePricesActivity : AppCompatActivity() {
 
 
     	val db = FirebaseFirestore.getInstance()
-    	val storeId = "1"
+    	val storeId = intent.getStringExtra("storeId")!!
 	  // val storeId = intent.getStringExtra("storeId")
 	
         //tvStorename.text = storeName
@@ -48,14 +48,18 @@ class StorePricesActivity : AppCompatActivity() {
 
     	layoutManager = LinearLayoutManager(this)
         
+        val btnAddProduct = findViewById<Button>(R.id.btnAddProduct)
+        
         
         val recyclerView = findViewById<RecyclerView>(R.id.rvPrices)
         recyclerView.layoutManager  = layoutManager
         recyclerView.adapter = RecyclerPrices( object : RecyclerPrices.CallbackInterface {
            override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
            }
-           },"sf")
+           },storeId,btnAddProduct)
            
+//
+        
                 /*
     		 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
 			 val currentDate = sdf.format(Date())
@@ -89,14 +93,14 @@ class StorePricesActivity : AppCompatActivity() {
 
 
        var btnSetPrice = findViewById<Button>(R.id.btnSetPrice)
-    	btnSetPrice.setOnClickListener {
+    	 btnSetPrice.setOnClickListener {
     		
     		}
     		
     		    var btnSeeOrders = findViewById<Button>(R.id.btnSeeOrders)
-    	btnSeeOrders.setOnClickListener {
-    							 val intent = Intent(this, StoreQueueActivity::class.java).apply {
-							 putExtra("storeId", "1")
+    	       btnSeeOrders.setOnClickListener {
+            	val intent = Intent(this, StoreQueueActivity::class.java).apply {
+							 putExtra("ID", storeId)
 					 }
 					 startActivity(intent)	
     		}
@@ -117,3 +121,4 @@ class StorePricesActivity : AppCompatActivity() {
     //}
 }
 	
+

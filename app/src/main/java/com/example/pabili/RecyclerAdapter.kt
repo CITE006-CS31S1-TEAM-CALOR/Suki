@@ -1,4 +1,4 @@
-package com.example.pabili
+    package com.example.pabili
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -116,7 +116,8 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
                         val qty: Int = lsOrder.get(0).toInt()
                         val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
                         val computedPrice = (unitPrice!! * qty)
-                        if (computedPrice == 0){
+                        val available: Boolean? = (TagPrices.firstOrNull {it.name == productName.trim()})?.available ?: false
+                        if (computedPrice == 0 || available==false){
                             Toast.makeText(holder.etOrder.getContext(),"Product Unavailable",Toast.LENGTH_SHORT).show()
                             holder.etOrder.setSelection(holder.etOrder.text.length)
                             return
@@ -167,5 +168,6 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
         return orderList.size
     }
 }
+
 
 
