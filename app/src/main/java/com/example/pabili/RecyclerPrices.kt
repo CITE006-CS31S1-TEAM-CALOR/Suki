@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import TagPrice
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -156,12 +157,21 @@ class RecyclerPrices (private val callbackInterface: CallbackInterface, private 
                 }
 
 
+
                  if (holder.getBindingAdapterPosition() != TagPrices.size-1) {
-    	       		val docref = db.collection("products/store$storeId/prices")
-                    docref.whereEqualTo("name",holder.etProduct.text.toString()).get().addOnSuccessListener { 
+    	       	   val productName = holder.etProduct.text.toString()
+
+                    val builder = AlertDialog.Builder(holder.etPrice.getContext())
+                    builder.setMessage("Are you sure you want to delete $productName from list")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes"){
+                            dialog,id->
+                        
+val dr = db.collection("products/store$storeId/prices")
+                    dr.whereEqualTo("name",holder.etProduct.text.toString()).get().addOnSuccessListener { 
                          results ->
                          for(data in results){
-                             docref.document(data.id).delete()
+                             dr.document(data.id).delete()
                          }
                          Toast.makeText(holder.etProduct.getContext(),"Product Deleted", Toast.LENGTH_SHORT).show()
                          TagPrices.removeAt(holder.getBindingAdapterPosition())
@@ -169,22 +179,38 @@ class RecyclerPrices (private val callbackInterface: CallbackInterface, private 
                      }.addOnFailureListener{ 
 
                 }
+                            }
+                    .setNegativeButton("No"){dialog, id ->
+                        dialog.dismiss()
+                    }
+                  builder.create().show()
+                   
+
+
+                	
             }
             
         }
 
         btnAddProduct.setOnClickListener {
-            val product = TagPrice(holder.etProduct.text.toString(),holder.etPrice.text.toString().toInt(),true)
-            TagPrices.add(product)
-            db.collection("products/store$storeId/prices").add(product).addOnSuccessListener { 
-                Toast.makeText(holder.etProduct.getContext(),"Product Added",Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener{ 
+            try {
+                if (holder.etProduct.text.toString() != "" && holder.etPrice.text.toString().toInt() > 0 &&  holder.etPrice.text.toString()!=""){
+                    val product = TagPrice(holder.etProduct.text.toString(),holder.etPrice.text.toString().toInt(),true)
+                TagPrices.add(product)
+                db.collection("products/store$storeId/prices").add(product).addOnSuccessListener { 
+                    Toast.makeText(holder.etProduct.getContext(),"Product Added",Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener{ 
 
+                }
+                
+     // /           TagPrices.add(TagPrice("",0))
+                     notifyItemInserted(holder.getBindingAdapterPosition()+1)
+                  }
+                }
+                 catch (e:NumberFormatException){
+
+                }
             }
-            
- // /           TagPrices.add(TagPrice("",0))
-            notifyItemInserted(holder.getBindingAdapterPosition()+1)
-        }
         /*
         holder.tvComputedPrice.setOnClickListener {
             		orderList.add((orderList.size).toString())
