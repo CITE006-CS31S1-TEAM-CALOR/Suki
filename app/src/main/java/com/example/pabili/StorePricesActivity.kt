@@ -100,7 +100,8 @@ class StorePricesActivity : AppCompatActivity() {
     		    var btnSeeOrders = findViewById<Button>(R.id.btnSeeOrders)
     	       btnSeeOrders.setOnClickListener {
             	val intent = Intent(this, StoreQueueActivity::class.java).apply {
-							 putExtra("ID", storeId)
+						putExtra("ID", storeId)
+						putExtra("username", intent.getStringExtra("username"))
 					 }
 					 startActivity(intent)	
     		}
