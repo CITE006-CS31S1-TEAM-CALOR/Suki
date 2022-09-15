@@ -9,52 +9,68 @@
 
     <TextView
         android:id="@+id/StoreNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#0064b7"
+        android:gravity="center"
         android:text="Store Name"
+        android:textSize="25dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#ffffff"
+        app:fontFamily="sans-serif-black"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="411dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="1dp"
+        android:background="#64c1ff"
         app:layout_constraintBottom_toTopOf="@+id/storeCustomerQueue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/StoreNameText">
 
+
         <TextView
             android:id="@+id/HEADERstoreCustomerName"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Customer Name" />
+            android:gravity="center"
+            android:text="Customer Name"
+            android:textColor="#000000"
+            app:fontFamily="monospace"/>
 
         <TextView
             android:id="@+id/HEADERstoreCustomerDate"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Date" />
+            android:gravity="center"
+            android:text="Date"
+            android:textColor="#000000"
+            app:fontFamily="monospace"/>
 
         <TextView
             android:id="@+id/HEADEREvaluate"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Evaluate" />
+            android:gravity="center"
+            android:text="Evaluate"
+            android:textColor="#000000"
+            app:fontFamily="monospace" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/storeCustomerQueue"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="405dp"
+        android:layout_height="637dp"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,8 +79,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="428dp"
-        android:layout_height="103dp"
+        android:layout_width="415dp"
+        android:layout_height="104dp"
         android:background="#002f6c"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
