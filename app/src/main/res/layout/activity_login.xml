@@ -92,7 +92,7 @@
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:hint="enter 'User' or 'store'"
-            android:text="E"
+            android:text="Q"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -135,7 +135,7 @@
             android:layout_marginBottom="7dp"
             android:hint="enter 'User' or 'store'"
             
-            android:text="E"
+            android:text="Q"
             app:layout_constraintBottom_toTopOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

@@ -95,24 +95,58 @@ class MainActivity : AppCompatActivity() {
 			 
     		order.put("timestamp",currentDate)
     		
-    		db.collection("orders")
+
+    		val docref = db.collection("orders")
+    		docref.whereEqualTo("transactionID",fillStr(transactionId)).get()
+    		.addOnSuccessListener {
+    			result ->
+				if (result.isEmpty()){
+					docref.add(order)
+					.addOnSuccessListener { 
+						documentReference ->
+						Toast.makeText(this@MainActivity,("Order Received"),Toast.LENGTH_SHORT).show()
+						     val intent = Intent(this, ClaimingActivity::class.java).apply {
+				      		 putExtra("transactionId", transactionId)
+					      }
+					      startActivity(intent)
+						}
+				} else {
+					for (data in result){
+						docref.document(data.id).delete().addOnSuccessListener {
+							docref.add(order).addOnSuccessListener {
+								Toast.makeText(this@MainActivity,("Order Received"),Toast.LENGTH_SHORT).show()
+								val intent = Intent(this, ClaimingActivity::class.java).apply {
+									putExtra("transactionId", transactionId)
+								}
+								startActivity(intent)
+							}
+						}
+					}
+				}
+    			
+				
+			}
+			}
+		}
+    		/*
+	    	db.collection("orders")
 					.add(order)
 					.addOnSuccessListener { 
 						documentReference ->
 						Toast.makeText(this@MainActivity,"Order Received",Toast.LENGTH_SHORT).show()
 						     val intent = Intent(this, ClaimingActivity::class.java).apply {
 				      		 putExtra("transactionId", transactionId)
-
-				      }
-				      startActivity(intent)
-					}
+					      }
+					      startActivity(intent)
+						}
 					.addOnFailureListener{
 						Toast.makeText(this@MainActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
 					}    	
-    	}
+    			}
     		
     		}
     		
+    		*/
 
         }
         
