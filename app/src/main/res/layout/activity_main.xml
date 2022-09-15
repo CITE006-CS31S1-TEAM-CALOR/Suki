@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-        
+
         <!--
         <LinearLayout 
         android:id="@+id/lnStoreDetail"
@@ -35,39 +35,45 @@
             android:src="@drawable/ic_edit"/>
         </LinearLayout>
         -->
-        
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitOrder"/>
+            app:layout_constraintBottom_toTopOf="@+id/btnSubmitOrder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <TextView
             android:id="@+id/lblTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+
             android:text="Total: Php "
             android:textSize="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            
-            app:layout_constraintTop_toTopOf="parent"
-        />
+            app:layout_constraintEnd_toEndOf="@+id/lblStoreName"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tvTotal"
-            android:text="0"
-            android:textSize="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="0"
+            android:textSize="25dp"
             app:layout_constraintStart_toEndOf="@+id/lblTotal"
-        />
-        <Button 
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/btnSubmitOrder"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="Submit Order"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Submit Order"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/txtStoreName"

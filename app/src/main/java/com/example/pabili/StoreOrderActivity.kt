@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.zxing.client.android.Intents
 
 class StoreOrderActivity : AppCompatActivity() {
 
