@@ -16,7 +16,8 @@ import android.view.animation.AnimationUtils
 import androidx.core.app.NotificationCompat.getAction
 import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
 
-const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
+var LOGIN_NAME = ""
+var LOGIN_ID = ""
 class LoginActivity : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
@@ -43,14 +44,12 @@ class LoginActivity : AppCompatActivity() {
                     when (event?.action) { MotionEvent.ACTION_UP -> {
                         btnCustomerLogin.startAnimation(scaleDown)
                     } MotionEvent.ACTION_DOWN -> {
-                        btnCustomerLogin.startAnimation(scaleUp)
+                            btnCustomerLogin.startAnimation(scaleUp)
+                        }
                     }
-                }
-
                 }
                 return v?.onTouchEvent(event) ?: true
             }
-
         })
 
         btnStoreLogin.setOnTouchListener(object:View.OnTouchListener {
@@ -60,13 +59,11 @@ class LoginActivity : AppCompatActivity() {
                         btnStoreLogin.startAnimation(scaleDown)
                     } MotionEvent.ACTION_DOWN -> {
                         btnStoreLogin.startAnimation(scaleUp)
+                        }
                     }
-                    }
-
                 }
                 return v?.onTouchEvent(event) ?: true
             }
-
         })
 
         btnSignup.setOnTouchListener(object:View.OnTouchListener {
@@ -76,13 +73,11 @@ class LoginActivity : AppCompatActivity() {
                         btnSignup.startAnimation(scaleDown)
                     } MotionEvent.ACTION_DOWN -> {
                         btnSignup.startAnimation(scaleUp)
+                        }
                     }
-                    }
-
                 }
                 return v?.onTouchEvent(event) ?: true
             }
-
         })
 
         btnCustomerLogin.setOnClickListener {
@@ -99,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
                     for (document in documents) {
                     Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
                      val intent = Intent(this, HomeActivity::class.java).apply {
-                             putExtra(EXTRA_MESSAGE, username)
+                             putExtra("username", username)
                      }
                      startActivity(intent)              
                      }
@@ -113,6 +108,7 @@ class LoginActivity : AppCompatActivity() {
         btnStoreLogin.setOnClickListener {
             var username = etUsername.text.toString()
             var password = etPassword.text.toString()
+            LOGIN_NAME = username
             db.collection("stores")
                 .whereEqualTo("username", username).whereEqualTo("password", password)
                 .get()
@@ -123,10 +119,10 @@ class LoginActivity : AppCompatActivity() {
 
                       for (document in documents) {
 							Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
-							val storeID = document.data["id"].toString()
+							LOGIN_ID = document.data["id"].toString()
 							val intent = Intent(this, StoreQueueActivity::class.java).apply {
-								putExtra(EXTRA_MESSAGE, username)
-								putExtra("ID",storeID)
+								putExtra("username", LOGIN_NAME)
+								putExtra("ID",LOGIN_ID)
 							}
 							startActivity(intent)
 						}

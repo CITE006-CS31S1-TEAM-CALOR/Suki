@@ -20,7 +20,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val currentUser = intent.getStringExtra(EXTRA_MESSAGE)
+        val currentUser = intent.getStringExtra("username")
         val db = FirebaseFirestore.getInstance()
         findViewById<TextView>(R.id.txtName).apply{
             text = currentUser

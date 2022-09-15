@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StorePricesActivity">
-        
-        <!--
+
+    <!--
         <LinearLayout 
         android:id="@+id/lnStoreDetail"
         android:layout_height="wrap_content"
@@ -35,91 +35,171 @@
             android:src="@drawable/ic_edit"/>
         </LinearLayout>
         -->
-        
-    
-          <LinearLayout
-            android:id="@+id/tableHeader"
-          android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-               app:layout_constraintTop_toTopOf="parent"
-            >
-          
+
+
+    <LinearLayout
+        android:id="@+id/tableHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="Product"
-            android:gravity="center"
-            />
-                  <TextView
-            android:text="Price"
-         android:layout_height="wrap_content"
-         android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-     />
-         </LinearLayout>
+            android:text="Product" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Price" />
+    </LinearLayout>
 
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/linRV"
+        android:layout_width="407dp"
+        android:layout_height="698dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableHeader"
+        tools:ignore="MissingConstraints">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/linRV"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/tableHeader"
-            app:layout_constraintBottom_toTopOf="@+id/linNav">
 
-
-          <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="vertical">
-
-         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPrices"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never"/>
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPrices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
 
             <Button
-            android:id="@+id/btnAddProduct"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="Add Price"/>
+                android:id="@+id/btnAddProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Price" />
 
-         </LinearLayout>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-         
 
-          <LinearLayout
-            android:id="@+id/linNav"
-          android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-               app:layout_constraintBottom_toBottomOf="parent"
-            >
-      
-              <Button
-         	 android:id="@+id/btnSeeOrders"
-             android:layout_height="wrap_content"
-              android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="See Orders"
-              />   
-               
-           <Button
-         	 android:id="@+id/btnSetPrice"
-            android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/linNav"
+        android:layout_width="415dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="1dp"
+        android:background="#002f6c"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linRV">
+
+        <LinearLayout
             android:layout_width="0dp"
+            android:layout_height="92dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="Set Price"
-            />
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageButton
+                android:id="@+id/btnSeeOrders"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/icon_see_orders"
+                android:textSize="20dp"
+                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:text="SEE ORDERS"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
+        </LinearLayout>
 
 
-			</LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="#03093c"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <ImageButton
+                android:id="@+id/btnSetPrice"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/icon_set_price"
+                android:textSize="20dp"
+                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="26dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:text="SET PRICE"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/icon_logout"
+                android:textSize="20dp"
+                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:text="LOG OUT"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,9 @@ import android.util.Log
 import java.util.Random
 import android.view.View
 import TagPrice
+import android.view.MotionEvent
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 
 class SignupActivity : AppCompatActivity() {
 	private lateinit var db: FirebaseFirestore
@@ -31,6 +34,37 @@ class SignupActivity : AppCompatActivity() {
 		etVerifyPassword = findViewById(R.id.etVerifyPassword) as EditText
 		btnCustomerSignup = findViewById(R.id.btnCustomerSignup)
 		btnStoreSignup = findViewById(R.id.btnStoreSignup)
+
+		val scaleUp: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_up)
+		val scaleDown: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_down)
+
+		btnCustomerSignup.setOnTouchListener(object:View.OnTouchListener {
+			override fun onTouch(v: View?, event: MotionEvent?): Boolean{
+				when (v) { v ->
+					when (event?.action) { MotionEvent.ACTION_UP -> {
+						btnCustomerSignup.startAnimation(scaleDown)
+					} MotionEvent.ACTION_DOWN -> {
+						btnCustomerSignup.startAnimation(scaleUp)
+					}
+					}
+				}
+				return v?.onTouchEvent(event) ?: true
+			}
+		})
+
+		btnStoreSignup.setOnTouchListener(object:View.OnTouchListener {
+			override fun onTouch(v: View?, event: MotionEvent?): Boolean{
+				when (v) { v ->
+					when (event?.action) { MotionEvent.ACTION_UP -> {
+						btnStoreSignup.startAnimation(scaleDown)
+					} MotionEvent.ACTION_DOWN -> {
+						btnStoreSignup.startAnimation(scaleUp)
+					}
+					}
+				}
+				return v?.onTouchEvent(event) ?: true
+			}
+		})
 
 		try {
 			btnCustomerSignup.setOnClickListener {

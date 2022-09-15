@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
 import android.content.Intent
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -18,7 +19,7 @@ class StoreQueueActivity : AppCompatActivity() {
         setContentView(R.layout.activity_store_queue)
 
 
-        val storeName = intent.getStringExtra(EXTRA_MESSAGE)
+        val storeName = intent.getStringExtra("username")
         val storeID = intent.getStringExtra("ID")
         val storeNameDisplay = findViewById<TextView>(R.id.StoreNameText)
         val db = FirebaseFirestore.getInstance()
@@ -26,6 +27,7 @@ class StoreQueueActivity : AppCompatActivity() {
         val recyclerview = findViewById<RecyclerView>(R.id.storeCustomerQueue)
         recyclerview.layoutManager = LinearLayoutManager(this)
         val data = ArrayList<DataRecyclerQueue>()
+        val btnSetPrice = findViewById<ImageButton>(R.id.btnSetPrice)
 
 
         storeNameDisplay.text = storeName
@@ -64,11 +66,11 @@ class StoreQueueActivity : AppCompatActivity() {
         val adapter = RecyclerQueue(data)
         recyclerview.adapter = adapter
          */
-        
-        val btnSetPrice = findViewById<Button>(R.id.btnSetPrice)
+
         btnSetPrice.setOnClickListener {
 							val intent = Intent(this, StorePricesActivity::class.java).apply {
 								putExtra("storeId", storeID)
+                                putExtra("username", storeName)
 							}
 							startActivity(intent)
         }

@@ -5,14 +5,8 @@ import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import TagPrice
@@ -24,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.*
 import java.util.Random
 
 class StorePricesActivity : AppCompatActivity() {
@@ -92,15 +87,16 @@ class StorePricesActivity : AppCompatActivity() {
     	}*/
 
 
-       var btnSetPrice = findViewById<Button>(R.id.btnSetPrice)
+       var btnSetPrice = findViewById<ImageButton>(R.id.btnSetPrice)
     	 btnSetPrice.setOnClickListener {
     		
     		}
     		
-    		    var btnSeeOrders = findViewById<Button>(R.id.btnSeeOrders)
+    		    var btnSeeOrders = findViewById<ImageButton>(R.id.btnSeeOrders)
     	       btnSeeOrders.setOnClickListener {
             	val intent = Intent(this, StoreQueueActivity::class.java).apply {
-							 putExtra("ID", storeId)
+						putExtra("ID", storeId)
+						putExtra("username", intent.getStringExtra("username"))
 					 }
 					 startActivity(intent)	
     		}

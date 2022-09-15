@@ -7,13 +7,60 @@
     tools:context=".StoreOrderActivity">
 
 
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="19dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/storeCustomerOrder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orderCustomerName">
+
+        <TextView
+            android:id="@+id/HEADERnumTxt"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="#" />
+
+        <TextView
+            android:id="@+id/HEADEROrderName"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/HEADEROrderQty"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="QTY" />
+
+        <TextView
+            android:id="@+id/HEADEROrderPrice"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Price" />
+
+        <TextView
+            android:id="@+id/HEADERDeleteButton"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Del" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/orderCustomerName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/storeCustomerOrder"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,6 +79,7 @@
         android:id="@+id/switchToClaim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:text="Ready to Claim"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,11 +90,11 @@
         android:id="@+id/storeCustomerOrder"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/orderTotal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderCustomerName">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
     </androidx.recyclerview.widget.RecyclerView>
 

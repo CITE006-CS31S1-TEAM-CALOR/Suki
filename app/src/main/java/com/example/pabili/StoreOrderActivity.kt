@@ -17,22 +17,9 @@ class StoreOrderActivity : AppCompatActivity() {
 
     private lateinit var cInfo: DataCustomerInfo
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_order)
-
-        /*
-        val computedPricesView: TextView = findViewById(R.id.computedPricesTXT)
-        val orderListView: TextView = findViewById(R.id.orderListTXT)
-        val statusView: TextView = findViewById(R.id.statusTXT)
-        val storeView: TextView = findViewById(R.id.storeTXT)
-        val timestampView: TextView = findViewById(R.id.timestampTXT)
-        val totalPriceView: TextView = findViewById(R.id.totalPriceTXT)
-        val transactionIDView: TextView = findViewById(R.id.transactionIDTXT)
-        val usernameView: TextView = findViewById(R.id.usernameTXT)
-         */
-
 
         val data = ArrayList<DataOrderList>()
         val cDoc = intent.getStringExtra("cDoc")
@@ -47,17 +34,42 @@ class StoreOrderActivity : AppCompatActivity() {
         val swt = findViewById<Switch>(R.id.switchToClaim)
         recyclerview.layoutManager = LinearLayoutManager(this)
 
-        orders.get().addOnSuccessListener { result ->
-            swt.isChecked = checkStatus(result.getString("status").toString())
-        }
+        orders.get()
+            .addOnSuccessListener { result ->
+                cInfo = DataCustomerInfo(
+                    result.getString("computedPrices").toString(),
+                    result.getString("orderList").toString(),
+                    result.getString("status").toString(),
+                    result.getString("store").toString(),
+                    result.getString("timestamp").toString(),
+                    result.getString("totalPrice").toString(),
+                    result.getString("transactionID").toString(),
+                    result.getString("username").toString()
+                )
 
-        swt.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                orders.update("status", "ready")
-            } else {
-                orders.update("status", "pending")
+                swt.isChecked = checkStatus(cInfo.status.toString())
+                customerNameTxt.text = "Name: " + cInfo.username
+                customerOrderTotal.text = "Total: P" + cInfo.totalPrice
+
+
+
+                val computedPricesArray = cInfo.computedPrices!!.split(", ")
+                val orderListArray = cInfo.orderList!!.split(", ")
+                for ((refComp, order) in orderListArray!!.withIndex()){
+                    if(refComp != orderListArray.size-1){
+                        val name = order.replace("\\d+".toRegex(),"")
+                        val qty = order.replace(" [a-z]+".toRegex(),"")
+                        val com = computedPricesArray[refComp]
+
+                        data.add(DataOrderList(name, "x$qty", "P$com"))
+                    }
+
+                }
+
+                val adapter = RecyclerOrder(this, cDoc, data, customerOrderTotal)
+                recyclerview.adapter = adapter
+
             }
-        }
 
         delBtn.setOnClickListener{
             if(!swt.isChecked){
@@ -89,40 +101,37 @@ class StoreOrderActivity : AppCompatActivity() {
             }
         }
 
-        orders.get()
-            .addOnSuccessListener { result ->
-                cInfo = DataCustomerInfo(
-                    result.getString("computedPrices").toString(),
-                    result.getString("orderList").toString(),
-                    result.getString("status").toString(),
-                    result.getString("store").toString(),
-                    result.getString("timestamp").toString(),
-                    result.getString("totalPrice").toString(),
-                    result.getString("transactionID").toString(),
-                    result.getString("username").toString()
-                )
-
-                customerNameTxt.text = "Name: " + cInfo.username
-                customerOrderTotal.text = "Total: " + cInfo.totalPrice
 
 
+        swt.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                orders.update("status", "ready")
+            } else {
+                orders.update("status", "pending")
+            }
+        }
 
-                val computedPricesArray = cInfo.computedPrices!!.split(", ")
-                val orderListArray = cInfo.orderList!!.split(", ")
-                for ((refComp, order) in orderListArray!!.withIndex()){
-                    if(refComp != orderListArray.size-1){
-                        val name = order.replace("\\d+".toRegex(),"")
-                        val qty = order.replace(" [a-z]+".toRegex(),"")
-                        val com = computedPricesArray[refComp]
-
-                        data.add(DataOrderList(name,"x"+qty,"P"+com))
-                    }
-
+        scnBtn.setOnClickListener {
+            if(swt.isChecked){
+                val intent = Intent(this, ScannerActivity::class.java).apply {
+                    putExtra("cDoc",cDoc)
                 }
+                startActivity(intent)
+            }else{
+                Toast.makeText(this@StoreOrderActivity,"Order not yet ready", Toast.LENGTH_SHORT).show()
+            }
+        }
 
-                val adapter = RecyclerOrder(this, cDoc, data, customerOrderTotal)
-                recyclerview.adapter = adapter
-/*
+        /*
+        val computedPricesView: TextView = findViewById(R.id.computedPricesTXT)
+        val orderListView: TextView = findViewById(R.id.orderListTXT)
+        val statusView: TextView = findViewById(R.id.statusTXT)
+        val storeView: TextView = findViewById(R.id.storeTXT)
+        val timestampView: TextView = findViewById(R.id.timestampTXT)
+        val totalPriceView: TextView = findViewById(R.id.totalPriceTXT)
+        val transactionIDView: TextView = findViewById(R.id.transactionIDTXT)
+        val usernameView: TextView = findViewById(R.id.usernameTXT)
+
                 data.add(cInfo)
                 val adapter = RecyclerOrder(data)
                 recyclerview.adapter = adapter
@@ -145,9 +154,6 @@ class StoreOrderActivity : AppCompatActivity() {
                 transactionIDView.setText(cInfo.transactionID)
                 usernameView.setText(cInfo.username)
                  */
-            }
-
-
 
     }
     private fun checkStatus(comp:String): Boolean{
