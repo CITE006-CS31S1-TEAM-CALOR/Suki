@@ -1,4 +1,4 @@
-	package com.example.pabili
+package com.example.pabili
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,7 +16,7 @@ import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import TagPrice
-import java.util.Date
+//import java.util.Date
 import java.text.SimpleDateFormat
 //import java.time.LocalDateTime
 import java.lang.System
@@ -25,6 +25,8 @@ import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
 import java.util.Random
+import java.sql.Date
+
 
 class MainActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
@@ -90,9 +92,9 @@ class MainActivity : AppCompatActivity() {
 						Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
     		} else {
     		               
-    		 val sdf = SimpleDateFormat("yyyy/mm/dd hh:mm:ss")
-			 val currentDate = sdf.format(Date()) //TODO change to TimeStamp format
-			 
+    	//	 val sdf = SimpleDateFormat("yyyy/mm/dd hh:mm:ss")
+		//	 val currentDate = sdf.format(Date()) //TODO change to TimeStamp format
+			 val currentDate = Date(System.currentTimeMillis()).toString()
     		order.put("timestamp",currentDate)
     		
 
