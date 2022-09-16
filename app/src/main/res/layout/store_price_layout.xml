@@ -10,7 +10,10 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Product Name"/>
+        android:hint="Product Name"
+        android:textColorHint="#BCBCBC"
+        android:backgroundTint="#000000"
+        android:textColor="#000000"/>
 
     <EditText
 
@@ -19,6 +22,8 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:hint="Product Price"
+        android:textColorHint="#BCBCBC"
+        android:backgroundTint="#000000"
         />
         
     <ImageView
