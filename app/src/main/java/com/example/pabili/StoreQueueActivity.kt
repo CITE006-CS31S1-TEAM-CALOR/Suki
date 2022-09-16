@@ -35,7 +35,7 @@ class StoreQueueActivity : AppCompatActivity() {
 
         db.collection("orders")
             .whereEqualTo("store",storeID).whereIn("status", listOf("pending","ready"))
-            .orderBy("timestamp")
+            .orderBy("date").orderBy("time")
             .get()
             .addOnSuccessListener { result ->
                 for(document in result) {
@@ -44,7 +44,7 @@ class StoreQueueActivity : AppCompatActivity() {
                     //Log.d("TAG", stringUser)
 
                     val stringUser = document.getString("username").toString()
-                    val stringDate = document.getString("timestamp").toString()
+                    val stringDate = document.getString("date").toString() + " " + document.getString("time").toString()
                     val stringStore = document.id
 
                     Log.d(

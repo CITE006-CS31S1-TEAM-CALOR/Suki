@@ -38,9 +38,11 @@ class StoreOrderActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 cInfo = DataCustomerInfo(
                     result.getString("computedPrices").toString(),
+                    result.getString("date").toString(),
                     result.getString("orderList").toString(),
                     result.getString("status").toString(),
                     result.getString("store").toString(),
+                    //result.getString("timestamp").toString(),
                     result.getString("timestamp").toString(),
                     result.getString("totalPrice").toString(),
                     result.getString("transactionID").toString(),

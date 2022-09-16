@@ -171,8 +171,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvStoreid" />
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/horizontalBarChart"
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/idBar"
         android:layout_width="0dp"
         android:background="#ffffff"
         android:layout_height="250dp"
@@ -189,7 +189,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalBarChart" />
+        app:layout_constraintTop_toBottomOf="@+id/idBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
