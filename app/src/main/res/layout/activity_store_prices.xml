@@ -66,9 +66,11 @@
         android:id="@+id/linRV"
         android:layout_width="407dp"
         android:layout_height="698dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linNav"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableHeader"
         tools:ignore="MissingConstraints">
@@ -95,22 +97,23 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
     <LinearLayout
-        android:id="@+id/linNav"
-        android:layout_width="415dp"
-        android:layout_height="104dp"
-        android:layout_marginTop="1dp"
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
         android:background="#002f6c"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linRV">
+        app:layout_constraintTop_toBottomOf="@+id/linRV"
+        app:layout_constraintVertical_bias="1.0">
+
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="92dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:orientation="vertical"
@@ -118,28 +121,28 @@
 
             <ImageButton
                 android:id="@+id/btnSeeOrders"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginLeft="20dp"
+                android:layout_width="53dp"
+                android:layout_height="47dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/icon_see_orders"
                 android:textSize="20dp"
                 tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="72dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
-                android:text="SEE ORDERS"
+                android:text="ORDERS"
                 android:textColor="#ffffff"
                 android:textSize="16dp" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
@@ -147,12 +150,11 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-
             <ImageButton
                 android:id="@+id/btnSetPrice"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_marginLeft="20dp"
+                android:layout_width="53dp"
+                android:layout_height="58dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/icon_set_price"
@@ -160,19 +162,53 @@
                 tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="26dp"
-                android:layout_marginLeft="20dp"
+                android:layout_width="93dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="0dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:text="SET PRICE"
+                android:layout_marginRight="7dp"
+                android:gravity="center"
+                android:text="SET PRICE  "
                 android:textColor="#ffffff"
                 android:textSize="16dp" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageButton
+                android:id="@+id/btnStat"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/icon_stat"
+                android:textSize="20dp"
+                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="STATS"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
@@ -181,7 +217,7 @@
 
             <ImageButton
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="47dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/icon_logout"
@@ -198,7 +234,6 @@
                 android:textColor="#ffffff"
                 android:textSize="16dp" />
         </LinearLayout>
-
 
     </LinearLayout>
 
