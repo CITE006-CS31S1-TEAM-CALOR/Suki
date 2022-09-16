@@ -18,15 +18,16 @@ import android.content.Intent
 import TagPrice
 //import java.util.Date
 import java.text.SimpleDateFormat
-//import java.time.LocalDateTime
 import java.lang.System
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
 import java.util.Random
-import java.sql.Date
-
+//import java.sql.Date
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
@@ -94,8 +95,12 @@ class MainActivity : AppCompatActivity() {
     		               
     	//	 val sdf = SimpleDateFormat("yyyy/mm/dd hh:mm:ss")
 		//	 val currentDate = sdf.format(Date()) //TODO change to TimeStamp format
-			 val currentDate = Date(System.currentTimeMillis()).toString()
-    		order.put("timestamp",currentDate)
+		//	val currentDate = Date(System.currentTimeMillis()).toString()
+			val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+			val time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+			println(date+" "+time)
+			order.put("date",date)
+			order.put("time",time)
     		
 
     		val docref = db.collection("orders")
