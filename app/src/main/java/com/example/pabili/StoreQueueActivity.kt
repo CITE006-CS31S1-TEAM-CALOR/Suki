@@ -28,6 +28,7 @@ class StoreQueueActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         val data = ArrayList<DataRecyclerQueue>()
         val btnSetPrice = findViewById<ImageButton>(R.id.btnSetPrice)
+        val btnStat = findViewById<ImageButton>(R.id.btnStat)
 
 
         storeNameDisplay.text = storeName
@@ -73,6 +74,14 @@ class StoreQueueActivity : AppCompatActivity() {
                                 putExtra("username", storeName)
 							}
 							startActivity(intent)
+        }
+
+        btnSetPrice.setOnClickListener {
+            val intent = Intent(this, StoreStatActivity::class.java).apply{
+                putExtra("storeId", storeID)
+                putExtra("username", storeName)
+            }
+            startActivity(intent)
         }
     }
 }

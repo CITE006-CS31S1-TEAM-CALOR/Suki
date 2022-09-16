@@ -4,78 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StoreQueueActivity">
-
-
-    <TextView
-        android:id="@+id/StoreNameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#0064b7"
-        android:gravity="center"
-        android:text="Store Name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#ffffff"
-        android:textSize="25dp"
-        app:fontFamily="sans-serif-black"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginBottom="1dp"
-        android:background="#64c1ff"
-        app:layout_constraintBottom_toTopOf="@+id/storeCustomerQueue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StoreNameText">
-
-
-        <TextView
-            android:id="@+id/HEADERstoreCustomerName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Customer Name"
-            android:textColor="#000000"
-            app:fontFamily="monospace" />
-
-        <TextView
-            android:id="@+id/HEADERstoreCustomerDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Date"
-            android:textColor="#000000"
-            app:fontFamily="monospace" />
-
-        <TextView
-            android:id="@+id/HEADEREvaluate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Evaluate"
-            android:textColor="#000000"
-            app:fontFamily="monospace" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/storeCustomerQueue"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+    tools:context=".StoreStatActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -85,8 +14,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/storeCustomerQueue">
+        app:layout_constraintStart_toStartOf="parent">
 
 
         <LinearLayout
@@ -213,4 +141,42 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtvStoreid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvName" />
+
+    <TextView
+        android:id="@+id/txtvIncome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvStoreid" />
+
+    <!--com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/idBarChart"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvIncome"/-->
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
