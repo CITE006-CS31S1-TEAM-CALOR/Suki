@@ -65,12 +65,10 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/linRV"
         android:layout_width="407dp"
-        android:layout_height="698dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linNav"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableHeader"
         tools:ignore="MissingConstraints">
@@ -97,8 +95,9 @@
 
     </androidx.core.widget.NestedScrollView>
 
+
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linNav"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="#002f6c"
@@ -108,8 +107,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linRV"
+        
         app:layout_constraintVertical_bias="1.0">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -234,7 +233,6 @@
                 android:textColor="#ffffff"
                 android:textSize="16dp" />
         </LinearLayout>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
