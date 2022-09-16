@@ -66,6 +66,7 @@
         android:id="@+id/linRV"
         android:layout_width="407dp"
         android:layout_height="0dp"
+        android:background="#ffffff"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linNav"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +90,7 @@
                 android:id="@+id/btnAddProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_main_1"
                 android:text="Add Price" />
 
         </LinearLayout>
