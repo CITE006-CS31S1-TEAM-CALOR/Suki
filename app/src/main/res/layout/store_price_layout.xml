@@ -3,46 +3,50 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="3dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:background="#ffffff"
     android:padding="20dp">
-    
+
     <EditText
         android:id="@+id/etProdName"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Product Name"
-        android:textColorHint="#BCBCBC"
         android:backgroundTint="#000000"
-        android:textColor="#000000"/>
+        android:hint="Product Name"
+        android:textColor="#000000"
+        android:textColorHint="#BCBCBC" />
 
     <EditText
 
         android:id="@+id/etProdPrice"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:hint="Product Price"
-        android:textColorHint="#BCBCBC"
         android:backgroundTint="#000000"
-        />
-        
+        android:textColor="#000000"
+        android:hint="Price"
+        android:textColorHint="#BCBCBC" />
+
     <ImageView
         android:id="@+id/ivProdRemove"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_remove"/>
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_remove" />
 
     <ImageView
         android:id="@+id/ivProdUpdate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit"/>
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_edit" />
 
     <Switch
         android:id="@+id/switchProd"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"/>
+        android:layout_height="match_parent"
+        android:checked="true" />
 
 </LinearLayout>
 

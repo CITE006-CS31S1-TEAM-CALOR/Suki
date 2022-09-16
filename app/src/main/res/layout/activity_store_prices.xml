@@ -42,6 +42,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="#002f6c"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -51,14 +54,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Product" />
+            android:text="PRODUCT"
+            android:textColor="#ffffff"
+            app:fontFamily="sans-serif-medium" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Price" />
+            android:text="PRICE"
+            android:textColor="#ffffff"
+            app:fontFamily="sans-serif-medium"/>
     </LinearLayout>
 
 
@@ -66,7 +73,7 @@
         android:id="@+id/linRV"
         android:layout_width="407dp"
         android:layout_height="0dp"
-        android:background="#ffffff"
+        android:background="#C4E8FF"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linNav"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,14 +91,23 @@
                 android:id="@+id/rvPrices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:overScrollMode="never" />
+                android:overScrollMode="never"
+                android:layout_marginTop="3dp"/>
 
             <Button
                 android:id="@+id/btnAddProduct"
-                android:layout_width="match_parent"
+                android:layout_width="54dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_margin="7dp"
                 android:background="@drawable/btn_main_1"
-                android:text="Add Price" />
+                android:clipToOutline="true"
+                android:text="+"
+                android:textColor="#ffffff"
+                android:textSize="25dp"
+                app:backgroundTint="#008AD5"
+                app:backgroundTintMode="screen"
+                app:strokeColor="#012F68" />
 
         </LinearLayout>
 
