@@ -48,7 +48,8 @@ dependencies {
 
 	implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     def camerax_version = "1.1.0-beta01"
-    implementation 'com.jjoe64:graphview:4.2.2'
+    //implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.github.Philjay:mpandroidchart:3.1.0'
     implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:${camerax_version}"
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"

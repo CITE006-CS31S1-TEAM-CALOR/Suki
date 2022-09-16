@@ -76,7 +76,7 @@ class StoreQueueActivity : AppCompatActivity() {
 							startActivity(intent)
         }
 
-        btnSetPrice.setOnClickListener {
+        btnStat.setOnClickListener {
             val intent = Intent(this, StoreStatActivity::class.java).apply{
                 putExtra("storeId", storeID)
                 putExtra("username", storeName)

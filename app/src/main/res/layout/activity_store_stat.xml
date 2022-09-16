@@ -169,15 +169,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvStoreid" />
 
-    <com.jjoe64.graphview.GraphView
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/horizontalBarChart"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvIncome" />
+
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/idLineGraph"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtvIncome" />
-
+        app:layout_constraintTop_toBottomOf="@+id/horizontalBarChart" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
