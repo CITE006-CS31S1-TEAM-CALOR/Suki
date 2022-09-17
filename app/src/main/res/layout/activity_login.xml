@@ -87,6 +87,7 @@
 
         <EditText
             android:id="@+id/etPassword"
+            android:inputType="textPassword"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
