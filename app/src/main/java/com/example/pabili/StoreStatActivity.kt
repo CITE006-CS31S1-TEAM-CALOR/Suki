@@ -20,7 +20,9 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.Utils
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -29,11 +31,16 @@ import java.time.format.DateTimeFormatter
 
 class StoreStatActivity : AppCompatActivity() {
 
-    private lateinit var lineG: LineChart
-    private lateinit var lineV: ArrayList<Entry>
+    private lateinit var lineGb: LineChart
+    private lateinit var lineVb: ArrayList<Entry>
 
-    private lateinit var barG: BarChart
-    private lateinit var barEl: ArrayList<BarEntry>
+    private lateinit var barGb: BarChart
+    private lateinit var barElb: ArrayList<BarEntry>
+    private lateinit var storeID: String
+    private lateinit var storeName: String
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    private val order = FirebaseFirestore.getInstance().collection("orders")
 
     //lateinit var barD: BarData
     //lateinit var barDS: BarDataSet
@@ -44,11 +51,9 @@ class StoreStatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_stat)
 
-        val storeID = intent.getStringExtra("storeId")
-        val storeName = intent.getStringExtra("username")
-        val db = FirebaseFirestore.getInstance()
-        val order = db.collection("orders")
-        val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+        storeID = intent.getStringExtra("storeId").toString()
+        storeName = intent.getStringExtra("username").toString()
 
         val txtName:TextView = findViewById(R.id.txtvName)
         val txtId:TextView = findViewById(R.id.txtvStoreid)
@@ -103,15 +108,72 @@ class StoreStatActivity : AppCompatActivity() {
             }
 
 
-        lineG = findViewById(R.id.idLineGraph)
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        lineGb = findViewById(R.id.idLineGraph)
+        lineVb = ArrayList()
+
+        barGb = findViewById<BarChart>(R.id.idBar)
+        barElb = ArrayList()
+        runInitial(lineGb, lineVb, barGb, barElb)
+
+
+        /*
+        for (i in barEl){
+            Log.d("BarElOut", "${i.x} | ${i.y}")
+        }
+        if(barEl.isEmpty()) Log.d("BarElOut", "BarEl is Empty")
+
+         */
+
+
+        //createBarChart(barG, barEl, "Sales on $date")
+        /*
+        var hasRun = true
+        while(barEl.isNotEmpty() && hasRun){
+            createBarChart(barG, barEl, "Sales on $date")
+            hasRun = false
+        }
+
+         */
+
+
+        //createLineGrid(lineG, lineV, lineLabel)
+
+
+/*
+        lineV.add(Entry(0F, 50F))
+        lineV.add(Entry(1F, 100F))
+        lineV.add(Entry(2F, 200F))
+        lineV.add(Entry(3F, 30F))
+        val xlabel = arrayListOf<String>("Sunday","Monday","Tuesday","Wednesday")
+        //lineV.add(Entry(4F, 120F))
+        //lineV.add(Entry(5F, 100F))
+        //lineV.add(Entry(6F, 10F))
+
+        createLineGrid(lineG, lineV, xlabel)
+
+
+        barEl.add(BarEntry(1f, 5f))
+        barEl.add(BarEntry(2f, 2f))
+        barEl.add(BarEntry(3f, 9f))
+
+        createBarChart(barG, barEl, "Sales on $date")
+
+        */
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun runInitial(lineG: LineChart, lineV: ArrayList<Entry>, barG: BarChart, barEl: ArrayList<BarEntry> ){
+        //lineG = findViewById(R.id.idLineGraph)
         lineG.setTouchEnabled(true);
-        lineG.setPinchZoom(true);
-        lineV = ArrayList()
+        lineG.setPinchZoom(false);
+        //lineV = ArrayList()
 
-        barG = findViewById<BarChart>(R.id.idBar)
+        //barG = findViewById<BarChart>(R.id.idBar)
         barG.setTouchEnabled(true)
+        barG.setPinchZoom(false);
 
-        barEl = ArrayList()
+        //barEl = ArrayList()
 
         /*
         barG = findViewById<BarChart>(R.id.idBar)
@@ -196,49 +258,43 @@ class StoreStatActivity : AppCompatActivity() {
 
             }.addOnCompleteListener { Log.d("BAR", "It works") }
             .addOnFailureListener { e -> Log.d("BAR", "It DID NOT works \n $e") }
-        /*
-        for (i in barEl){
-            Log.d("BarElOut", "${i.x} | ${i.y}")
-        }
-        if(barEl.isEmpty()) Log.d("BarElOut", "BarEl is Empty")
 
-         */
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateBarChart(barG: BarChart, barEl: ArrayList<BarEntry>, dates: String){
+        barEl.clear()
+        barG.invalidate()
+        barG.clear()
 
-        //createBarChart(barG, barEl, "Sales on $date")
-        /*
-        var hasRun = true
-        while(barEl.isNotEmpty() && hasRun){
-            createBarChart(barG, barEl, "Sales on $date")
-            hasRun = false
-        }
-
-         */
-
-
-        //createLineGrid(lineG, lineV, lineLabel)
-
-
-/*
-        lineV.add(Entry(0F, 50F))
-        lineV.add(Entry(1F, 100F))
-        lineV.add(Entry(2F, 200F))
-        lineV.add(Entry(3F, 30F))
-        val xlabel = arrayListOf<String>("Sunday","Monday","Tuesday","Wednesday")
-        //lineV.add(Entry(4F, 120F))
-        //lineV.add(Entry(5F, 100F))
-        //lineV.add(Entry(6F, 10F))
-
-        createLineGrid(lineG, lineV, xlabel)
-
-
-        barEl.add(BarEntry(1f, 5f))
-        barEl.add(BarEntry(2f, 2f))
-        barEl.add(BarEntry(3f, 9f))
-
-        createBarChart(barG, barEl, "Sales on $date")
-
-        */
+        order.whereEqualTo("store", storeID)
+            .whereEqualTo("date", dates)
+            //.whereEqualTo("date", "2022-09-16")
+            .get()
+            .addOnSuccessListener { result ->
+                var dclaim = 0f
+                var dpend = 0f
+                var dcan = 0f
+                for (doc in result) {
+                    val status = doc.getString("status").toString()
+                    Log.d("STATUS", status)
+                    when (status) {
+                        "claimed" -> dclaim++
+                        "pending" -> dpend++
+                        "ready" -> dpend++
+                        "cancel" -> dcan++
+                    }
+                }
+                Log.d("FloatIN", "$dclaim | $dpend | $dcan")
+                barEl.add(BarEntry(1f, dclaim))
+                barEl.add(BarEntry(2f, dpend))
+                barEl.add(BarEntry(3f, dcan))
+                for (i in barEl) {
+                    Log.d("BarEl", "${i.x} | ${i.y}")
+                }
+                createBarChart(barG, barEl, "Sales on $dates")
+            }.addOnCompleteListener { Log.d("BAR", "It works") }
+            .addOnFailureListener { e -> Log.d("BAR", "It DID NOT works \n $e") }
     }
 
     private fun createBarChart(chart: BarChart, array: ArrayList<BarEntry>, title: String){
@@ -316,6 +372,16 @@ class StoreStatActivity : AppCompatActivity() {
                 chart.description.isEnabled = false
                 chart.data = data;
         }
+        chart.setOnChartValueSelectedListener(object: OnChartValueSelectedListener{
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                val datelabel = label.get(e!!.x.toInt())
+                updateBarChart(barGb, barElb, datelabel)
+            }
+
+            override fun onNothingSelected() {
+            }
+        })
         chart.invalidate()
     }
 
