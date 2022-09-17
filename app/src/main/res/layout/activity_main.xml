@@ -6,99 +6,124 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context=".MainActivity">
+	
+    <LinearLayout
+        android:id="@+id/linDetails"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!--
-        <LinearLayout 
-        android:id="@+id/lnStoreDetail"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+        android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent">
             <TextView
-            android:layout_height="wrap_content"
-            android:text="Store:"
-            android:layout_width="wrap_content"
-            android:textSize="15dp"/>
+                android:id="@+id/lblTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total: Php "
+                android:textSize="25dp" />
 
             <TextView
-            android:id="@+id/tvStorename"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:hint="Not yet selected"/>
+                android:id="@+id/tvTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"
+                android:textSize="25dp"/>
 
-            <ImageView
-            android:id="@+id/btnAddStore"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_edit"/>
+            <Button
+                android:id="@+id/btnSubmitOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit Order"/>
         </LinearLayout>
-        -->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitOrder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent">
+
+          <TextView
+                android:id="@+id/lblStoreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Store Name:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+            <TextView
+                android:id="@+id/txtStoreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="null"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+        </LinearLayout>
+     
+    </LinearLayout>
+
+	<androidx.core.widget.NestedScrollView
+		android:id="@+id/linRV"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:orientation="vertical"
+		app:layout_constraintTop_toBottomOf="@+id/linDetails"
+		app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="50dp">
+
+		<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
-        <TextView
-            android:id="@+id/lblTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-            android:text="Total: Php "
-            android:textSize="25dp"
-            app:layout_constraintEnd_toEndOf="@+id/lblStoreName"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="25dp"
-            app:layout_constraintStart_toEndOf="@+id/lblTotal"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btnSubmitOrder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Submit Order"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/txtStoreName"
+            android:id="@+id/choice1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="36dp"
-            android:text="null"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintStart_toEndOf="@+id/lblStoreName"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text=""
+            android:textSize="15dp"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"/>
 
-        <TextView
-            android:id="@+id/lblStoreName"
+        <Button
+            android:id="@+id/choice2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="9dp"
-            android:text="Store Name:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintEnd_toStartOf="@+id/txtStoreName"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lblTotal" />
+            android:text=""
+            android:textSize="15dp"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/choice3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15dp"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
     package com.example.pabili
-
+import java.util.regex.Pattern;
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcel
@@ -16,7 +16,7 @@ import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import TagPrice
-
+import java.util.ListIterator;
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.text.Editable
@@ -24,7 +24,8 @@ import android.text.TextWatcher
 
 
 
-class RecyclerAdapter (private val callbackInterface: CallbackInterface, private val storeId:String): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter (private val callbackInterface: CallbackInterface, private val storeId:String, 
+private val choice1:Button, private val choice2:Button, private val choice3:Button): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     var computedPrices = ArrayList<Int>()
     var orderList = ArrayList<String>()	
@@ -103,10 +104,65 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
         val textWatcher:TextWatcher = object:TextWatcher {
                 override fun afterTextChanged(s: Editable){
                     val strOrder:String = s.toString()
-                    val pattern = "\\d [A-Za-z]*\\n".toRegex()
+                    
+                    try {
+                        val prodqty = strOrder.split(" ").get(0).trim()
+                        val matches = getMatchingStrings(strOrder.split(" ").get(1))
+                        //Toast.makeText(holder.etOrder.getContext(),matches.joinToString(),Toast.LENGTH_LONG).show()
+                        if (matches.size >= 3){
+                            choice1.text = matches.get(0)
+                            choice2.text = matches.get(1)
+                            choice3.text = matches.get(2)
+                            
+                            choice1.setOnClickListener {
+                                holder.etOrder.setText(prodqty + " " + matches.get(0).toString()+ "\n")
+                            }
+                            choice2.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + matches.get(1).toString() + "\n")
+                            }
+                            choice3.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + matches.get(2).toString()+ "\n")
+                            }
+                        }
+                        if (matches.size == 2){
+                            choice2.text = ""
+                            choice2.text = matches.get(0)
+                            choice3.text = matches.get(1)
+
+                            choice2.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
+                            }
+                            choice3.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + matches.get(1).toString()+ "\n")
+                            }
+                        }
+                        if (matches.size == 1){
+                            choice1.text = ""
+                            choice2.text = matches.get(0)
+                            choice3.text = ""
+
+                            choice1.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
+                            }
+                            choice2.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
+                            }
+                            choice3.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
+                            }
+
+                        }
+
+                         
+
+                    } catch (e: IndexOutOfBoundsException){
+                        
+                    }
+
+
+                    val pattern = "\\d [A-Za-z0-9]*\\n".toRegex()
                     val found = pattern.find(strOrder)
                     val m = found?.value
-
                     if (m != null){
                         holder.etOrder.setText(strOrder.trim())	
                         orderList.set(holder.getBindingAdapterPosition(),strOrder.trim())
@@ -166,6 +222,21 @@ class RecyclerAdapter (private val callbackInterface: CallbackInterface, private
 
     override fun getItemCount(): Int {
         return orderList.size
+    }
+
+    fun getMatchingStrings(regex:String):ArrayList<String> {
+        val list = TagPrices
+        
+        val matches = ArrayList<String>();
+        val p = Pattern.compile(regex+".*");
+
+        for (s in list) {
+            if (p.matcher(s.name!!.toLowerCase()).matches() && s.available==true) {
+            matches.add(s.name!!);
+            }
+        }
+
+        return matches
     }
 }
 

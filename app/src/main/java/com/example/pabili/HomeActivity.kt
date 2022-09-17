@@ -109,8 +109,11 @@ class HomeActivity : AppCompatActivity() {
                     mAlertDialogBuilder.setCancelable(true)
                     mAlertDialogBuilder.setItems(storeArray, DialogInterface.OnClickListener{ dialog, index ->
                         val intent = Intent(this, MainActivity::class.java).apply {
-                            val selectedStore=storeIDList.get(index).toString()
-                            putExtra("storeId,currentUser", "$selectedStore,$currentUser");
+                            val selStoreName=storeList.get(index).toString()
+                            val selStoreId=storeIDList.get(index).toString()
+                            putExtra("storeId", "$selStoreId");
+                            putExtra("currentUser", "$currentUser");
+                            putExtra("storeName", "$selStoreName");
                             
                         }
                         startActivity(intent)

@@ -8,6 +8,7 @@
 
     
     <AutoCompleteTextView
+        android:textColor="#000000"
         android:id="@+id/etOrder"
         android:layout_weight="1"
         android:layout_width="0dp"

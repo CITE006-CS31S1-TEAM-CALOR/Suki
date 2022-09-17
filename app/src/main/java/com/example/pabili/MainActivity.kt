@@ -39,14 +39,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
     	val db = FirebaseFirestore.getInstance()
-    	val currentUser = intent.getStringExtra("storeId,currentUser")!!.split(',')[1]
-	    val storeId = intent.getStringExtra("storeId,currentUser")!!.split(',')[0]
+    	val currentUser = intent.getStringExtra("currentUser")!!
+	    val storeId = intent.getStringExtra("storeId")!!
+		val storeName = intent.getStringExtra("storeName")!!
+
+		val choice1 = findViewById<Button>(R.id.choice1)
+		val choice2 = findViewById<Button>(R.id.choice2)
+		val choice3 = findViewById<Button>(R.id.choice3)
+		
 
 		Toast.makeText(this@MainActivity, currentUser, Toast.LENGTH_SHORT).show()
 	    Toast.makeText(this@MainActivity,storeId,Toast.LENGTH_SHORT).show()
 
 		findViewById<TextView>(R.id.txtStoreName).apply{
-			text = storeId
+			text = storeName
 		}
         //tvStorename.text = storeName
 
@@ -78,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 tvTotal.setText(totalPrice)
             }
-        },storeId) 
+        },storeId,choice1,choice2,choice3) 
          /*       
     	var btnAddStore = findViewById<ImageView>(R.id.btnAddStore)
     	btnAddStore.setOnClickListener {
