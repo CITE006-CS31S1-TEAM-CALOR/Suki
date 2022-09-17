@@ -64,14 +64,18 @@ class StoreStatActivity : AppCompatActivity() {
                 putExtra("username", storeName)
             }
             startActivity(intent)
+            overridePendingTransition(R.anim.push_right_in, android.R.anim.slide_out_right);
         }
+
         btnprice.setOnClickListener {
             val intent = Intent(this, StorePricesActivity::class.java).apply {
                 putExtra("storeId", storeID)
                 putExtra("username", storeName)
             }
             startActivity(intent)
+            overridePendingTransition(R.anim.push_right_in, android.R.anim.slide_out_right);
         }
+
         btnlogout.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("Confirm logging out?")

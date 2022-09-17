@@ -98,6 +98,8 @@ class StorePricesActivity : AppCompatActivity() {
 				putExtra("username", storeName)
 			}
 			startActivity(intent)
+			overridePendingTransition(R.anim.push_right_in, android.R.anim.slide_out_right);
+
 		}
 		btnstat.setOnClickListener {
 			val intent = Intent(this, StoreStatActivity::class.java).apply {
@@ -105,6 +107,8 @@ class StorePricesActivity : AppCompatActivity() {
 				putExtra("username", storeName)
 			}
 			startActivity(intent)
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
 		}
 		btnlogout.setOnClickListener {
 			val builder = AlertDialog.Builder(this)
