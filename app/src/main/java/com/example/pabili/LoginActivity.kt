@@ -9,10 +9,12 @@ import android.widget.Toast
 import android.widget.Button
 import android.widget.EditText
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat.getAction
 import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
 
@@ -26,7 +28,12 @@ class LoginActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Pabili)
         setContentView(R.layout.activity_login)
 
-    //try {]    
+    //try {]
+        val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout)
+        val animationDrawable: AnimationDrawable = constraintLayout.getBackground() as AnimationDrawable
+        animationDrawable.setEnterFadeDuration(2500);
+        animationDrawable.setExitFadeDuration(5000);
+        animationDrawable.start()
 
         val etUsername: EditText = findViewById(R.id.etUsername)
         val etPassword: EditText = findViewById(R.id.etPassword)
