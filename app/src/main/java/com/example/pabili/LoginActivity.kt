@@ -124,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
 							LOGIN_ID = document.data["id"].toString()
 							val intent = Intent(this, StoreQueueActivity::class.java).apply {
 								putExtra("username", LOGIN_NAME)
-								putExtra("ID",LOGIN_ID)
+								putExtra("storeId",LOGIN_ID)
 							}
 							startActivity(intent)
 						}

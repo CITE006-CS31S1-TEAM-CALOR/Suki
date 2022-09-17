@@ -21,7 +21,7 @@ class StoreQueueActivity : AppCompatActivity() {
 
 
         val storeName = intent.getStringExtra("username")
-        val storeID = intent.getStringExtra("ID")
+        val storeID = intent.getStringExtra("storeId")
         val storeNameDisplay = findViewById<TextView>(R.id.StoreNameText)
         val db = FirebaseFirestore.getInstance()
 
