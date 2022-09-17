@@ -98,8 +98,10 @@ class LoginActivity : AppCompatActivity() {
                              putExtra("username", username)
                              putExtra("password", password)
                      }
-                     startActivity(intent)              
-                     }
+                     startActivity(intent)
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+                    }
                 
                 }
                 
@@ -124,9 +126,10 @@ class LoginActivity : AppCompatActivity() {
 							LOGIN_ID = document.data["id"].toString()
 							val intent = Intent(this, StoreQueueActivity::class.java).apply {
 								putExtra("username", LOGIN_NAME)
-								putExtra("ID",LOGIN_ID)
+								putExtra("storeId",LOGIN_ID)
 							}
 							startActivity(intent)
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 						}
 
                     }
@@ -137,7 +140,9 @@ class LoginActivity : AppCompatActivity() {
 
         btnSignup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
-            startActivity(intent)   
+            startActivity(intent)
+            overridePendingTransition(androidx.appcompat.R.anim.abc_grow_fade_in_from_bottom, androidx.appcompat.R.anim.abc_slide_out_top);
+
         }
         
         
