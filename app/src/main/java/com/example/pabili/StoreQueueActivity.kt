@@ -1,12 +1,16 @@
 package com.example.pabili
 
 import android.app.AlertDialog
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,7 +54,27 @@ class StoreQueueActivity : AppCompatActivity() {
 
         }
         btnlogout.setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.alert_dialog_layout)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+
+            val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+            val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+            positiveButton.setOnClickListener{
+                val intent = Intent(this, LoginActivity::class.java);
+                startActivity(intent)
+                dialog.dismiss()
+            }
+            negativeButton.setOnClickListener{
+                dialog.dismiss()
+            }
+
+            dialog.show()
+
+            /*
             val builder = AlertDialog.Builder(this)
+
             builder.setMessage("Confirm logging out?")
                 .setCancelable(false)
                 .setPositiveButton("Yes"){dialog, id ->
@@ -60,6 +84,8 @@ class StoreQueueActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
             builder.create().show()
+            */
+
         }
 
 
