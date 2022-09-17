@@ -96,6 +96,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
                      val intent = Intent(this, HomeActivity::class.java).apply {
                              putExtra("username", username)
+                             putExtra("password", password)
                      }
                      startActivity(intent)              
                      }

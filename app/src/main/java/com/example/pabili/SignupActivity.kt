@@ -106,7 +106,11 @@ fun registerCustomer(){
 
 	val account = hashMapOf(
 		"username" to username,
-		"password" to password
+		"password" to password,
+		"name" to "",
+		"email" to "",
+		"phone" to "",
+		"address" to "",
 	)
 
 	db.collection("users")
