@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import TagPrice
+import android.app.AlertDialog
 import java.util.Date
 import java.text.SimpleDateFormat
 //import java.time.LocalDateTime
@@ -30,9 +31,9 @@ class StorePricesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_store_prices)
 
 
-
+		val storeID = intent.getStringExtra("storeId")!!
+		val storeName = intent.getStringExtra("username")
     	val db = FirebaseFirestore.getInstance()
-    	val storeId = intent.getStringExtra("storeId")!!
 	  // val storeId = intent.getStringExtra("storeId")
 	
         //tvStorename.text = storeName
@@ -51,7 +52,7 @@ class StorePricesActivity : AppCompatActivity() {
         recyclerView.adapter = RecyclerPrices( object : RecyclerPrices.CallbackInterface {
            override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
            }
-           },storeId,btnAddProduct)
+           },storeID,btnAddProduct)
            
 //
         
@@ -87,19 +88,36 @@ class StorePricesActivity : AppCompatActivity() {
     	}*/
 
 
-       var btnSetPrice = findViewById<ImageButton>(R.id.btnSetPrice)
-    	 btnSetPrice.setOnClickListener {
-    		
-    		}
-    		
-    		    var btnSeeOrders = findViewById<ImageButton>(R.id.btnSeeOrders)
-    	       btnSeeOrders.setOnClickListener {
-            	val intent = Intent(this, StoreQueueActivity::class.java).apply {
-						putExtra("ID", storeId)
-						putExtra("username", intent.getStringExtra("username"))
-					 }
-					 startActivity(intent)	
-    		}
+		val btnqueue = findViewById<ImageButton>(R.id.btnSeeOrders)
+		val btnstat = findViewById<ImageButton>(R.id.btnStat)
+		val btnlogout = findViewById<ImageButton>(R.id.btnStoreLogout)
+
+		btnqueue.setOnClickListener {
+			val intent = Intent(this, StoreQueueActivity::class.java).apply {
+				putExtra("storeId", storeID)
+				putExtra("username", storeName)
+			}
+			startActivity(intent)
+		}
+		btnstat.setOnClickListener {
+			val intent = Intent(this, StoreStatActivity::class.java).apply {
+				putExtra("storeId", storeID)
+				putExtra("username", storeName)
+			}
+			startActivity(intent)
+		}
+		btnlogout.setOnClickListener {
+			val builder = AlertDialog.Builder(this)
+			builder.setMessage("Confirm logging out?")
+				.setCancelable(false)
+				.setPositiveButton("Yes"){dialog, id ->
+					val intent = Intent(this, LoginActivity::class.java)
+					startActivity(intent)
+				}.setNegativeButton("No"){dialog, id->
+					dialog.dismiss()
+				}
+			builder.create().show()
+		}
     		
 }
         

@@ -1,5 +1,6 @@
 package com.example.pabili
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,8 +28,37 @@ class StoreQueueActivity : AppCompatActivity() {
         val recyclerview = findViewById<RecyclerView>(R.id.storeCustomerQueue)
         recyclerview.layoutManager = LinearLayoutManager(this)
         val data = ArrayList<DataRecyclerQueue>()
-        val btnSetPrice = findViewById<ImageButton>(R.id.btnSetPrice)
-        val btnStat = findViewById<ImageButton>(R.id.btnStat)
+
+        val btnstat = findViewById<ImageButton>(R.id.btnStat)
+        val btnprice = findViewById<ImageButton>(R.id.btnSetPrice)
+        val btnlogout = findViewById<ImageButton>(R.id.btnStoreLogout)
+
+        btnstat.setOnClickListener {
+            val intent = Intent(this, StoreStatActivity::class.java).apply {
+                putExtra("storeId", storeID)
+                putExtra("username", storeName)
+            }
+            startActivity(intent)
+        }
+        btnprice.setOnClickListener {
+            val intent = Intent(this, StorePricesActivity::class.java).apply {
+                putExtra("storeId", storeID)
+                putExtra("username", storeName)
+            }
+            startActivity(intent)
+        }
+        btnlogout.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Confirm logging out?")
+                .setCancelable(false)
+                .setPositiveButton("Yes"){dialog, id ->
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }.setNegativeButton("No"){dialog, id->
+                    dialog.dismiss()
+                }
+            builder.create().show()
+        }
 
 
         storeNameDisplay.text = storeName
@@ -67,7 +97,7 @@ class StoreQueueActivity : AppCompatActivity() {
         val adapter = RecyclerQueue(data)
         recyclerview.adapter = adapter
          */
-
+/*
         btnSetPrice.setOnClickListener {
 							val intent = Intent(this, StorePricesActivity::class.java).apply {
 								putExtra("storeId", storeID)
@@ -83,6 +113,8 @@ class StoreQueueActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+ */
     }
 }
 
