@@ -33,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
     //try {]
         val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout)
         val animationDrawable: AnimationDrawable = constraintLayout.getBackground() as AnimationDrawable
-        animationDrawable.setEnterFadeDuration(2500);
-        animationDrawable.setExitFadeDuration(5000);
+        animationDrawable.setEnterFadeDuration(1500);
+        animationDrawable.setExitFadeDuration(3000);
         animationDrawable.start()
 
         val etUsername: EditText = findViewById(R.id.etUsername)

@@ -127,7 +127,7 @@ class StoreStatActivity : AppCompatActivity() {
                 for(doc in result){
                     sum += doc.getString("totalPrice")!!.toInt()
                 }
-                txtInc.text = "Total Income: $sum"
+                txtInc.text = "Total Income: P$sum"
             }
 
 

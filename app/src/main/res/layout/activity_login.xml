@@ -185,7 +185,7 @@
         android:id="@+id/btnSignup"
         android:layout_width="280dp"
         android:layout_height="50dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="13dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/btn_main_1"
         android:text="Signup"
