@@ -195,6 +195,7 @@
             android:padding="5dp">
 
             <ImageButton
+                android:id="@+id/btnStoreLogout"
                 android:layout_width="match_parent"
                 android:layout_height="47dp"
                 android:layout_marginLeft="20dp"
