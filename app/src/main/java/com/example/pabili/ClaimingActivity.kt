@@ -1,30 +1,32 @@
 package com.example.pabili
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.widget.Button
-import com.google.firebase.firestore.FirebaseFirestore
-import android.widget.TextView
 import android.widget.ImageView
-
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.zxing.BarcodeFormat;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
-
- 
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.*
 
 class ClaimingActivity: AppCompatActivity() {
 
-	private lateinit var cInfo: DataCustomerInfo
     override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_claiming)
-
 		val db = FirebaseFirestore.getInstance()
-
-
 		val transactionId = intent.getStringExtra("transactionId")
 		val tvTransactionId = findViewById<TextView>(R.id.tvTransactionId)
 		tvTransactionId.text = transactionId
@@ -39,12 +41,11 @@ class ClaimingActivity: AppCompatActivity() {
 		val totaltxt = findViewById<TextView>(R.id.totalText)
 		val status = findViewById<TextView>(R.id.txtStatus)
 		val storeN = findViewById<TextView>(R.id.txtStore)
-
 		db.collection("orders").whereEqualTo("transactionID", transactionId)
 			.get()
 			.addOnSuccessListener { result ->
 				if(result.isEmpty){
-					Log.d("FAIL", "No data")
+					Toast.makeText(this, ("No orders received"), Toast.LENGTH_SHORT).show()
 				} else{
 					for(document in result){
 						val cDoc = document.id
@@ -71,84 +72,42 @@ class ClaimingActivity: AppCompatActivity() {
 					}
 				}
 			}
-
+			val saveQR = findViewById<Button>(R.id.btnSaveQr)
+			saveQR.setOnClickListener{
+				saveImage(bitmap)
+			}
 			val editBtn = findViewById<Button>(R.id.btnEdit)
-
 			editBtn.setOnClickListener{
 				super.finish()
 			}
-
-
 	}
 
-
-
+	fun saveImage(myBitmap: Bitmap){
+		val bytes = ByteArrayOutputStream()
+		myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+		val wallpaperDirectory = File(
+			Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES
+		)
+		// have the object build the directory structure, if needed.
+		if (!wallpaperDirectory.exists()) {
+			Toast.makeText(this, ("Current Directory does not exist, creating one."), Toast.LENGTH_LONG).show()
+			wallpaperDirectory.mkdirs()
+		}
+		try {
+			val f = File(
+				wallpaperDirectory, Calendar.getInstance()
+					.timeInMillis.toString() + ".jpg"
+			)
+			f.createNewFile() //give read write permission
+			val fo = FileOutputStream(f)
+			fo.write(bytes.toByteArray())
+			MediaScannerConnection.scanFile(this, arrayOf(f.path), arrayOf("image/jpeg"), null)
+			fo.close()
+			Toast.makeText(this, ("File Saved at: " + f.absolutePath), Toast.LENGTH_LONG).show()
+		} catch (e1: IOException) {
+			Toast.makeText(this, ("No Read/Write Permission"), Toast.LENGTH_LONG).show()
+		}
+	}
 }
 
-
-
-//			db.collection("orders")
-//				.get()
-//				.addOnCompleteListener {
-//					task ->
-//						if(task.isSuccessful){
-//							for(document in task.result){
-//
-//							}
-//
-//
-//
-//							val adapter = RecyclerOrder(data)
-//							recyclerView.adapter = adapter
-//						}
-//					Log.d("TAG", "Orders: $oL")
-//					}
-
-
-
-
-
-	//try {]	
-		/*
-		val db = FirebaseFirestore.getInstance()
-		val etUsername: EditText = findViewById(R.id.etUsername) as EditText 
-		val etPassword: EditText = findViewById(R.id.etPassword) as EditText 
-		val btnCustomerLogin: Button = findViewById(R.id.btnCustomerLogin)
-		val btnStoreLogin: Button = findViewById(R.id.btnStoreLogin)
-
-		btnCustomerLogin.setOnClickListener {
-			var username = etUsername.text.toString()
-			var password = etPassword.text.toString()
-			db.collection("users")
-			.whereEqualTo("username", username).whereEqualTo("password", password)
-			.get()
-			.addOnSuccessListener { documents ->
-			    for (document in documents) {
-				Toast.makeText(this@LoginActivity,'Access Granted',Toast.LENGTH_SHORT).show()
-				 val intent = Intent(this, MainActivity::class.java).apply {
-					    putExtra(EXTRA_MESSAGE, username)
-				 }
-				 startActivity(intent)				
-			    }
-			}
-		}
-		
-		btnStoreLogin.setOnClickListener {
-			var username = etUsername.text.toString()
-			var password = etPassword.text.toString()
-			db.collection("stores")
-			.whereEqualTo("username", username).whereEqualTo("password", password)
-			.get()
-			.addOnSuccessListener { documents ->
-			    for (document in documents) {
-				Toast.makeText(this@LoginActivity,"Access Granted",Toast.LENGTH_SHORT).show()
-			    }
-			}
-		}
-		
-		
-			
-	} catch (e: IOException) {
-		Toast.makeText(this@LoginActivity,"ttt",Toast.LENGTH_SHORT).show()
-	}*/
     

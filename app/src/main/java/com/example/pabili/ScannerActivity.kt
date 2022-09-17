@@ -269,7 +269,7 @@ class ScannerActivity : AppCompatActivity() {
                                     val intent = Intent(baseContext, StoreQueueActivity::class.java).apply {
                                         //putExtra("storename", barcode.rawValue.toString())
                                         putExtra("username", LOGIN_NAME)
-                                        putExtra("ID",LOGIN_ID)
+                                        putExtra("storeId",LOGIN_ID)
                                     }
                                     startActivity(intent)
                                 }.addOnFailureListener{ e ->

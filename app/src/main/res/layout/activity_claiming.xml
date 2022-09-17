@@ -74,6 +74,14 @@
 				android:layout_height="wrap_content"
 				android:text="Edit"/>
 
+			<Button
+				android:id="@+id/btnSaveQr"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="Save QR Code"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
 		</LinearLayout>
 	</androidx.core.widget.NestedScrollView>
 <!-- 

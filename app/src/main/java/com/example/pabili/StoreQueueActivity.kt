@@ -1,16 +1,15 @@
 package com.example.pabili
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Button
 import android.content.Intent
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 class StoreQueueActivity : AppCompatActivity() {
 
@@ -20,15 +19,48 @@ class StoreQueueActivity : AppCompatActivity() {
 
 
         val storeName = intent.getStringExtra("username")
-        val storeID = intent.getStringExtra("ID")
+        val storeID = intent.getStringExtra("storeId")
         val storeNameDisplay = findViewById<TextView>(R.id.StoreNameText)
         val db = FirebaseFirestore.getInstance()
 
         val recyclerview = findViewById<RecyclerView>(R.id.storeCustomerQueue)
         recyclerview.layoutManager = LinearLayoutManager(this)
         val data = ArrayList<DataRecyclerQueue>()
-        val btnSetPrice = findViewById<ImageButton>(R.id.btnSetPrice)
-        val btnStat = findViewById<ImageButton>(R.id.btnStat)
+
+        val btnstat = findViewById<ImageButton>(R.id.btnStat)
+        val btnprice = findViewById<ImageButton>(R.id.btnSetPrice)
+        val btnlogout = findViewById<ImageButton>(R.id.btnStoreLogout)
+
+        btnstat.setOnClickListener {
+            val intent = Intent(this, StoreStatActivity::class.java).apply {
+                putExtra("storeId", storeID)
+                putExtra("username", storeName)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
+
+        }
+        btnprice.setOnClickListener {
+            val intent = Intent(this, StorePricesActivity::class.java).apply {
+                putExtra("storeId", storeID)
+                putExtra("username", storeName)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+        }
+        btnlogout.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Confirm logging out?")
+                .setCancelable(false)
+                .setPositiveButton("Yes"){dialog, id ->
+                    val intent = Intent(this, LoginActivity::class.java);
+                    startActivity(intent)
+                }.setNegativeButton("No"){dialog, id->
+                    dialog.dismiss()
+                }
+            builder.create().show()
+        }
 
 
         storeNameDisplay.text = storeName
@@ -67,22 +99,26 @@ class StoreQueueActivity : AppCompatActivity() {
         val adapter = RecyclerQueue(data)
         recyclerview.adapter = adapter
          */
-
+/*
         btnSetPrice.setOnClickListener {
 							val intent = Intent(this, StorePricesActivity::class.java).apply {
 								putExtra("storeId", storeID)
                                 putExtra("username", storeName)
 							}
 							startActivity(intent)
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         }
 
         btnStat.setOnClickListener {
-            val intent = Intent(this, StoreStatActivity::class.java).apply{
-                putExtra("storeId", storeID)
-                putExtra("username", storeName)
-            }
-            startActivity(intent)
+                            val intent = Intent(this, StoreStatActivity::class.java).apply{
+                                putExtra("storeId", storeID)
+                                putExtra("username", storeName)
+                            }
+                            startActivity(intent)
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         }
+
+ */
     }
 }
 

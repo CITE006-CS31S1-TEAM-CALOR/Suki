@@ -84,7 +84,7 @@ class StoreOrderActivity : AppCompatActivity() {
                                 Toast.makeText(this@StoreOrderActivity,("Order was canceled"), Toast.LENGTH_SHORT).show()
                                 orders.get().addOnSuccessListener { result ->
                                     val intent = Intent(this, StoreQueueActivity::class.java).apply {
-                                        putExtra("ID", result.getString("store"))
+                                        putExtra("storeId", result.getString("store"))
                                     }
                                     startActivity(intent)
                                 }
