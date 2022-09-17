@@ -1,20 +1,25 @@
 package com.example.pabili
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.widget.Button
-import com.google.firebase.firestore.FirebaseFirestore
-import android.widget.TextView
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
-
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.zxing.BarcodeFormat;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
-
- 
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.*
 
 class ClaimingActivity: AppCompatActivity() {
 
@@ -67,10 +72,41 @@ class ClaimingActivity: AppCompatActivity() {
 					}
 				}
 			}
+			val saveQR = findViewById<Button>(R.id.btnSaveQr)
+			saveQR.setOnClickListener{
+				saveImage(bitmap)
+			}
 			val editBtn = findViewById<Button>(R.id.btnEdit)
 			editBtn.setOnClickListener{
 				super.finish()
 			}
+	}
+
+	fun saveImage(myBitmap: Bitmap){
+		val bytes = ByteArrayOutputStream()
+		myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+		val wallpaperDirectory = File(
+			Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES
+		)
+		// have the object build the directory structure, if needed.
+		if (!wallpaperDirectory.exists()) {
+			Toast.makeText(this, ("Current Directory does not exist, creating one."), Toast.LENGTH_LONG).show()
+			wallpaperDirectory.mkdirs()
+		}
+		try {
+			val f = File(
+				wallpaperDirectory, Calendar.getInstance()
+					.timeInMillis.toString() + ".jpg"
+			)
+			f.createNewFile() //give read write permission
+			val fo = FileOutputStream(f)
+			fo.write(bytes.toByteArray())
+			MediaScannerConnection.scanFile(this, arrayOf(f.path), arrayOf("image/jpeg"), null)
+			fo.close()
+			Toast.makeText(this, ("File Saved at: " + f.absolutePath), Toast.LENGTH_LONG).show()
+		} catch (e1: IOException) {
+			Toast.makeText(this, ("No Read/Write Permission"), Toast.LENGTH_LONG).show()
+		}
 	}
 }
 
