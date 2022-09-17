@@ -398,8 +398,10 @@ class StoreStatActivity : AppCompatActivity() {
         chart.setOnChartValueSelectedListener(object: OnChartValueSelectedListener{
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                val datelabel = label.get(e!!.x.toInt())
-                updateBarChart(barGb, barElb, datelabel)
+                if(label.isNotEmpty()) {
+                    val datelabel = label.get(e!!.x.toInt())
+                    updateBarChart(barGb, barElb, datelabel)
+                }
             }
 
             override fun onNothingSelected() {
