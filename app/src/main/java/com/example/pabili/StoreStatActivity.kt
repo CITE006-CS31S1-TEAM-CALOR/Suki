@@ -1,6 +1,7 @@
 package com.example.pabili
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.DashPathEffect
@@ -9,6 +10,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -82,6 +85,24 @@ class StoreStatActivity : AppCompatActivity() {
         }
 
         btnlogout.setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.alert_dialog_layout)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+
+            val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+            val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+            positiveButton.setOnClickListener{
+                val intent = Intent(this, LoginActivity::class.java);
+                startActivity(intent)
+                dialog.dismiss()
+            }
+            negativeButton.setOnClickListener{
+                dialog.dismiss()
+            }
+
+            dialog.show()
+            /*
             val builder = AlertDialog.Builder(this)
             builder.setMessage("Confirm logging out?")
                 .setCancelable(false)
@@ -92,6 +113,8 @@ class StoreStatActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
             builder.create().show()
+
+             */
         }
 
         txtName.text = "Name: $storeName"
@@ -104,7 +127,7 @@ class StoreStatActivity : AppCompatActivity() {
                 for(doc in result){
                     sum += doc.getString("totalPrice")!!.toInt()
                 }
-                txtInc.text = "Total Income: $sum"
+                txtInc.text = "Total Income: P$sum"
             }
 
 
@@ -375,8 +398,10 @@ class StoreStatActivity : AppCompatActivity() {
         chart.setOnChartValueSelectedListener(object: OnChartValueSelectedListener{
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                val datelabel = label.get(e!!.x.toInt())
-                updateBarChart(barGb, barElb, datelabel)
+                if(label.isNotEmpty()) {
+                    val datelabel = label.get(e!!.x.toInt())
+                    updateBarChart(barGb, barElb, datelabel)
+                }
             }
 
             override fun onNothingSelected() {

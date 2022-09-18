@@ -7,7 +7,15 @@
         <entry key="..\:/PrivateProperty/Coding/Mobile2/Pabili-Appv2/app/src/main/res/layout/store_queue_layout.xml" value="0.19166666666666668" />
         <entry key="..\:/PrivateProperty/Coding/Mobile2/PabiliApp/app/src/main/res/layout/activity_login.xml" value="0.15982776089159068" />
         <entry key="..\:/PrivateProperty/Coding/Mobile2/PabiliApp/app/src/main/res/layout/activity_signup.xml" value="0.33" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable-anydpi/ic_action_qrcode.xml" value="0.26" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/bg_stats_layout.xml" value="0.268" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/btn_main_1.xml" value="0.2165" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/custom_dialog_background.xml" value="0.259" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/custom_input.xml" value="0.26" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/grad_anim_1.xml" value="0.1815" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/gradient_list.xml" value="0.1815" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/ic_account.xml" value="0.26" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/ic_lock.xml" value="0.26" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/ic_logo_suki_main.xml" value="0.205" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/ic_remove.xml" value="0.1" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/layout_round_corners.xml" value="0.2155" />
@@ -15,18 +23,20 @@
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/drawable/splash_image.xml" value="0.205" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_claiming.xml" value="0.1" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_home.xml" value="0.25" />
-        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_login.xml" value="0.18" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_main.xml" value="0.19739583333333333" />
-        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_scanner.xml" value="0.1" />
-        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_signup.xml" value="0.15" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_scanner.xml" value="0.16" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_signup.xml" value="0.25" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_store_order.xml" value="0.22" />
-        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_store_prices.xml" value="0.2" />
-        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_store_queue.xml" value="0.16" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_store_prices.xml" value="0.25" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_store_queue.xml" value="0.25" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/activity_store_stat.xml" value="0.25" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/alert_dialog_layout.xml" value="0.18" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/orderlayout.xml" value="0.2" />
-        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/store_order_layout.xml" value="0.33" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/store_order_layout.xml" value="0.25" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/store_price_layout.xml" value="0.18" />
         <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/layout/store_queue_layout.xml" value="0.25" />
+        <entry key="..\:/Users/Jean/AndroidStudioProjects/Pabili-App/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2855" />
         <entry key="..\:/Users/RA/Desktop/TIP Files/Programming/AppDev/Pabili-App/app/src/main/res/layout/activity_home.xml" value="0.5" />
         <entry key="..\:/Users/RA/Desktop/TIP Files/Programming/AppDev/Pabili-App/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/RA/Desktop/TIP Files/Programming/AppDev/Pabili-App/app/src/main/res/layout/activity_main.xml" value="0.2558876811594203" />

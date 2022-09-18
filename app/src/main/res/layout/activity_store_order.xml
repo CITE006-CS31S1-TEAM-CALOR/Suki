@@ -10,8 +10,11 @@
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="19dp"
-        android:layout_marginBottom="1dp"
+        android:layout_height="35dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:background="#64c1ff"
+        android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toTopOf="@+id/storeCustomerOrder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,23 +22,26 @@
 
         <TextView
             android:id="@+id/HEADERnumTxt"
-            android:layout_width="20dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="#" />
 
         <TextView
             android:id="@+id/HEADEROrderName"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Name" />
 
         <TextView
             android:id="@+id/HEADEROrderQty"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="QTY" />
 
         <TextView
@@ -43,13 +49,15 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Price" />
 
         <TextView
             android:id="@+id/HEADERDeleteButton"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Del" />
 
     </LinearLayout>
@@ -58,8 +66,12 @@
         android:id="@+id/orderCustomerName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
         android:text="TextView"
+        android:background="#002f6c"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,6 +82,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/bg_stats_layout"
+        android:backgroundTint="#64c1ff"
         app:layout_constraintBottom_toTopOf="@+id/switchToClaim"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,10 +96,22 @@
 
     <Switch
         android:id="@+id/switchToClaim"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="0dp"
+        android:layout_height="47dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/bg_stats_layout"
+        android:backgroundTint="#9767D367"
+        android:gravity="center"
         android:minHeight="48dp"
+        android:paddingStart="12dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="10dp"
         android:text="Ready to Claim"
+        android:textColor="#000000"
+        app:backgroundTint="#000000"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,15 +143,33 @@
 
         <Button
             android:id="@+id/deleteBtn"
-            android:layout_width="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_action_trash"
+            android:layout_width="134dp"
             android:layout_height="wrap_content"
-            android:text="Delete" />
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_main_1"
+            android:text="CANCEL"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            app:backgroundTint="#A80808"
+            app:iconGravity="textStart"
+            app:backgroundTintMode="src_over" />
 
         <Button
             android:id="@+id/scannerBTN"
-            android:layout_width="325dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="258dp"
             android:layout_height="wrap_content"
-            android:text="Scanner" />
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_main_1"
+            android:gravity="center"
+            android:text="Scanner"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#0870A8"
+            app:backgroundTintMode="src_over"
+            app:icon="@drawable/ic_qrcode"
+            app:iconGravity="textStart" />
     </LinearLayout>
 
 

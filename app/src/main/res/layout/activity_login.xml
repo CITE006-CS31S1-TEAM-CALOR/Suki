@@ -3,14 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:src="@drawable/btn_main_1"
-
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-1dp"
-    android:background="@drawable/bg_image_signup"
+    android:background="@drawable/gradient_list"
+    android:id="@+id/mainLayout"
     >
 
 
@@ -81,7 +80,6 @@
         android:layout_height="187dp"
         android:layout_marginStart="11dp"
         android:layout_marginEnd="11dp"
-        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,62 +87,39 @@
 
         <EditText
             android:id="@+id/etPassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
-            android:hint="enter 'User' or 'store'"
+            android:inputType="textPassword"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_lock"
+            android:drawablePadding="12dp"
+            android:hint="Enter Password"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text=""
             android:textColorHint="#BCBCBC"
-            android:backgroundTint="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="369dp"
-            android:layout_height="27dp"
-            android:text="Password"
-            android:textColor="#002f66"
-            app:autoSizeTextType="uniform"
-            app:fontFamily="sans-serif-black"
-            app:layout_constraintBottom_toTopOf="@+id/etPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etUsername" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="370dp"
-            android:layout_height="27dp"
-            android:layout_marginTop="10dp"
-            android:text="Username"
-            android:textColor="#002f66"
-            app:autoSizeTextType="uniform"
-            app:fontFamily="sans-serif-black"
-            app:layout_constraintBottom_toTopOf="@+id/etUsername"
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_account"
+            android:drawablePadding="12dp"
+            android:hint="Enter Username"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColorHint="#BCBCBC"
+            app:layout_constraintBottom_toTopOf="@+id/etPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/etUsername"
-            android:layout_width="380dp"
-            android:textColorHint="#BCBCBC"
-            android:backgroundTint="#000000"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:hint="enter 'User' or 'store'"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -157,7 +132,7 @@
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSignup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
@@ -173,11 +148,12 @@
 
             <Button
                 android:id="@+id/btnCustomerLogin"
-                android:layout_width="282dp"
-                android:layout_height="0dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
                 android:layout_margin="7dp"
                 android:background="@drawable/btn_main_1"
                 android:text="Login as Customer"
+                android:textColor="#ffffff"
                 app:backgroundTint="#00FFFFFF"
                 app:backgroundTintMode="screen"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -189,12 +165,13 @@
         <Button
             android:id="@+id/btnStoreLogin"
             android:layout_width="280dp"
-            android:layout_height="51dp"
+            android:layout_height="50dp"
             android:layout_margin="7dp"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="1dp"
             android:background="@drawable/btn_main_1"
             android:text="Login as Store"
+            android:textColor="#ffffff"
             app:backgroundTint="#00FFFFFF"
             app:backgroundTintMode="screen"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -207,11 +184,12 @@
     <Button
         android:id="@+id/btnSignup"
         android:layout_width="280dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="17dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="13dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/btn_main_1"
         android:text="Signup"
+        android:textColor="#ffffff"
         app:backgroundTint="#00FFFFFF"
         app:backgroundTintMode="screen"
         app:layout_constraintBottom_toBottomOf="parent"

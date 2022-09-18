@@ -1,10 +1,12 @@
 package com.example.pabili
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
@@ -75,6 +77,37 @@ class StoreOrderActivity : AppCompatActivity() {
 
         delBtn.setOnClickListener{
             if(!swt.isChecked){
+                val dialog = Dialog(this)
+                dialog.setContentView(R.layout.alert_dialog_layout)
+                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                dialog.setCancelable(false)
+
+                val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+                val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+                //val title = dialog.findViewById<TextView>(R.id.alertTitle)
+                val subtitle = dialog.findViewById<TextView>(R.id.alertSubtitle)
+                subtitle.text = "Do you want to cancel this customer's order?"
+                positiveButton.setOnClickListener{
+                    orders.update("status","canceled")
+                        .addOnSuccessListener {
+                            Toast.makeText(this@StoreOrderActivity,("Order was canceled"), Toast.LENGTH_SHORT).show()
+                            orders.get().addOnSuccessListener { result ->
+                                val intent = Intent(this, StoreQueueActivity::class.java).apply {
+                                    putExtra("storeId", result.getString("store"))
+                                }
+                                startActivity(intent)
+                            }
+                        }.addOnFailureListener{
+                            Toast.makeText(this@StoreOrderActivity, ("There was an issue in the server. Please try again"), Toast.LENGTH_LONG).show()
+                        }
+                    dialog.dismiss()
+                }
+                negativeButton.setOnClickListener{
+                    dialog.dismiss()
+                }
+
+                dialog.show()
+                /*
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage("Are you sure you want to delete this customer?")
                     .setCancelable(false)
@@ -98,6 +131,8 @@ class StoreOrderActivity : AppCompatActivity() {
                         dialog.dismiss()
                     }
                 builder.create().show()
+
+                 */
             }else{
                 Toast.makeText(this@StoreOrderActivity,"Order is ready to be Claimed. Can't cancel order.", Toast.LENGTH_SHORT).show()
             }
