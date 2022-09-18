@@ -1,4 +1,4 @@
-    package com.example.pabili
+package com.example.pabili
 import java.util.regex.Pattern;
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,7 +16,6 @@ import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import TagPrice
-import java.util.ListIterator;
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.text.Editable
@@ -33,14 +32,18 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
     val TagPrices = ArrayList<TagPrice>()
     val db = FirebaseFirestore.getInstance()
     init {
-    		   val docRef = db.collection("products").document("store"+storeId).collection("prices")
+            choice1.setVisibility(View.GONE)
+            choice2.setVisibility(View.GONE)
+            choice3.setVisibility(View.GONE)
+            
+    		val docRef = db.collection("products").document("store"+storeId).collection("prices")
 			docRef.get().addOnSuccessListener { 
-				result ->
-				for (document in result){
-					val product = document.toObject<TagPrice>(TagPrice::class.java)!!
-					 TagPrices.add(product)
-					}
+			result ->
+			for (document in result){
+				val product = document.toObject<TagPrice>(TagPrice::class.java)
+				 TagPrices.add(product)
 				}
+			}
 				  
             orderList.add("0")
             notifyItemInserted(0);
@@ -104,55 +107,61 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
         val textWatcher:TextWatcher = object:TextWatcher {
                 override fun afterTextChanged(s: Editable){
                     val strOrder:String = s.toString()
-                    
+                    var toSearch:String
                     try {
-                        val prodqty = strOrder.split(" ").get(0).trim()
-                        val matches = getMatchingStrings(strOrder.split(" ").get(1))
-                        //Toast.makeText(holder.etOrder.getContext(),matches.joinToString(),Toast.LENGTH_LONG).show()
+                        val prodqty = strOrder.lowercase().split(" ").get(0).trim()
+                        toSearch = strOrder.split(" ",limit=2).get(1)
+                        val matches = getMatchingStrings(toSearch)
+
+                        choice1.setVisibility(View.VISIBLE)
+                        choice2.setVisibility(View.VISIBLE)
+                        choice3.setVisibility(View.VISIBLE)
                         if (matches.size >= 3){
                             choice1.text = matches.get(0)
                             choice2.text = matches.get(1)
                             choice3.text = matches.get(2)
                             
                             choice1.setOnClickListener {
-                                holder.etOrder.setText(prodqty + " " + matches.get(0).toString()+ "\n")
+                                holder.etOrder.setText(prodqty + " " + choice1.text.toString() + "\n")                    
                             }
                             choice2.setOnClickListener {
-                                holder.etOrder.setText(prodqty+ " "  + matches.get(1).toString() + "\n")
+                                holder.etOrder.setText(prodqty+ " "  + choice2.text.toString() + "\n")
                             }
                             choice3.setOnClickListener {
-                                holder.etOrder.setText(prodqty+ " "  + matches.get(2).toString()+ "\n")
+                                holder.etOrder.setText(prodqty+ " "  + choice3.text.toString() + "\n")
                             }
                         }
                         if (matches.size == 2){
-                            choice2.text = ""
-                            choice2.text = matches.get(0)
-                            choice3.text = matches.get(1)
+                            choice1.text = matches.get(0)
+                            choice2.text = matches.get(1)
+                            choice3.setVisibility(View.GONE)
+                            
 
-                            choice2.setOnClickListener {
-                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
+                            choice1.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + choice2.text.toString() + "\n")
                             }
-                            choice3.setOnClickListener {
-                                holder.etOrder.setText(prodqty+ " "  + matches.get(1).toString()+ "\n")
+                            choice2.setOnClickListener {
+                                holder.etOrder.setText(prodqty+ " "  + choice3.text.toString() + "\n")
                             }
                         }
                         if (matches.size == 1){
-                            choice1.text = ""
-                            choice2.text = matches.get(0)
-                            choice3.text = ""
+                            choice1.setVisibility(View.VISIBLE)
+                            choice2.setVisibility(View.GONE)
+                            choice3.setVisibility(View.GONE)
+
+                            choice1.text = matches.get(0)
 
                             choice1.setOnClickListener {
-                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
-                            }
-                            choice2.setOnClickListener {
-                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
-                            }
-                            choice3.setOnClickListener {
-                                holder.etOrder.setText(prodqty+ " "  + matches.get(0).toString()+ "\n")
+                                holder.etOrder.setText(prodqty+ " "  + choice1.text.toString() + "\n")
                             }
 
                         }
 
+                        if (matches.size == 0){
+                            choice1.setVisibility(View.GONE)
+                            choice2.setVisibility(View.GONE)
+                            choice3.setVisibility(View.GONE)
+                        }
                          
 
                     } catch (e: IndexOutOfBoundsException){
@@ -160,19 +169,24 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
                     }
 
 
-                    val pattern = "\\d [A-Za-z0-9]*\\n".toRegex()
+                    val pattern = "\\d [A-Za-z0-9 ]*\\n".toRegex()
                     val found = pattern.find(strOrder)
                     val m = found?.value
                     if (m != null){
                         holder.etOrder.setText(strOrder.trim())	
                         orderList.set(holder.getBindingAdapterPosition(),strOrder.trim())
 
-                        val lsOrder = strOrder.split(" ")
-                        val productName: String = lsOrder.get(1)
+                        val lsOrder = strOrder.split(" ",limit=2)
+                       // var productName: String = lsOrder.get(1).lowercase()
+                        var rawName:String = lsOrder.get(1).lowercase().trim()
+                        
+                        var productName: String? = (TagPrices.firstOrNull {it.name!!.lowercase() == lsOrder.get(1).lowercase().trim()})?.name ?: rawName!!
                         val qty: Int = lsOrder.get(0).toInt()
-                        val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
+                        val unitPrice: Int? = (TagPrices.firstOrNull {it.name!!.lowercase() == rawName.trim().lowercase()})?.price ?: 0
                         val computedPrice = (unitPrice!! * qty)
-                        val available: Boolean? = (TagPrices.firstOrNull {it.name == productName.trim()})?.available ?: false
+                        val available: Boolean? = (TagPrices.firstOrNull {it.name!!.lowercase() == rawName.trim().lowercase()})?.available ?: false
+                        
+                        holder.etOrder.setText("$qty " + productName)
                         if (computedPrice == 0 || available==false){
                             Toast.makeText(holder.etOrder.getContext(),"Product Unavailable",Toast.LENGTH_SHORT).show()
                             holder.etOrder.setSelection(holder.etOrder.text.length)
@@ -188,15 +202,15 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
 	            		
                         } else {	
                             orderList.add("")
-                 	    notifyItemInserted(orderList.size - 1);
-               					
+                 	        notifyItemInserted(orderList.size - 1);
                             computedPrices.add(computedPrice)
                         }
-                      Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
-                        val totalPrice = computedPrices.sum()
-                      callbackInterface.passResultCallback(totalPrice.toString(), orderList.joinToString(), computedPrices.joinToString())  
-                  	holder.etOrder.clearFocus()
-                  	
+                    
+                    Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
+                    val totalPrice = computedPrices.sum()
+                    callbackInterface.passResultCallback(totalPrice.toString(), orderList.joinToString(), computedPrices.joinToString())  
+                    holder.etOrder.clearFocus()
+                    resetChoices()
                     //notifyItemChanged(position-1)			
                     }
                     
@@ -228,15 +242,44 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
         val list = TagPrices
         
         val matches = ArrayList<String>();
-        val p = Pattern.compile(regex+".*");
+        val front = Pattern.compile("^"+regex+".+");
 
         for (s in list) {
-            if (p.matcher(s.name!!.toLowerCase()).matches() && s.available==true) {
+            if (front.matcher(s.name!!.lowercase()).matches() && s.available==true) {
+            matches.add(s.name!!)
+            }
+        }
+        
+        val middle = Pattern.compile("^.+" +regex + ".+$");
+
+        for (s in list) {
+            if (middle.matcher(s.name!!.lowercase()).matches() && s.available==true) {
             matches.add(s.name!!);
             }
         }
 
         return matches
+    }
+
+    fun resetChoices(){
+        choice1.text = ""
+        choice2.text = ""
+        choice3.text = ""
+
+        choice1.setVisibility(View.GONE)
+        choice2.setVisibility(View.GONE)
+        choice3.setVisibility(View.GONE)
+        
+
+        choice1.setOnClickListener {
+
+        }
+        choice2.setOnClickListener {
+
+        }
+        choice3.setOnClickListener {
+
+        }
     }
 }
 
