@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#64c1ffff"
+    android:layout_marginTop="2dp"
+    >
+
+    <TextView
+        android:id="@+id/numTxt"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        app:fontFamily="monospace"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/OrderName"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="name"
+        android:background="#4f83ccff"
+        android:textColor="#000000"
+        app:fontFamily="monospace" />
+
+    <TextView
+        android:id="@+id/OrderQty"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="x10"
+        app:fontFamily="sans-serif-light" />
+
+    <TextView
+        android:id="@+id/OrderPrice"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="P1000"
+        android:background="#64c1ff"
+        app:fontFamily="sans-serif-light" />
+
+</LinearLayout>

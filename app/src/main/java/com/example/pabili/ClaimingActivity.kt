@@ -5,6 +5,7 @@ import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -41,6 +42,14 @@ class ClaimingActivity: AppCompatActivity() {
 		val totaltxt = findViewById<TextView>(R.id.totalText)
 		val status = findViewById<TextView>(R.id.txtStatus)
 		val storeN = findViewById<TextView>(R.id.txtStore)
+		val editBtn = findViewById<Button>(R.id.btnEdit)
+		editBtn.setOnClickListener{
+			super.finish()
+		}
+		val saveQR = findViewById<Button>(R.id.btnSaveQr)
+		saveQR.setOnClickListener{
+			saveImage(bitmap)
+		}
 		db.collection("orders").whereEqualTo("transactionID", transactionId)
 			.get()
 			.addOnSuccessListener { result ->
@@ -55,6 +64,9 @@ class ClaimingActivity: AppCompatActivity() {
 						storeN.text = "Store: " + store
 						val s = document.data["status"].toString()
 						status.text = "Status: " + s
+						if(s.lowercase() == "ready"){
+							editBtn.setVisibility(View.GONE)
+						}
 						var computedPrices = document.data["computedPrices"].toString()
 						var oL = document.data["orderList"].toString()
 						val orderListArray = oL.split(", ")
@@ -67,19 +79,13 @@ class ClaimingActivity: AppCompatActivity() {
 								data.add(DataOrderList(name, "x" + qty, "P" + com))
 							}
 						}
-						val adapter = RecyclerOrder(this, cDoc, data, totaltxt)
+						val adapter = RecyclerClaiming(this, cDoc, data, totaltxt)
 						recyclerView.adapter = adapter
 					}
 				}
 			}
-			val saveQR = findViewById<Button>(R.id.btnSaveQr)
-			saveQR.setOnClickListener{
-				saveImage(bitmap)
-			}
-			val editBtn = findViewById<Button>(R.id.btnEdit)
-			editBtn.setOnClickListener{
-				super.finish()
-			}
+
+
 	}
 
 	fun saveImage(myBitmap: Bitmap){
