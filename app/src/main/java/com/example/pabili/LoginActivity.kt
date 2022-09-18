@@ -113,17 +113,32 @@ class LoginActivity : AppCompatActivity() {
                 if (documents.isEmpty()) {
                     Toast.makeText(this@LoginActivity,("Access Denied"),Toast.LENGTH_SHORT).show()
                 } else {
-                
-                    for (document in documents) {
-                    Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
-                     val intent = Intent(this, HomeActivity::class.java).apply {
-                             putExtra("username", username)
-                             putExtra("password", password)
-                     }
-                     startActivity(intent)
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+                    db.collection("orders").whereEqualTo("username", username)
+                        .get()
+                        .addOnSuccessListener { result ->
+                            for(data in result){
+                                val status = data.data["status"].toString()
+                                val transactionId = data.data["transactionID"].toString()
+                                if(status.lowercase() == "pending" || status.lowercase() == "ready"){
+                                    Toast.makeText(this@LoginActivity,("You have a pending order."),Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this, ClaimingActivity::class.java).apply {
+                                        putExtra("transactionId", transactionId)
+                                    }
+                                    startActivity(intent)
+                                }
+                            }
+                        }
+                    for (document in documents) {
+                        Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, HomeActivity::class.java).apply {
+                            putExtra("username", username)
+                            putExtra("password", password)
+                        }
+                        startActivity(intent)
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
+
                 
                 }
                 
