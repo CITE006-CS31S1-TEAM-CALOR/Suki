@@ -23,8 +23,21 @@ import java.io.IOException
 import java.util.*
 import android.content.Intent	
 
-class ClaimingActivity: AppCompatActivity() {
 
+import android.view.ViewGroup
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.AnimationDrawable
+import android.view.MotionEvent
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat.getAction
+import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
+import androidx.core.widget.doOnTextChanged
+import kotlin.system.exitProcess
+
+class ClaimingActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_claiming)
@@ -50,12 +63,11 @@ class ClaimingActivity: AppCompatActivity() {
 			saveImage(bitmap)
 		}
 
-		db.collection("orders").whereEqualTo("transactionID", transactionId)
-			.get()
-			.addOnSuccessListener { result ->
+		db.collection("orders").whereEqualTo("transactionID", transactionId).get().addOnSuccessListener { 
+		result ->
 				if(result.isEmpty){
 					Toast.makeText(this, ("No orders received"), Toast.LENGTH_SHORT).show()
-				} else{
+				} else {
 					for(document in result){
 						val cDoc = document.id
 						val total = document.data["totalPrice"].toString()
@@ -116,14 +128,13 @@ class ClaimingActivity: AppCompatActivity() {
 					                putExtra("storeName", storeName2);
 					                putExtra("strExistingOrderList", oL2); 
 					             	putExtra("strExistingComputedPrices", cP2); 
-					                        
 								}
-
-							startActivity(intent)
+					            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+								startActivity(intent)
+	                        	finish()
 			    			}
 			    		}
-			    		
-		    	}
+		    		}
 				
 			} else {
 				super.finish()
@@ -159,6 +170,31 @@ class ClaimingActivity: AppCompatActivity() {
 			Toast.makeText(this, ("No Read/Write Permission"), Toast.LENGTH_LONG).show()
 		}
 	}
+
+	 override fun onBackPressed() {
+    	var isHavingOrder: String? = intent.getStringExtra("isHavingOrder")?:"false"
+		val dialog = Dialog(this)
+        dialog.setContentView(R.layout.alert_dialog_layout)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.setCancelable(false)
+
+        val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+        val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+        val subtitle = dialog.findViewById<TextView>(R.id.alertSubtitle)
+        subtitle.text = "Do you want to logout?"
+        positiveButton.text = "Yes"
+        positiveButton.setOnClickListener{
+            val intent =  Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+			startActivity(intent)	
+			finish()
+            dialog.dismiss()
+        }
+        negativeButton.setOnClickListener{
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
 }
 
     

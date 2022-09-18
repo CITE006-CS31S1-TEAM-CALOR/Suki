@@ -1,7 +1,6 @@
 package com.example.pabili
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +12,20 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import android.widget.EditText
 
+
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.AnimationDrawable
+import android.util.Log
+import android.view.MotionEvent
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat.getAction
+import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
+import androidx.core.widget.doOnTextChanged
+import kotlin.system.exitProcess
+import android.view.ViewGroup
 
 class HomeActivity : AppCompatActivity() {
 
@@ -112,11 +125,13 @@ class HomeActivity : AppCompatActivity() {
                             val selStoreName=storeList.get(index).toString()
                             val selStoreId=storeIDList.get(index).toString()
                             putExtra("storeId", "$selStoreId");
-                            putExtra("currentUser", "$currentUser");
                             putExtra("storeName", "$selStoreName");
+                            putExtra("currentUser", "$currentUser");
+                            putExtra("currentUserPw", "$currentUserPw");
                             
                         }
                         startActivity(intent)
+                        finish()
                     })
                     mAlertDialogBuilder.setNegativeButton("Cancel") { dialog, which ->
                         Toast.makeText(applicationContext,
@@ -126,6 +141,30 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+
+    override fun onBackPressed() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.alert_dialog_layout)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.setCancelable(false)
+
+        val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+        val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+        val subtitle = dialog.findViewById<TextView>(R.id.alertSubtitle)
+        subtitle.text = "Do you want to logout?"
+        positiveButton.text = "Yes"
+        positiveButton.setOnClickListener{
+            val intent =  Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)   
+            finish()    
+            dialog.dismiss()
+        }
+        negativeButton.setOnClickListener{
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
 }
 
 

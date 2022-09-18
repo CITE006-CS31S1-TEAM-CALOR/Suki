@@ -33,7 +33,6 @@ class LoginActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Pabili)
         setContentView(R.layout.activity_login)
 
-    //try {]
         val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout)
         val animationDrawable: AnimationDrawable = constraintLayout.getBackground() as AnimationDrawable
         animationDrawable.setEnterFadeDuration(1500);
@@ -126,17 +125,22 @@ class LoginActivity : AppCompatActivity() {
                                         putExtra("transactionId", transactionId)
                                         putExtra("isHavingOrder","true")
                                     }
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                                     startActivity(intent)
+                                    finish()
                                 }
                             }
                         }
+
                     for (document in documents) {
                         Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, HomeActivity::class.java).apply {
                             putExtra("username", username)
                             putExtra("password", password)
                         }
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                         startActivity(intent)
+                        finish()
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
 
@@ -182,13 +186,6 @@ class LoginActivity : AppCompatActivity() {
             overridePendingTransition(androidx.appcompat.R.anim.abc_grow_fade_in_from_bottom, androidx.appcompat.R.anim.abc_slide_out_top);
 
         }
-        
-        
-            
-    /*          
-    } catch (e: IOException) {
-        Toast.makeText(this@LoginActivity,("ttt"),Toast.LENGTH_SHORT).show()
-    }*/
     }
 
     override fun onBackPressed() {
@@ -204,6 +201,7 @@ class LoginActivity : AppCompatActivity() {
         subtitle.text = "Do you want to leave the app?"
         positiveButton.text = "Yes"
         positiveButton.setOnClickListener{
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
             exitProcess(0)
             dialog.dismiss()
         }

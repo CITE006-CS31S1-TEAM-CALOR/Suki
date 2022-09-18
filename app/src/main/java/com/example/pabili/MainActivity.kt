@@ -16,7 +16,6 @@ import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import TagPrice
-//import java.util.Date
 import java.text.SimpleDateFormat
 import java.lang.System
 import android.view.LayoutInflater
@@ -24,10 +23,24 @@ import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
 import java.util.Random
-//import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.AnimationDrawable
+import android.util.Log
+import android.view.MotionEvent
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat.getAction
+import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
+import androidx.core.widget.doOnTextChanged
+import kotlin.system.exitProcess
+
+
 
 class MainActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
@@ -67,15 +80,9 @@ class MainActivity : AppCompatActivity() {
 		val choice2 = findViewById<Button>(R.id.choice2)
 		val choice3 = findViewById<Button>(R.id.choice3)
 
-		//Toast.makeText(this@MainActivity, currentUser, Toast.LENGTH_SHORT).show()
-	    //Toast.makeText(this@MainActivity,storeId,Toast.LENGTH_SHORT).show()
-
 		findViewById<TextView>(R.id.txtStoreName).apply{
 			text = storeName
 		}
-        //tvStorename.text = storeName
-
-      //  val tvStorename = findViewById<TextView>(R.id.tvStorename)
         val tvTotal = findViewById<TextView>(R.id.tvTotal)
 
         //tvStorename.text = storeName
@@ -90,14 +97,14 @@ class MainActivity : AppCompatActivity() {
         	}
         }
 
-        var computedPrices = ArrayList<Int>()
+		var computedPrices = ArrayList<Int>()
 		if (strExistingComputedPrices!=""){
         	val lsExistingPrices = strExistingComputedPrices.split(", ")
         	for(data in lsExistingPrices){
         		computedPrices.add(data.trim().toInt())
         	}
         }
-        
+
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
@@ -119,12 +126,6 @@ class MainActivity : AppCompatActivity() {
                 tvTotal.setText(totalPrice.toString())
             }
         },storeId,choice1,choice2,choice3,orderList,computedPrices) 
-         /*       
-    	var btnAddStore = findViewById<ImageView>(R.id.btnAddStore)
-    	btnAddStore.setOnClickListener {
-            val intent = Intent(this, ScannerActivity::class.java)
-            startActivity(intent)	    	
-    	}*/
 
 
        var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
@@ -170,25 +171,7 @@ class MainActivity : AppCompatActivity() {
 				}
 			}
 		}
-    		/*
-	    	db.collection("orders")
-					.add(order)
-					.addOnSuccessListener { 
-						documentReference ->
-						Toast.makeText(this@MainActivity,"Order Received",Toast.LENGTH_SHORT).show()
-						     val intent = Intent(this, ClaimingActivity::class.java).apply {
-				      		 putExtra("transactionId", transactionId)
-					      }
-					      startActivity(intent)
-						}
-					.addOnFailureListener{
-						Toast.makeText(this@MainActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
-					}    	
-    			}
     		
-    		}
-    		
-    		*/
 
         }
         
@@ -201,16 +184,51 @@ class MainActivity : AppCompatActivity() {
 			        
 			  return transactionId
 		}
-		 fun fillStr(value:String):String {
-                	if (value != ""){
-                		return value
-                	}
-                	return "0"
-                
-                }
+		
+		fun fillStr(value:String):String {
+            if (value != ""){
+                return value
+            }
+            return "0"
+        }
 
-//    override fun passResultCallback(message: String) {
-   //     Toast.makeText(this@MainActivity,("rrasd"),Toast.LENGTH_SHORT).show()
-    //}
+    override fun onBackPressed() {
+    	var isHavingOrder: String? = intent.getStringExtra("isHavingOrder")?:"false"
+
+    	if (isHavingOrder=="true"){
+    		val dialog = Dialog(this)
+	        dialog.setContentView(R.layout.alert_dialog_layout)
+	        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+	        dialog.setCancelable(false)
+
+	        val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+	        val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+	        val subtitle = dialog.findViewById<TextView>(R.id.alertSubtitle)
+	        subtitle.text = "Do you want to logout?"
+	        positiveButton.text = "Yes"
+	        positiveButton.setOnClickListener{
+	            val intent =  Intent(this, LoginActivity::class.java)
+	            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+				startActivity(intent)	
+                finish()	
+	            dialog.dismiss()
+	        }
+	        negativeButton.setOnClickListener{
+	            dialog.dismiss()
+	        }
+	        dialog.show()
+    	}
+
+
+    	if (isHavingOrder!="true"){
+	    	val intent =  Intent(this, HomeActivity::class.java).apply {
+	    		putExtra("currentUser", intent.getStringExtra("currentUser"));
+	            putExtra("currentUserPw", intent.getStringExtra("currentUserPw"));
+	    	}
+	        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+			startActivity(intent)   
+			finish()
+    	}
+    }
 }
 	
