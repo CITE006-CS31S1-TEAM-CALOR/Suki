@@ -2,6 +2,7 @@ package com.example.pabili
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,8 @@ class RecyclerQueue (private val context: Context, private val mList: List<DataR
         val cDoc = DataRecyclerQueue.id
         holder.name.text = DataRecyclerQueue.name
         holder.date.text =  DataRecyclerQueue.date
+        if(DataRecyclerQueue.readyBool) holder.name.setBackgroundColor(Color.rgb(153, 255,153))
+
 
         holder.btn.setOnClickListener(){
             Log.d("TAG", "Name: " + cName + " | Date: " + cDate + " | ID: " + cDoc)
