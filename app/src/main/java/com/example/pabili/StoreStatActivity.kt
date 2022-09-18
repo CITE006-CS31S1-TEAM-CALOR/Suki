@@ -189,11 +189,11 @@ class StoreStatActivity : AppCompatActivity() {
 
         barGb = findViewById<BarChart>(R.id.idBar)
         barElb = ArrayList()
-        runbar(lineGb, lineVb, barGb, barElb)
+        runChart(lineGb, lineVb, barGb, barElb)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun runbar(lineG: LineChart, lineV: ArrayList<Entry>, barG: BarChart, barEl: ArrayList<BarEntry> ){
+    private fun runChart(lineG: LineChart, lineV: ArrayList<Entry>, barG: BarChart, barEl: ArrayList<BarEntry> ){
         //lineG = findViewById(R.id.idLineGraph)
         lineG.setTouchEnabled(true);
         lineG.setPinchZoom(false);
@@ -216,7 +216,7 @@ class StoreStatActivity : AppCompatActivity() {
 
         var lineLabel: ArrayList<String> = ArrayList()
         order.whereEqualTo("store", storeID)
-            .whereEqualTo("status", "claimed")
+            //.whereEqualTo("status", "claimed")
             .orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
@@ -225,7 +225,7 @@ class StoreStatActivity : AppCompatActivity() {
                 var dot = 0f
                 var i = 0f
                 for (doc in result) {
-                    if (i != 7f) {
+                    if (i != 6f) {
                         var idate = doc.getString("date").toString()
                         Log.d("FOR $i", "$idate | $temp | $dot")
 
@@ -250,27 +250,54 @@ class StoreStatActivity : AppCompatActivity() {
                 lineV.add(Entry(i, dot))
                 Log.d("LineLabel", "$lineLabel")
                 Log.d("lineV", "$lineV")
-                createLineGrid(lineG, lineV, lineLabel)
+                createLineGrid(lineG, lineV, lineLabel, "Total Interaction")
 
             }.addOnCompleteListener { Log.d("LINE", "It works") }
             .addOnFailureListener { Log.d("LINE", "It DID NOT works") }
 
         order.whereEqualTo("store", storeID)
-            .whereEqualTo("date", date)
+            //.whereEqualTo("date", date)
             //.whereEqualTo("date", "2022-09-16")
+            .orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
                 var dclaim = 0f
                 var dpend = 0f
                 var dcan = 0f
+                var i = 1
+                var temp = ""
                 for (doc in result) {
                     val status = doc.getString("status").toString()
+                    val idate = doc.getString("date").toString()
                     Log.d("STATUS", status)
-                    when (status) {
-                        "claimed" -> dclaim++
-                        "pending" -> dpend++
-                        "ready" -> dpend++
-                        "cancel" -> dcan++
+                    if(i != 7){
+                        if(temp.isEmpty()){
+                            when (status) {
+                                "claimed" -> dclaim++
+                                "pending" -> dpend++
+                                "ready" -> dpend++
+                                "cancel" -> dcan++
+                            }
+                            temp = idate
+                        }else if(temp == idate){
+                            when (status) {
+                                "claimed" -> dclaim++
+                                "pending" -> dpend++
+                                "ready" -> dpend++
+                                "cancel" -> dcan++
+                            }
+                        }else if (temp != idate){
+                            when (status) {
+                                "claimed" -> dclaim++
+                                "pending" -> dpend++
+                                "ready" -> dpend++
+                                "cancel" -> dcan++
+                            }
+                            i++
+                            temp = idate
+                        }
+                    }else{
+                        break
                     }
                 }
                 Log.d("FloatIN", "$dclaim | $dpend | $dcan")
@@ -282,7 +309,7 @@ class StoreStatActivity : AppCompatActivity() {
                 }
 
 
-                createBarChart(barG, barEl, "Sales on $date")
+                createBarChart(barG, barEl, "Sales in past $i days")
 
 
 
@@ -327,9 +354,56 @@ class StoreStatActivity : AppCompatActivity() {
             .addOnFailureListener { e -> Log.d("BAR", "It DID NOT works \n $e") }
     }
 
+    private fun updateLineChart(lineV: ArrayList<Entry>, lineG: LineChart, status:String){
+        lineV.clear()
+        lineG.invalidate()
+        lineG.clear()
+        var lineLabel: ArrayList<String> = ArrayList()
+        order.whereEqualTo("store", storeID)
+            //.whereEqualTo("status", status)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+
+                var temp = ""
+                var dot = 0f
+                var i = 0f
+                for (doc in result) {
+                    if (i != 6f) {
+                        var idate = doc.getString("date").toString()
+                        Log.d("FOR $i", "$idate | $temp | $dot")
+
+                        if (temp.isEmpty()) {
+                            temp = idate
+                            lineLabel.add(temp)
+                            if(doc.getString("status") == status){dot++}
+                        } else if (temp == idate) {
+                            if(doc.getString("status") == status){dot++}
+                        } else if (temp != idate) {
+                            lineV.add(Entry(i, dot))
+                            lineLabel.add(idate)
+                            temp = idate
+                            if(doc.getString("status") == status){dot = 1f}else{dot = 0f}
+                            i++
+                        }
+                        Log.d("FOR AFTER $i", "$idate | $temp | $dot")
+                    } else {
+                        break
+                    }
+                }
+                lineV.add(Entry(i, dot))
+                Log.d("LineLabel", "$lineLabel")
+                Log.d("lineV", "$lineV")
+                createLineGrid(lineG, lineV, lineLabel, status)
+
+            }.addOnCompleteListener { Log.d("LINE", "It works") }
+            .addOnFailureListener { Log.d("LINE", "It DID NOT works") }
+    }
+
     private fun createBarChart(chart: BarChart, array: ArrayList<BarEntry>, title: String){
         //val barDataSet: BarDataSet = BarDataSet(array, title)
         val barDataSet: BarDataSet
+        var xlabel:List<String> = listOf<String>("", "Claimed", "Pending", "Cancel")
 
 
         if(chart.data != null &&
@@ -349,17 +423,28 @@ class StoreStatActivity : AppCompatActivity() {
             val barData: BarData = BarData(barDataSet)
 
             val xaxis: XAxis = chart.xAxis
-            val xlabel = listOf<String>("", "Claimed", "Pending", "Canceled")
             xaxis.valueFormatter = IndexAxisValueFormatter(xlabel)
 
             chart.data = barData
         }
+        chart.setOnChartValueSelectedListener(object: OnChartValueSelectedListener{
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                if (e != null) {
+                    updateLineChart(lineVb, lineGb, xlabel[e.x.toInt()].lowercase())
+                }
+
+            }
+
+            override fun onNothingSelected() {
+
+            }
+        })
         chart.invalidate()
     }
 
 
 
-    private fun createLineGrid(chart: LineChart, array: ArrayList<Entry>, label: ArrayList<String>){
+    private fun createLineGrid(chart: LineChart, array: ArrayList<Entry>, label: ArrayList<String>, title: String){
         //https://medium.com/@leelaprasad4648/creating-linechart-using-mpandroidchart-33632324886d
         var set1: LineDataSet
             if(chart.data != null &&
@@ -369,7 +454,7 @@ class StoreStatActivity : AppCompatActivity() {
                 chart.data.notifyDataChanged()
                 chart.notifyDataSetChanged()
             }else{
-                set1 = LineDataSet(array, "Sales")
+                set1 = LineDataSet(array, title)
                 set1.setDrawIcons(false)
                 set1.enableDashedLine(10f,5f, 0f)
                 set1.enableDashedHighlightLine(10f,5f,0f)
@@ -406,7 +491,7 @@ class StoreStatActivity : AppCompatActivity() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if(label.isNotEmpty()) {
-                    val datelabel = label.get(e!!.x.toInt())
+                    val datelabel = label[e!!.x.toInt()]
                     updateBarChart(barGb, barElb, datelabel)
                 }
             }

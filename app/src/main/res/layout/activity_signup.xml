@@ -112,6 +112,7 @@
 
             <EditText
                 android:id="@+id/etUsername"
+                android:singleLine="true"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="30dp"
@@ -142,6 +143,7 @@
 
             <EditText
                 android:id="@+id/etPassword"
+                android:inputType="textPassword"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="16dp"
@@ -170,6 +172,7 @@
 
             <EditText
                 android:id="@+id/etVerifyPassword"
+                android:inputType="textPassword"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="4dp"
