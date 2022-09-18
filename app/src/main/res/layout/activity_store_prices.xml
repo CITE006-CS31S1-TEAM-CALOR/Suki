@@ -6,37 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".StorePricesActivity">
 
-    <!--
-        <LinearLayout 
-        android:id="@+id/lnStoreDetail"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-            <TextView
-            android:layout_height="wrap_content"
-            android:text="Store:"
-            android:layout_width="wrap_content"
-            android:textSize="15dp"/>
-
-            <TextView
-            android:id="@+id/tvStorename"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:hint="Not yet selected"/>
-
-            <ImageView
-            android:id="@+id/btnAddStore"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_edit"/>
-        </LinearLayout>
-        -->
-
-
     <LinearLayout
         android:id="@+id/tableHeader"
         android:layout_width="0dp"
