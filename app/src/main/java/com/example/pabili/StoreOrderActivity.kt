@@ -91,12 +91,14 @@ class StoreOrderActivity : AppCompatActivity() {
                     orders.update("status","canceled")
                         .addOnSuccessListener {
                             Toast.makeText(this@StoreOrderActivity,("Order was canceled"), Toast.LENGTH_SHORT).show()
-                            orders.get().addOnSuccessListener { result ->
+                            //orders.get().addOnSuccessListener { result ->
                                 val intent = Intent(this, StoreQueueActivity::class.java).apply {
-                                    putExtra("storeId", result.getString("store"))
+                                    putExtra("username", LOGIN_NAME)
+                                    putExtra("storeId",LOGIN_ID)
                                 }
                                 startActivity(intent)
-                            }
+                            finish()
+                            //}
                         }.addOnFailureListener{
                             Toast.makeText(this@StoreOrderActivity, ("There was an issue in the server. Please try again"), Toast.LENGTH_LONG).show()
                         }

@@ -1,6 +1,7 @@
 package com.example.pabili
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,12 +14,14 @@ import android.graphics.drawable.AnimationDrawable
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat.getAction
 import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
 import androidx.core.widget.doOnTextChanged
+import kotlin.system.exitProcess
 
 var LOGIN_NAME = ""
 var LOGIN_ID = ""
@@ -110,17 +113,32 @@ class LoginActivity : AppCompatActivity() {
                 if (documents.isEmpty()) {
                     Toast.makeText(this@LoginActivity,("Access Denied"),Toast.LENGTH_SHORT).show()
                 } else {
-                
-                    for (document in documents) {
-                    Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
-                     val intent = Intent(this, HomeActivity::class.java).apply {
-                             putExtra("username", username)
-                             putExtra("password", password)
-                     }
-                     startActivity(intent)
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+                    db.collection("orders").whereEqualTo("username", username)
+                        .get()
+                        .addOnSuccessListener { result ->
+                            for(data in result){
+                                val status = data.data["status"].toString()
+                                val transactionId = data.data["transactionID"].toString()
+                                if(status.lowercase() == "pending" || status.lowercase() == "ready"){
+                                    Toast.makeText(this@LoginActivity,("You have a pending order."),Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this, ClaimingActivity::class.java).apply {
+                                        putExtra("transactionId", transactionId)
+                                    }
+                                    startActivity(intent)
+                                }
+                            }
+                        }
+                    for (document in documents) {
+                        Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, HomeActivity::class.java).apply {
+                            putExtra("username", username)
+                            putExtra("password", password)
+                        }
+                        startActivity(intent)
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
+
                 
                 }
                 
@@ -170,5 +188,29 @@ class LoginActivity : AppCompatActivity() {
     } catch (e: IOException) {
         Toast.makeText(this@LoginActivity,("ttt"),Toast.LENGTH_SHORT).show()
     }*/
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.alert_dialog_layout)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.setCancelable(false)
+
+        val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+        val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+        val subtitle = dialog.findViewById<TextView>(R.id.alertSubtitle)
+        subtitle.text = "Do you want to leave the app?"
+        positiveButton.text = "Yes"
+        positiveButton.setOnClickListener{
+            exitProcess(0)
+            dialog.dismiss()
+        }
+        negativeButton.setOnClickListener{
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
     }
 }

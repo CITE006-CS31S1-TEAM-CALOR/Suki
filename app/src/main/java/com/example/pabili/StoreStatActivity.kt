@@ -54,90 +54,9 @@ class StoreStatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_stat)
 
-
-        storeID = intent.getStringExtra("storeId").toString()
-        storeName = intent.getStringExtra("username").toString()
-
-        val txtName:TextView = findViewById(R.id.txtvName)
-        val txtId:TextView = findViewById(R.id.txtvStoreid)
-        val txtInc:TextView = findViewById(R.id.txtvIncome)
-
-        val btnqueue = findViewById<ImageButton>(R.id.btnSeeOrders)
-        val btnprice = findViewById<ImageButton>(R.id.btnSetPrice)
-        val btnlogout = findViewById<ImageButton>(R.id.btnStoreLogout)
-
-        btnqueue.setOnClickListener {
-            val intent = Intent(this, StoreQueueActivity::class.java).apply {
-                putExtra("storeId", storeID)
-                putExtra("username", storeName)
-            }
-            startActivity(intent)
-            overridePendingTransition(R.anim.push_right_in, android.R.anim.slide_out_right);
-        }
-
-        btnprice.setOnClickListener {
-            val intent = Intent(this, StorePricesActivity::class.java).apply {
-                putExtra("storeId", storeID)
-                putExtra("username", storeName)
-            }
-            startActivity(intent)
-            overridePendingTransition(R.anim.push_right_in, android.R.anim.slide_out_right);
-        }
-
-        btnlogout.setOnClickListener {
-            val dialog = Dialog(this)
-            dialog.setContentView(R.layout.alert_dialog_layout)
-            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            dialog.setCancelable(false)
-
-            val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
-            val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
-            positiveButton.setOnClickListener{
-                val intent = Intent(this, LoginActivity::class.java);
-                startActivity(intent)
-                dialog.dismiss()
-            }
-            negativeButton.setOnClickListener{
-                dialog.dismiss()
-            }
-
-            dialog.show()
-            /*
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage("Confirm logging out?")
-                .setCancelable(false)
-                .setPositiveButton("Yes"){dialog, id ->
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                }.setNegativeButton("No"){dialog, id->
-                    dialog.dismiss()
-                }
-            builder.create().show()
-
-             */
-        }
-
-        txtName.text = "Name: $storeName"
-        txtId.text = "ID: $storeID"
-        order.whereEqualTo("store", storeID)
-            .whereEqualTo("status", "claimed")
-            .get()
-            .addOnSuccessListener { result->
-                var sum = 0
-                for(doc in result){
-                    sum += doc.getString("totalPrice")!!.toInt()
-                }
-                txtInc.text = "Total Income: P$sum"
-            }
+        initialize()
 
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        lineGb = findViewById(R.id.idLineGraph)
-        lineVb = ArrayList()
-
-        barGb = findViewById<BarChart>(R.id.idBar)
-        barElb = ArrayList()
-        runInitial(lineGb, lineVb, barGb, barElb)
 
 
         /*
@@ -186,7 +105,95 @@ class StoreStatActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun runInitial(lineG: LineChart, lineV: ArrayList<Entry>, barG: BarChart, barEl: ArrayList<BarEntry> ){
+    private fun initialize(){
+        storeID = intent.getStringExtra("storeId").toString()
+        storeName = intent.getStringExtra("username").toString()
+
+        val txtName:TextView = findViewById(R.id.txtvName)
+        val txtId:TextView = findViewById(R.id.txtvStoreid)
+        val txtInc:TextView = findViewById(R.id.txtvIncome)
+
+        val btnqueue = findViewById<ImageButton>(R.id.btnSeeOrders)
+        val btnprice = findViewById<ImageButton>(R.id.btnSetPrice)
+        val btnlogout = findViewById<ImageButton>(R.id.btnStoreLogout)
+
+        btnqueue.setOnClickListener {
+            val intent = Intent(this, StoreQueueActivity::class.java).apply {
+                putExtra("storeId", storeID)
+                putExtra("username", storeName)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.push_right_in, android.R.anim.slide_out_right);
+        }
+
+        btnprice.setOnClickListener {
+            val intent = Intent(this, StorePricesActivity::class.java).apply {
+                putExtra("storeId", storeID)
+                putExtra("username", storeName)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.push_right_in, android.R.anim.slide_out_right);
+        }
+
+        btnlogout.setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.alert_dialog_layout)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+
+            val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+            val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+            positiveButton.setOnClickListener{
+                val intent = Intent(this, LoginActivity::class.java);
+                startActivity(intent)
+                finish()
+                dialog.dismiss()
+            }
+            negativeButton.setOnClickListener{
+                dialog.dismiss()
+            }
+
+            dialog.show()
+            /*
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Confirm logging out?")
+                .setCancelable(false)
+                .setPositiveButton("Yes"){dialog, id ->
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }.setNegativeButton("No"){dialog, id->
+                    dialog.dismiss()
+                }
+            builder.create().show()
+
+             */
+        }
+
+        txtName.text = "Name: $storeName"
+        txtId.text = "ID: $storeID"
+        order.whereEqualTo("store", storeID)
+            .whereEqualTo("status", "claimed")
+            .get()
+            .addOnSuccessListener { result->
+                var sum = 0
+                for(doc in result){
+                    sum += doc.getString("totalPrice")!!.toInt()
+                }
+                txtInc.text = "Total Income: P$sum"
+            }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        lineGb = findViewById(R.id.idLineGraph)
+        lineVb = ArrayList()
+
+        barGb = findViewById<BarChart>(R.id.idBar)
+        barElb = ArrayList()
+        runbar(lineGb, lineVb, barGb, barElb)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun runbar(lineG: LineChart, lineV: ArrayList<Entry>, barG: BarChart, barEl: ArrayList<BarEntry> ){
         //lineG = findViewById(R.id.idLineGraph)
         lineG.setTouchEnabled(true);
         lineG.setPinchZoom(false);
@@ -408,6 +415,12 @@ class StoreStatActivity : AppCompatActivity() {
             }
         })
         chart.invalidate()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onRestart() {
+        super.onRestart()
+        initialize()
     }
 
 }

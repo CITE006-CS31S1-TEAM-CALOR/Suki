@@ -122,6 +122,7 @@ class StorePricesActivity : AppCompatActivity() {
 			positiveButton.setOnClickListener{
 				val intent = Intent(this, LoginActivity::class.java);
 				startActivity(intent)
+				finish()
 				dialog.dismiss()
 			}
 			negativeButton.setOnClickListener{

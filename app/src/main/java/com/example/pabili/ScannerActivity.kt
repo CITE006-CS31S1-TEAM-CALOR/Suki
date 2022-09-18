@@ -272,6 +272,7 @@ class ScannerActivity : AppCompatActivity() {
                                         putExtra("storeId",LOGIN_ID)
                                     }
                                     startActivity(intent)
+                                    finish()
                                 }.addOnFailureListener{ e ->
                                     Toast.makeText(baseContext,"There was an error on updating. Check your Network", Toast.LENGTH_SHORT).show()
                                     Log.d("ERROR", e.toString())

@@ -20,8 +20,15 @@ class StoreQueueActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_queue)
+        initialize()
 
+    }
+    override fun onRestart() {
+        super.onRestart()
+        initialize()
+    }
 
+    private fun initialize(){
         val storeName = intent.getStringExtra("username")
         val storeID = intent.getStringExtra("storeId")
         val storeNameDisplay = findViewById<TextView>(R.id.StoreNameText)
@@ -64,6 +71,7 @@ class StoreQueueActivity : AppCompatActivity() {
             positiveButton.setOnClickListener{
                 val intent = Intent(this, LoginActivity::class.java);
                 startActivity(intent)
+                finish()
                 dialog.dismiss()
             }
             negativeButton.setOnClickListener{
@@ -104,12 +112,13 @@ class StoreQueueActivity : AppCompatActivity() {
                     val stringUser = document.getString("username").toString()
                     val stringDate = document.getString("date").toString() + " " + document.getString("time").toString()
                     val stringStore = document.id
+                    val boolStatus = booleanStatus(document.getString("status").toString())
 
                     Log.d(
                         "TAG",
                         "Name: $stringUser | Date: $stringDate | ID: $stringStore"
                     )
-                    data.add(DataRecyclerQueue(stringUser, stringDate, stringStore))
+                    data.add(DataRecyclerQueue(stringUser, stringDate, stringStore, boolStatus))
                 }
                 val adapter = RecyclerQueue(this,data)
                 recyclerview.adapter = adapter
@@ -145,6 +154,12 @@ class StoreQueueActivity : AppCompatActivity() {
         }
 
  */
+    }
+    private fun booleanStatus(string: String): Boolean{
+        return when(string){
+            "ready" -> true
+            else -> false
+        }
     }
 }
 

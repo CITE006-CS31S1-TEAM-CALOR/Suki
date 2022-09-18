@@ -1,5 +1,6 @@
 package com.example.pabili
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -12,10 +13,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.properties.Delegates
+
+//private var readyBool by Delegates.notNull<Boolean>()
 
 class RecyclerOrder (private val context: Context, private val cDoc: String, private val mList: ArrayList<DataOrderList>, private val totaltxt: TextView?) : RecyclerView.Adapter<RecyclerOrder.ViewHolder>(){
     class ViewHolder(ItemView : View) : RecyclerView.ViewHolder(ItemView){
@@ -41,112 +47,151 @@ class RecyclerOrder (private val context: Context, private val cDoc: String, pri
         val oQty = DataOrderList.qtyOrder
         val oPrice = DataOrderList.priOrder
         val orders = db.collection("orders").document(cDoc)
+        //var readyBool:Boolean
+
+
+
+
 
         holder.num.text = ((position+1).toString()) + ": "
         holder.name.text = oName
         holder.qty.text = oQty
         holder.pri.text = oPrice
         holder.del.setOnClickListener {
-            val dialog = Dialog(context)
-            dialog.setContentView(R.layout.alert_dialog_layout)
-            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            dialog.setCancelable(false)
+            orders.get().addOnSuccessListener { result->
+                val readyBool = booleanStatus(result.getString("status").toString())
+                if(readyBool) {
+                    val dialog = Dialog(context)
+                    dialog.setContentView(R.layout.alert_dialog_layout)
+                    dialog.window?.setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    dialog.setCancelable(false)
 
-            val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
-            val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
-            val subtitle = dialog.findViewById<TextView>(R.id.alertSubtitle)
-            subtitle.text = "Do you want to delete $oName?"
-            positiveButton.setOnClickListener{
-                Log.d("TAG","$position")
-                orders.get()
-                    .addOnSuccessListener { result ->
-                        //update computedPrices
-                        var regex = "\\d+".toRegex()
-                        var match: Sequence<MatchResult> = regex.findAll(result.getString("computedPrices").toString())
-                        var array = LinkedList<String>()
-                        for(i in match){
-                            array.add(i.value)
-                        }
-                        array.removeAt(position)
-                        orders.update("computedPrices",array.toString().replace("[","").replace("]",""))
+                    val positiveButton = dialog.findViewById<Button>(R.id.btn_okay)
+                    val negativeButton = dialog.findViewById<Button>(R.id.btn_cancel)
+                    val subtitle = dialog.findViewById<TextView>(R.id.alertSubtitle)
+                    subtitle.text = "Do you want to delete $oName?"
+                    positiveButton.setOnClickListener {
+                        Log.d("TAG", "$position")
+                        orders.get()
+                            .addOnSuccessListener { result ->
+                                //update computedPrices
+                                var regex = "\\d+".toRegex()
+                                var match: Sequence<MatchResult> =
+                                    regex.findAll(result.getString("computedPrices").toString())
+                                var array = LinkedList<String>()
+                                for (i in match) {
+                                    array.add(i.value)
+                                }
+                                array.removeAt(position)
+                                orders.update(
+                                    "computedPrices",
+                                    array.toString().replace("[", "").replace("]", "")
+                                )
 
-                        //update orderList
-                        regex = "\\d+ \\w+".toRegex()
-                        var mmatch: Sequence<MatchResult> = regex.findAll(result.getString("orderList").toString())
-                        var aaray = LinkedList<String>()
-                        for(i in mmatch){
-                            aaray.add(i.value)
-                        }
-                        aaray.removeAt(position)
-                        orders.update("orderList",aaray.toString().replace("[","").replace("]","")+", ")
+                                //update orderList
+                                regex = "\\d+ \\D+[^, ]\\w+".toRegex()
+                                var mmatch: Sequence<MatchResult> =
+                                    regex.findAll(result.getString("orderList").toString())
+                                var aaray = LinkedList<String>()
+                                for (i in mmatch) {
+                                    aaray.add(i.value)
+                                }
+                                aaray.removeAt(position)
+                                orders.update(
+                                    "orderList",
+                                    aaray.toString().replace("[", "").replace("]", "") + ", "
+                                )
 
-                        //update totalPrice
-                        var sum = 0
-                        for(i in array){
-                            sum += i.toInt()
-                        }
-                        orders.update("totalPrice", sum.toString())
+                                //update totalPrice
+                                var sum = 0
+                                for (i in array) {
+                                    sum += i.toInt()
+                                }
+                                orders.update("totalPrice", sum.toString())
 
-                        totaltxt!!.text = "total: P$sum"
-                        mList.removeAt(holder.bindingAdapterPosition)
-                        notifyItemRemoved(holder.bindingAdapterPosition)
-                        notifyDataSetChanged()
+                                totaltxt!!.text = "total: P$sum"
+                                Toast.makeText(context, "${position+1}. $oName has been deleted", Toast.LENGTH_SHORT).show()
+                                mList.removeAt(holder.bindingAdapterPosition)
+                                notifyItemRemoved(holder.bindingAdapterPosition)
+                                notifyDataSetChanged()
+                                if(mList.isEmpty()){
+                                    orders.update("status", "cancel")
+                                    Toast.makeText(context, "Whole Order's canceled. Back to Queue", Toast.LENGTH_SHORT)
+
+                                    val intent = Intent(context, StoreQueueActivity::class.java).apply {
+                                        putExtra("username", LOGIN_NAME)
+                                        putExtra("storeId",LOGIN_ID)
+                                    }
+                                    context.startActivity(intent)
+                                    (context as Activity).finish()
+                                }
+                            }
+                        dialog.dismiss()
                     }
-                dialog.dismiss()
-            }
-            negativeButton.setOnClickListener{
-                dialog.dismiss()
-            }
+                    negativeButton.setOnClickListener {
+                        dialog.dismiss()
+                    }
 
-            dialog.show()
-            /*
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("Are you sure you want to delete $oName?")
-                .setCancelable(false)
-                .setPositiveButton("Yes"){dialog, id ->
-                    Log.d("TAG","$position")
-                    orders.get()
-                        .addOnSuccessListener { result ->
-                            //update computedPrices
-                            var regex = "\\d+".toRegex()
-                            var match: Sequence<MatchResult> = regex.findAll(result.getString("computedPrices").toString())
-                            var array = LinkedList<String>()
-                            for(i in match){
-                                array.add(i.value)
+                    dialog.show()
+                    /*
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("Are you sure you want to delete $oName?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes"){dialog, id ->
+                        Log.d("TAG","$position")
+                        orders.get()
+                            .addOnSuccessListener { result ->
+                                //update computedPrices
+                                var regex = "\\d+".toRegex()
+                                var match: Sequence<MatchResult> = regex.findAll(result.getString("computedPrices").toString())
+                                var array = LinkedList<String>()
+                                for(i in match){
+                                    array.add(i.value)
+                                }
+                                array.removeAt(position)
+                                orders.update("computedPrices",array.toString().replace("[","").replace("]",""))
+
+                                //update orderList
+                                regex = "\\d+ \\w+".toRegex()
+                                var mmatch: Sequence<MatchResult> = regex.findAll(result.getString("orderList").toString())
+                                var aaray = LinkedList<String>()
+                                for(i in mmatch){
+                                    aaray.add(i.value)
+                                }
+                                aaray.removeAt(position)
+                                orders.update("orderList",aaray.toString().replace("[","").replace("]","")+", ")
+
+                                //update totalPrice
+                                var sum = 0
+                                for(i in array){
+                                    sum += i.toInt()
+                                }
+                                orders.update("totalPrice", sum.toString())
+
+                                totaltxt!!.text = "total: P$sum"
+                                mList.removeAt(holder.bindingAdapterPosition)
+                                notifyItemRemoved(holder.bindingAdapterPosition)
+                                notifyDataSetChanged()
                             }
-                            array.removeAt(position)
-                            orders.update("computedPrices",array.toString().replace("[","").replace("]",""))
 
-                            //update orderList
-                            regex = "\\d+ \\w+".toRegex()
-                            var mmatch: Sequence<MatchResult> = regex.findAll(result.getString("orderList").toString())
-                            var aaray = LinkedList<String>()
-                            for(i in mmatch){
-                                aaray.add(i.value)
-                            }
-                            aaray.removeAt(position)
-                            orders.update("orderList",aaray.toString().replace("[","").replace("]","")+", ")
+                    }
+                    .setNegativeButton("No"){dialog, id ->
+                        dialog.dismiss()
+                    }
+                builder.create().show()
 
-                            //update totalPrice
-                            var sum = 0
-                            for(i in array){
-                                sum += i.toInt()
-                            }
-                            orders.update("totalPrice", sum.toString())
-
-                            totaltxt!!.text = "total: P$sum"
-                            mList.removeAt(holder.bindingAdapterPosition)
-                            notifyItemRemoved(holder.bindingAdapterPosition)
-                            notifyDataSetChanged()
-                        }
-
+                 */
+                }else{
+                    Toast.makeText(context, "The order is ready. Can't edit order.", Toast.LENGTH_SHORT).show()
                 }
-                .setNegativeButton("No"){dialog, id ->
-                    dialog.dismiss()
-                }
-            builder.create().show()
+            }.addOnFailureListener { r ->
+                Toast.makeText(context, "Couldn't retrieve data from the database. Check your internet", Toast.LENGTH_SHORT).show()
+                Log.d("ERROR", "$r")
+            }
 
-             */
         }
 
 
@@ -155,5 +200,12 @@ class RecyclerOrder (private val context: Context, private val cDoc: String, pri
 
     override fun getItemCount(): Int {
         return mList.size
+    }
+
+    private fun booleanStatus(string: String): Boolean{
+        return when(string){
+            "pending" -> true
+            else -> false
+        }
     }
 }
