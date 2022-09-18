@@ -72,17 +72,17 @@ class MainActivity : AppCompatActivity() {
     				if (totalPrice.equals("0")){
     					order = hashMapOf()
     				} else {
-               		 order = hashMapOf (
-						       "username" to fillStr(currentUser),
-						       "store" to fillStr(storeId),
-						       "transactionID" to fillStr(transactionId),
-						       "orderList" to fillStr(strOrderList),
-						       "computedPrices" to fillStr(strComputedPrices),
-						       "status" to "pending",
-						       "totalPrice" to fillStr(totalPrice),
+               			order = hashMapOf (
+							"username" to fillStr(currentUser),
+							"store" to fillStr(storeId),
+							"transactionID" to fillStr(transactionId),
+							"orderList" to fillStr(strOrderList),
+							"computedPrices" to fillStr(strComputedPrices),
+							"status" to "pending",
+							"totalPrice" to fillStr(totalPrice)
 		                )
                 }
-                tvTotal.setText(totalPrice)
+                tvTotal.setText(totalPrice.toString())
             }
         },storeId,choice1,choice2,choice3) 
          /*       
@@ -96,49 +96,44 @@ class MainActivity : AppCompatActivity() {
        var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
     	btnSubmitOrder.setOnClickListener {
     		if (order.isEmpty()) {
-						Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
+				Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
     		} else {
-    		               
-    	//	 val sdf = SimpleDateFormat("yyyy/mm/dd hh:mm:ss")
-		//	 val currentDate = sdf.format(Date()) //TODO change to TimeStamp format
-		//	val currentDate = Date(System.currentTimeMillis()).toString()
-			val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-			val time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-			println(date+" "+time)
-			order.put("date",date)
-			order.put("time",time)
-    		
+				val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+				val time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+				println(date + " " + time)
+				order.put("date",date)
+				order.put("time",time)
 
-    		val docref = db.collection("orders")
-    		docref.whereEqualTo("transactionID",fillStr(transactionId)).get()
-    		.addOnSuccessListener {
-    			result ->
-				if (result.isEmpty()){
-					docref.add(order)
-					.addOnSuccessListener { 
-						documentReference ->
-						Toast.makeText(this@MainActivity,("Order Received"),Toast.LENGTH_SHORT).show()
-						     val intent = Intent(this, ClaimingActivity::class.java).apply {
-				      		 putExtra("transactionId", transactionId)
-					      }
-					      startActivity(intent)
-						}
-				} else {
-					for (data in result){
-						docref.document(data.id).delete().addOnSuccessListener {
-							docref.add(order).addOnSuccessListener {
-								Toast.makeText(this@MainActivity,("Order Received"),Toast.LENGTH_SHORT).show()
+				val docref = db.collection("orders")
+				docref.whereEqualTo("transactionID",fillStr(transactionId)).get()
+				.addOnSuccessListener {
+					result ->
+					if (result.isEmpty()){
+						docref.add(order)
+						.addOnSuccessListener { 
+							documentReference ->
+							Toast.makeText(this@MainActivity,("Order Received"),Toast.LENGTH_SHORT).show()
 								val intent = Intent(this, ClaimingActivity::class.java).apply {
-									putExtra("transactionId", transactionId)
+								putExtra("transactionId", transactionId)
+
+							}
+							startActivity(intent)
+
+							}
+					} else {
+						for (data in result){
+							docref.document(data.id).delete().addOnSuccessListener {
+								docref.add(order).addOnSuccessListener {
+									Toast.makeText(this@MainActivity,("Order Received"),Toast.LENGTH_SHORT).show()
+									val intent = Intent(this, ClaimingActivity::class.java).apply {
+										putExtra("transactionId", transactionId)
+									}
+									startActivity(intent)
 								}
-								startActivity(intent)
 							}
 						}
 					}
 				}
-    			
-				
-			}
 			}
 		}
     		/*

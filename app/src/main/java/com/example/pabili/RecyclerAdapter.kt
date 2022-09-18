@@ -88,10 +88,10 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
             if (holder.getBindingAdapterPosition() != orderList.size-1) {
           		computedPrices.removeAt(holder.getBindingAdapterPosition())
 	    		val totalPrice = computedPrices.sum()	
-	            callbackInterface.passResultCallback(totalPrice.toString(),orderList.joinToString(),computedPrices.joinToString())  
 	       		orderList.removeAt(holder.getBindingAdapterPosition())
 	       		notifyItemRemoved(holder.getBindingAdapterPosition())
 	       		Toast.makeText(holder.etOrder.getContext(), orderList.joinToString(), Toast.LENGTH_SHORT).show()
+                callbackInterface.passResultCallback(totalPrice.toString(),orderList.joinToString(),computedPrices.joinToString())  
             } 
             
         }
