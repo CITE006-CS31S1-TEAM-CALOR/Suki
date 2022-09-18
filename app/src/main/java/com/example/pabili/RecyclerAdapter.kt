@@ -24,14 +24,13 @@ import android.text.TextWatcher
 
 
 class RecyclerAdapter (private val callbackInterface: CallbackInterface, private val storeId:String, 
-private val choice1:Button, private val choice2:Button, private val choice3:Button): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
-
-    var computedPrices = ArrayList<Int>()
-    var orderList = ArrayList<String>()	
+private val choice1:Button, private val choice2:Button, private val choice3:Button, private var orderList:ArrayList<String>, private var computedPrices: ArrayList<Int>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     var isNotifyChange: Boolean = false
     val TagPrices = ArrayList<TagPrice>()
     val db = FirebaseFirestore.getInstance()
+    var isInit = false
     init {
+
             choice1.setVisibility(View.GONE)
             choice2.setVisibility(View.GONE)
             choice3.setVisibility(View.GONE)
@@ -44,8 +43,10 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
 				 TagPrices.add(product)
 				}
 			}
-				  
-            orderList.add("0")
+			
+            if (orderList.isEmpty()){
+                orderList.add("")
+            }
             notifyItemInserted(0);
             
     }
@@ -67,12 +68,21 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    		
-         if (holder.getBindingAdapterPosition() == orderList.size - 1){
+        if (isInit==false){
+            if (holder.getBindingAdapterPosition()<orderList.size-1){
+                holder.etOrder.setText(orderList.get(holder.getBindingAdapterPosition()))
+                holder.tvComputedPrice.text=computedPrices.get(holder.getBindingAdapterPosition()).toString()
+                callbackInterface.passResultCallback(computedPrices.sum().toString(),orderList.joinToString(),computedPrices.joinToString())  
+            } else {
+                isInit = true
+            }
+        }
+
+        if (holder.getBindingAdapterPosition() == orderList.size - 1){
          	holder.etOrder.setText("")
          	holder.tvComputedPrice.text = ""
             holder.etOrder.requestFocus()
-          }
+        }
 	//holder.etOrder.setText(holder.getBindingAdapterPosition().toString())
         holder.ivRemove.setOnClickListener {
         
@@ -113,9 +123,16 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
                         toSearch = strOrder.split(" ",limit=2).get(1)
                         val matches = getMatchingStrings(toSearch)
 
-                        choice1.setVisibility(View.VISIBLE)
-                        choice2.setVisibility(View.VISIBLE)
-                        choice3.setVisibility(View.VISIBLE)
+                        if (prodqty.toIntOrNull() != null){
+                            choice1.setVisibility(View.VISIBLE)
+                            choice2.setVisibility(View.VISIBLE)
+                            choice3.setVisibility(View.VISIBLE)
+                        } else {
+                            choice1.setVisibility(View.GONE)
+                            choice2.setVisibility(View.GONE)
+                            choice3.setVisibility(View.GONE)
+                        }
+
                         if (matches.size >= 3){
                             choice1.text = matches.get(0)
                             choice2.text = matches.get(1)
@@ -242,21 +259,22 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
         val list = TagPrices
         
         val matches = ArrayList<String>();
-        val front = Pattern.compile("^"+regex+".+");
 
         for (s in list) {
+            val front = Pattern.compile("^"+regex.lowercase()+".*");
             if (front.matcher(s.name!!.lowercase()).matches() && s.available==true) {
-            matches.add(s.name!!)
+                matches.add(s.name!!)
+            }
+
+            val middle = Pattern.compile(".*" + regex.lowercase() + ".*");
+            if (middle.matcher(s.name!!.lowercase()).matches() && s.available==true) {
+                if ((matches.firstOrNull { it!!.lowercase() == s.name!!.lowercase()})==null) {
+                    matches.add(s.name!!)
+                }
             }
         }
         
-        val middle = Pattern.compile("^.+" +regex + ".+$");
-
-        for (s in list) {
-            if (middle.matcher(s.name!!.lowercase()).matches() && s.available==true) {
-            matches.add(s.name!!);
-            }
-        }
+        
 
         return matches
     }

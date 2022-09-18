@@ -49,10 +49,6 @@ class RecyclerOrder (private val context: Context, private val cDoc: String, pri
         val orders = db.collection("orders").document(cDoc)
         //var readyBool:Boolean
 
-
-
-
-
         holder.num.text = ((position+1).toString()) + ": "
         holder.name.text = oName
         holder.qty.text = oQty

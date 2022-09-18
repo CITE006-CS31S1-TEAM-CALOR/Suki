@@ -39,17 +39,36 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
     	val db = FirebaseFirestore.getInstance()
-    	val currentUser = intent.getStringExtra("currentUser")!!
-	    val storeId = intent.getStringExtra("storeId")!!
-		val storeName = intent.getStringExtra("storeName")!!
 
+		var currentUser: String = ""
+		var storeId: String = ""
+		var storeName: String = ""
+
+    	var isHavingOrder: String? = intent.getStringExtra("isHavingOrder")?:"false"
+
+    	currentUser = intent.getStringExtra("currentUser")!!
+	    storeId = intent.getStringExtra("storeId")!!
+		storeName = intent.getStringExtra("storeName")!!
+
+        var transactionId:String = ""
+        if (isHavingOrder=="false"){
+        	transactionId = generateTransactionId()
+        } else {
+        	transactionId = intent.getStringExtra("transactionId")!!
+        }
+
+        var strExistingOrderList:String = intent.getStringExtra("strExistingOrderList")?:""
+		var strExistingComputedPrices:String = intent.getStringExtra("strExistingComputedPrices")?:""
+
+		Toast.makeText(this@MainActivity, strExistingOrderList, Toast.LENGTH_SHORT).show()
+		Toast.makeText(this@MainActivity, strExistingComputedPrices, Toast.LENGTH_SHORT).show()
+		
 		val choice1 = findViewById<Button>(R.id.choice1)
 		val choice2 = findViewById<Button>(R.id.choice2)
 		val choice3 = findViewById<Button>(R.id.choice3)
-		
 
-		Toast.makeText(this@MainActivity, currentUser, Toast.LENGTH_SHORT).show()
-	    Toast.makeText(this@MainActivity,storeId,Toast.LENGTH_SHORT).show()
+		//Toast.makeText(this@MainActivity, currentUser, Toast.LENGTH_SHORT).show()
+	    //Toast.makeText(this@MainActivity,storeId,Toast.LENGTH_SHORT).show()
 
 		findViewById<TextView>(R.id.txtStoreName).apply{
 			text = storeName
@@ -63,8 +82,23 @@ class MainActivity : AppCompatActivity() {
 
     	layoutManager = LinearLayoutManager(this)
         
-        val transactionId = generateTransactionId()
+        var orderList = ArrayList<String>()
+        if (strExistingOrderList!=""){
+        	val lsExistingOrders = strExistingOrderList.split(", ")
+        	for(data in lsExistingOrders){
+        		orderList.add(data.trim())
+        	}
+        }
+
+        var computedPrices = ArrayList<Int>()
+		if (strExistingComputedPrices!=""){
+        	val lsExistingPrices = strExistingComputedPrices.split(", ")
+        	for(data in lsExistingPrices){
+        		computedPrices.add(data.trim().toInt())
+        	}
+        }
         
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
         recyclerView.adapter = RecyclerAdapter( object : RecyclerAdapter.CallbackInterface {
@@ -84,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 tvTotal.setText(totalPrice.toString())
             }
-        },storeId,choice1,choice2,choice3) 
+        },storeId,choice1,choice2,choice3,orderList,computedPrices) 
          /*       
     	var btnAddStore = findViewById<ImageView>(R.id.btnAddStore)
     	btnAddStore.setOnClickListener {
@@ -164,7 +198,7 @@ class MainActivity : AppCompatActivity() {
 				 for (i in 0..30){
 					transactionId += charPool[Random().nextInt(82)]
 				 }
-			        Toast.makeText(this@MainActivity,transactionId.toString(),Toast.LENGTH_SHORT).show()
+			        
 			  return transactionId
 		}
 		 fun fillStr(value:String):String {

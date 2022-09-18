@@ -124,6 +124,7 @@ class LoginActivity : AppCompatActivity() {
                                     Toast.makeText(this@LoginActivity,("You have a pending order."),Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this, ClaimingActivity::class.java).apply {
                                         putExtra("transactionId", transactionId)
+                                        putExtra("isHavingOrder","true")
                                     }
                                     startActivity(intent)
                                 }

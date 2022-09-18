@@ -21,6 +21,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
+import android.content.Intent	
 
 class ClaimingActivity: AppCompatActivity() {
 
@@ -43,13 +44,12 @@ class ClaimingActivity: AppCompatActivity() {
 		val status = findViewById<TextView>(R.id.txtStatus)
 		val storeN = findViewById<TextView>(R.id.txtStore)
 		val editBtn = findViewById<Button>(R.id.btnEdit)
-		editBtn.setOnClickListener{
-			super.finish()
-		}
+
 		val saveQR = findViewById<Button>(R.id.btnSaveQr)
 		saveQR.setOnClickListener{
 			saveImage(bitmap)
 		}
+
 		db.collection("orders").whereEqualTo("transactionID", transactionId)
 			.get()
 			.addOnSuccessListener { result ->
@@ -85,6 +85,51 @@ class ClaimingActivity: AppCompatActivity() {
 				}
 			}
 
+		editBtn.setOnClickListener{
+			val isHavingOrder: String? = intent.getStringExtra("isHavingOrder")?:"false"
+			
+			if (isHavingOrder=="true"){
+				db.collection("orders").whereEqualTo("transactionID",transactionId).get().addOnSuccessListener {
+			    	result ->
+			    		var store2:String = ""
+			    		var storeName2:String = ""
+			    		var currentUser2:String = ""
+			    		var oL2:String = ""
+			    		var cP2:String = ""
+
+			    		for(document in result){
+			    			store2 = document["store"].toString()
+			    			currentUser2 = document["username"].toString()
+			    			oL2 = document["orderList"].toString()
+			    			cP2 = document["computedPrices"].toString()
+			    			
+			    			db.collection("stores").whereEqualTo("id",store2.toInt()).get().addOnSuccessListener {
+			    				result	->
+			    				for(data in result){
+			    					storeName2 = data["username"].toString()
+			    				}
+			    				val intent = Intent(this, MainActivity::class.java).apply {
+									putExtra("transactionId", transactionId)
+									putExtra("isHavingOrder", isHavingOrder)
+									putExtra("storeId", store2);
+					                putExtra("currentUser", currentUser2);
+					                putExtra("storeName", storeName2);
+					                putExtra("strExistingOrderList", oL2); 
+					             	putExtra("strExistingComputedPrices", cP2); 
+					                        
+								}
+
+							startActivity(intent)
+			    			}
+			    		}
+			    		
+		    	}
+				
+			} else {
+				super.finish()
+			}
+
+		}
 
 	}
 
