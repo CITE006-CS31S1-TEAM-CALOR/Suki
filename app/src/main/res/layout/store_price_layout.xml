@@ -40,7 +40,7 @@
         android:id="@+id/ivProdUpdate"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_edit" />
+        android:src="@drawable/ic_baseline_sync_24" />
 
     <Switch
         android:id="@+id/switchProd"

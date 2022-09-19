@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
         var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
 		btnSubmitOrder.text = "Cancel Order"
-		btnSubmitOrder.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_remove_black, 0);
+		btnSubmitOrder.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_cancel_24, 0);
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
