@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Pabili)
         setContentView(R.layout.activity_login)
 
-        //call ID, variables and laouts
+        //call ID, variables and layouts
         val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout)
         val animationDrawable: AnimationDrawable = constraintLayout.getBackground() as AnimationDrawable
 

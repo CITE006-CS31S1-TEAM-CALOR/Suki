@@ -4,13 +4,9 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 
 import android.content.Intent
-import android.widget.EditText
 
 
 import android.annotation.SuppressLint
@@ -18,6 +14,7 @@ import android.app.Dialog
 import android.graphics.drawable.AnimationDrawable
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -26,6 +23,7 @@ import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
 import androidx.core.widget.doOnTextChanged
 import kotlin.system.exitProcess
 import android.view.ViewGroup
+import android.widget.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -33,6 +31,9 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout2)
+        val animationDrawable: AnimationDrawable = constraintLayout.getBackground() as AnimationDrawable
 
         val currentUser = intent.getStringExtra("username")
         val currentUserPw = intent.getStringExtra("password")
@@ -48,6 +49,13 @@ class HomeActivity : AppCompatActivity() {
         phone.isFocusable = false
         address.isFocusable = false
         save.isEnabled = false
+
+
+
+        //set animation in background
+        animationDrawable.setEnterFadeDuration(2500);
+        animationDrawable.setExitFadeDuration(3000);
+        animationDrawable.start()
 
         db.collection("users").whereEqualTo("username", currentUser).get().addOnSuccessListener {
             result ->
@@ -100,12 +108,30 @@ class HomeActivity : AppCompatActivity() {
                 save.isEnabled = false
             }
         }
-        val btnSelectStore = findViewById<Button>(R.id.btnSelectStore)
+
+        val btnSelectStore = findViewById<ImageButton>(R.id.btnSelectStore)
         btnSelectStore.setOnClickListener(){
 
             val mAlertDialogBuilder = AlertDialog.Builder(this)
             val storeList = ArrayList<String>()
             val storeIDList = ArrayList<String>()
+
+            val scaleUp: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_up)
+            val scaleDown: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_down)
+
+            btnSelectStore.setOnTouchListener(object: View.OnTouchListener {
+                override fun onTouch(v: View?, event: MotionEvent?): Boolean{
+                    when (v) { v ->
+                        when (event?.action) { MotionEvent.ACTION_UP -> {
+                            btnSelectStore.startAnimation(scaleDown)
+                        } MotionEvent.ACTION_DOWN -> {
+                            btnSelectStore.startAnimation(scaleUp)
+                        }
+                        }
+                    }
+                    return v?.onTouchEvent(event) ?: true
+                }
+            })
 
             db.collection("stores")
                 .get()
