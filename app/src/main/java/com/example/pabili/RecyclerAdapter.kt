@@ -203,7 +203,7 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
                     val totalPrice = computedPrices.sum()
                     callbackInterface.passResultCallback(totalPrice.toString(), orderList.joinToString(), computedPrices.joinToString())  
                     resetChoices()	
-                    holder.etOrder.clearFocus()
+               //    holder.etOrder.clearFocus()
                     }
 /*
                     val pattern2 = (".*\\n").toRegex()

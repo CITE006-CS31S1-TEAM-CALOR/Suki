@@ -98,7 +98,7 @@ class ClaimingActivity: AppCompatActivity() {
 			}
 
 		editBtn.setOnClickListener{
-			val isHavingOrder: String? = intent.getStringExtra("isHavingOrder")?:"false"
+			val isHavingOrder: String? = intent.getStringExtra("isHavingOrder")?:"true"
 			
 			if (isHavingOrder=="true"){
 				db.collection("orders").whereEqualTo("transactionID",transactionId).get().addOnSuccessListener {

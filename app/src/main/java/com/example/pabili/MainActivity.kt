@@ -85,7 +85,6 @@ class MainActivity : AppCompatActivity() {
 		}
         val tvTotal = findViewById<TextView>(R.id.tvTotal)
 
-        //tvStorename.text = storeName
 
     	layoutManager = LinearLayoutManager(this)
         
@@ -106,13 +105,19 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
+        var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
+		btnSubmitOrder.text = "Cancel Order"
+		
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
         recyclerView.adapter = RecyclerAdapter( object : RecyclerAdapter.CallbackInterface {
             override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
     				if (totalPrice.equals("0")){
+    					btnSubmitOrder.text = "Cancel Order"
     					order = hashMapOf()
     				} else {
+    					btnSubmitOrder.text = "Submit Order"
                			order = hashMapOf (
 							"username" to fillStr(currentUser),
 							"store" to fillStr(storeId),
@@ -127,11 +132,21 @@ class MainActivity : AppCompatActivity() {
             }
         },storeId,choice1,choice2,choice3,orderList,computedPrices) 
 
-
-       var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
     	btnSubmitOrder.setOnClickListener {
     		if (order.isEmpty()) {
-				Toast.makeText(this@MainActivity, "Order is Empty", Toast.LENGTH_SHORT).show()
+				Toast.makeText(this@MainActivity, "Order Cancelled Successfully", Toast.LENGTH_SHORT).show()
+				val docref = db.collection("orders")
+				docref.whereEqualTo("transactionID",fillStr(transactionId)).get()
+				.addOnSuccessListener {
+					result ->
+					for (data in result){
+						docref.document(data.id).delete()
+					}
+					goToHomeActivity(currentUser)
+				}.addOnFailureListener {
+					goToHomeActivity(currentUser)
+				}
+
     		} else {
 				val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 				val time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
@@ -150,10 +165,8 @@ class MainActivity : AppCompatActivity() {
 							Toast.makeText(this@MainActivity,("Order Received"),Toast.LENGTH_SHORT).show()
 								val intent = Intent(this, ClaimingActivity::class.java).apply {
 								putExtra("transactionId", transactionId)
-
 							}
 							startActivity(intent)
-
 							}
 					} else {
 						for (data in result){
@@ -221,14 +234,17 @@ class MainActivity : AppCompatActivity() {
 
 
     	if (isHavingOrder!="true"){
-	    	val intent =  Intent(this, HomeActivity::class.java).apply {
-	    		putExtra("currentUser", intent.getStringExtra("currentUser"));
-	            putExtra("currentUserPw", intent.getStringExtra("currentUserPw"));
+	    	goToHomeActivity("")
+    	}
+    }
+    fun goToHomeActivity(currentUser:String){
+    		val intent =  Intent(this, HomeActivity::class.java).apply {
+	    		putExtra("username", intent.getStringExtra("currentUser")?:currentUser);
+	            putExtra("password", intent.getStringExtra("currentUserPw"));
 	    	}
 	        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
 			startActivity(intent)   
 			finish()
-    	}
     }
 }
 	
