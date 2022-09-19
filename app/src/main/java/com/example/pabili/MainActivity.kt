@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity() {
         var strExistingOrderList:String = intent.getStringExtra("strExistingOrderList")?:""
 		var strExistingComputedPrices:String = intent.getStringExtra("strExistingComputedPrices")?:""
 
-		Toast.makeText(this@MainActivity, strExistingOrderList, Toast.LENGTH_SHORT).show()
-		Toast.makeText(this@MainActivity, strExistingComputedPrices, Toast.LENGTH_SHORT).show()
+		//Toast.makeText(this@MainActivity, strExistingOrderList, Toast.LENGTH_SHORT).show()
+		//Toast.makeText(this@MainActivity, strExistingComputedPrices, Toast.LENGTH_SHORT).show()
 		
 		val choice1 = findViewById<Button>(R.id.choice1)
 		val choice2 = findViewById<Button>(R.id.choice2)
