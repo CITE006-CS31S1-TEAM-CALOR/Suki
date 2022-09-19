@@ -160,19 +160,22 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
                     }
 
 
-                    val pattern = "\\d [A-Za-z0-9]*\\n".toRegex()
+                    val pattern = "\\d [A-Za-z0-9\\s?]*\\n".toRegex()
                     val found = pattern.find(strOrder)
                     val m = found?.value
                     if (m != null){
-                        holder.etOrder.setText(strOrder.trim())	
                         orderList.set(holder.getBindingAdapterPosition(),strOrder.trim())
 
-                        val lsOrder = strOrder.split(" ")
-                        val productName: String = lsOrder.get(1)
+                        val lsOrder = strOrder.split(" ",limit=2)
+                        val productName: String = lsOrder.get(1).lowercase()
+                        val correctName: String? = (TagPrices.firstOrNull {it.name?.lowercase() == productName.trim()})?.name ?: productName
                         val qty: Int = lsOrder.get(0).toInt()
-                        val unitPrice: Int? = (TagPrices.firstOrNull {it.name == productName.trim()})?.price ?: 0
+                        val unitPrice: Int? = (TagPrices.firstOrNull {it.name?.lowercase() == productName.trim()})?.price ?: 0
                         val computedPrice = (unitPrice!! * qty)
-                        val available: Boolean? = (TagPrices.firstOrNull {it.name == productName.trim()})?.available ?: false
+                        val available: Boolean? = (TagPrices.firstOrNull {it.name?.lowercase()  == productName.trim()})?.available ?: false
+                        
+
+                        holder.etOrder.setText(qty.toString() + " " + correctName) 
                         if (computedPrice == 0 || available==false){
                             Toast.makeText(holder.etOrder.getContext(),"Product Unavailable",Toast.LENGTH_SHORT).show()
                             holder.etOrder.setSelection(holder.etOrder.text.length)
