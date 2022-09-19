@@ -108,16 +108,20 @@ class MainActivity : AppCompatActivity() {
 
         var btnSubmitOrder = findViewById<Button>(R.id.btnSubmitOrder)
 		btnSubmitOrder.text = "Cancel Order"
-		
+		btnSubmitOrder.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_remove_black, 0);
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager  = layoutManager
         recyclerView.adapter = RecyclerAdapter( object : RecyclerAdapter.CallbackInterface {
             override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
     				if (totalPrice.equals("0")){
-    					btnSubmitOrder.text = "Cancel Order"
+    					btnSubmitOrder.text = "Cancel Order" 
+    					btnSubmitOrder.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_remove_black, 0);
     					order = hashMapOf()
     				} else {
     					btnSubmitOrder.text = "Submit Order"
+               			btnSubmitOrder.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_arrow_forward_24, 0);
+    					
                			order = hashMapOf (
 							"username" to fillStr(currentUser),
 							"store" to fillStr(storeId),
