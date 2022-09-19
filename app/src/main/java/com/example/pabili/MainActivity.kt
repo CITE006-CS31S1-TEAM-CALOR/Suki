@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
             override fun passResultCallback(totalPrice: String, strOrderList:String, strComputedPrices:String) {
     				if (totalPrice.equals("0")){
     					btnSubmitOrder.text = "Cancel Order" 
-    					btnSubmitOrder.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_remove_black, 0);
+    					btnSubmitOrder.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_cancel_24, 0);
     					order = hashMapOf()
     				} else {
     					btnSubmitOrder.text = "Submit Order"
