@@ -17,6 +17,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 
 class SignupActivity : AppCompatActivity() {
+
+	//create variable under class
 	private lateinit var db: FirebaseFirestore
 	private lateinit var etUsername: EditText
 	private lateinit var etPassword: EditText
@@ -28,6 +30,7 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
+		//set variables
 		db = FirebaseFirestore.getInstance()
 		etUsername = findViewById(R.id.etUsername) as EditText
 		etPassword = findViewById(R.id.etPassword) as EditText
@@ -38,6 +41,7 @@ class SignupActivity : AppCompatActivity() {
 		val scaleUp: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_up)
 		val scaleDown: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_down)
 
+		//animation for the buttons
 		btnCustomerSignup.setOnTouchListener(object:View.OnTouchListener {
 			override fun onTouch(v: View?, event: MotionEvent?): Boolean{
 				when (v) { v ->
@@ -66,25 +70,27 @@ class SignupActivity : AppCompatActivity() {
 			}
 		})
 
+		//register customer
 		try {
 			btnCustomerSignup.setOnClickListener {
 				registerCustomer()
 			}
-
-
+			// register store
 			btnStoreSignup.setOnClickListener {
 				registerStore()
 			}
-		} catch (e: IndexOutOfBoundsException) {
+		} catch (e: IndexOutOfBoundsException) { //if theres an error, toast
 			Toast.makeText(this@SignupActivity,"There was an error. Try again",Toast.LENGTH_SHORT).show()
 		}
 	}
 
 fun registerCustomer(){
+	//get username, pass and ver pass
 	val username = etUsername.text.toString()
 	val password = etPassword.text.toString()
 	val verpassword = etVerifyPassword.text.toString()
 
+	//focus on fields that are empty
 	if(password != verpassword){
 		if(password.isEmpty()){
 			Toast.makeText(this@SignupActivity, "Password is Empty", Toast.LENGTH_SHORT).show()
@@ -102,8 +108,7 @@ fun registerCustomer(){
 		return
 	}
 
-
-
+	//if no error, put the account to users database
 	val account = hashMapOf(
 		"username" to username,
 		"password" to password,
@@ -139,14 +144,17 @@ fun registerCustomer(){
 	}
 
 	fun registerStore(){
+		//create id for store
 		var id:Int = Random().nextInt(10000);
 
 		Toast.makeText(this@SignupActivity, "id:$id", Toast.LENGTH_SHORT).show()
-			
+
+		//get necessary values
 		val username = etUsername.text.toString()
 		val password = etPassword.text.toString()
 		val verpassword = etVerifyPassword.text.toString()
 
+		//focus on field that is empty
 		if(password != verpassword){
 			if(password.isEmpty()){
 				Toast.makeText(this@SignupActivity, "Password is Empty", Toast.LENGTH_SHORT).show()
@@ -163,12 +171,14 @@ fun registerCustomer(){
 			return
 		}
 
+		//if no error, add account to store in the database
 		val account = hashMapOf(
 			"username" to username,
 			"password" to password,
 			"id" to id
 		)
 
+		//set price under SRP
 		db.collection("products/SRP/prices").get().addOnSuccessListener {
 			documents ->
 			if (documents.isEmpty){
@@ -183,8 +193,7 @@ fun registerCustomer(){
 				}
 		}
 
-
-
+		//add account to database
 		db.collection("stores")
 			.whereEqualTo("username", username)
 			.get()

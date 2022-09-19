@@ -33,11 +33,10 @@ class LoginActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Pabili)
         setContentView(R.layout.activity_login)
 
+        //call ID, variables and laouts
         val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout)
         val animationDrawable: AnimationDrawable = constraintLayout.getBackground() as AnimationDrawable
-        animationDrawable.setEnterFadeDuration(1500);
-        animationDrawable.setExitFadeDuration(3000);
-        animationDrawable.start()
+
 
         val etUsername: EditText = findViewById(R.id.etUsername)
         val etPassword: EditText = findViewById(R.id.etPassword)
@@ -50,6 +49,12 @@ class LoginActivity : AppCompatActivity() {
         val scaleUp: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_up)
         val scaleDown: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_down)
 
+        //set animation in background
+        animationDrawable.setEnterFadeDuration(1500);
+        animationDrawable.setExitFadeDuration(3000);
+        animationDrawable.start()
+
+        //Pressing enter in username textfield transfers automatically to password textfield
         etUsername.setOnKeyListener { v, keyCode, event ->
             Log.d("Keytouch", "$keyCode")
             if(keyCode == 66){
@@ -60,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        //animation for buttons
         btnCustomerLogin.setOnTouchListener(object:View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean{
                 when (v) { v ->
@@ -102,17 +108,20 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
+        //customer Login.
         btnCustomerLogin.setOnClickListener {
             var username = etUsername.text.toString()
             var password = etPassword.text.toString()
+
+            //get user data from database and only get if username and password are equal
             db.collection("users")
             .whereEqualTo("username", username).whereEqualTo("password", password)
             .get()
             .addOnSuccessListener { documents ->
-                if (documents.isEmpty()) {
+                if (documents.isEmpty()) { //if doesn't match, deny entry
                     Toast.makeText(this@LoginActivity,("Access Denied"),Toast.LENGTH_SHORT).show()
-                } else {
-
+                } else {    //else, enter
+                    //check if username have orders. if so, open the previous order
                     db.collection("orders").whereEqualTo("username", username)
                         .get()
                         .addOnSuccessListener { result ->
@@ -132,7 +141,7 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }
 
-                    for (document in documents) {
+                    for (document in documents) { //else show home page
                         Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, HomeActivity::class.java).apply {
                             putExtra("username", username)
@@ -150,18 +159,21 @@ class LoginActivity : AppCompatActivity() {
             } 
             
         }
-        
+
+        //store login
         btnStoreLogin.setOnClickListener {
             var username = etUsername.text.toString()
             var password = etPassword.text.toString()
             LOGIN_NAME = username
+
+            //get data from stores and see if username and password is equal
             db.collection("stores")
                 .whereEqualTo("username", username).whereEqualTo("password", password)
                 .get()
                 .addOnSuccessListener { documents ->
-                    if (documents.isEmpty()) {
+                    if (documents.isEmpty()) { //if no username or password matched, deny
                         Toast.makeText(this@LoginActivity,("Access Denied"),Toast.LENGTH_SHORT).show()
-                    } else {
+                    } else { //else, enter
 
                       for (document in documents) {
 							Toast.makeText(this@LoginActivity,("Access Granted"),Toast.LENGTH_SHORT).show()
@@ -180,6 +192,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        //enter Signup
         btnSignup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
@@ -188,6 +201,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    //quitting the app when back is pressed.
     override fun onBackPressed() {
         //super.onBackPressed()
         val dialog = Dialog(this)
