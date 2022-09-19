@@ -61,8 +61,8 @@ class StoreOrderActivity : AppCompatActivity() {
                 val orderListArray = cInfo.orderList!!.split(", ")
                 for ((refComp, order) in orderListArray!!.withIndex()){
                     if(refComp != orderListArray.size-1){
-                        val name = order.replace("\\d+".toRegex(),"")
-                        val qty = order.replace(" [a-z]+".toRegex(),"")
+                        val name = order.replace("^\\d+ ".toRegex(),"")
+                        val qty = order.replace("[^\\d]+\\S+".toRegex(),"")
                         val com = computedPricesArray[refComp]
 
                         data.add(DataOrderList(name, "x$qty", "P$com"))
