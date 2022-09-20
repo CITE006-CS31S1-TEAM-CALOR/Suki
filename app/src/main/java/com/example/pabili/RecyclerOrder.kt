@@ -74,7 +74,7 @@ class RecyclerOrder (private val context: Context, private val cDoc: String, pri
                         orders.get()
                             .addOnSuccessListener { result ->
                                 //update computedPrices
-                                var regex = "\\d+[^\\w]".toRegex()
+                                var regex = "\\d+[^,\\w]?".toRegex()
                                 var match: Sequence<MatchResult> =
                                     regex.findAll(result.getString("computedPrices").toString())
                                 var array = LinkedList<String>()
