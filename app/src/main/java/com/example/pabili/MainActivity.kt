@@ -6,8 +6,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.ImageViewimport android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +24,7 @@ import android.text.TextWatcher
 import java.util.Random
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-
+import java.time.format.DateTimeFormatter	
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.drawable.AnimationDrawable
@@ -91,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         var orderList = ArrayList<String>()
         if (strExistingOrderList!=""){
         	val lsExistingOrders = strExistingOrderList.split(", ")
-        	for(data in lsExistingOrders){
+        	for(data in lsExistingOrders){	
         		orderList.add(data.trim())
         	}
         }
@@ -236,7 +234,6 @@ class MainActivity : AppCompatActivity() {
 	        dialog.show()
     	}
 
-
     	if (isHavingOrder!="true"){
 	    	goToHomeActivity("")
     	}
@@ -252,3 +249,27 @@ class MainActivity : AppCompatActivity() {
     }
 }
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
