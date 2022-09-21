@@ -278,6 +278,3 @@ private val choice1:Button, private val choice2:Button, private val choice3:Butt
         }
     }
 }
-
-
-
