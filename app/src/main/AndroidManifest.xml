@@ -9,6 +9,9 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="33" />
+    <uses-sdk tools:overrideLibrary="
+          androidx.camera.camera2, androidx.camera.core,
+          androidx.camera.view, androidx.camera.lifecycle" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/splashScreenTheme"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
         <activity
             android:name=".StoreStatActivity"
             android:exported="false" />
@@ -40,15 +48,17 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-            <intent-filter>
+             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ScannerActivity"
-            android:exported="true" />
+            android:name=".QRScannerActivity"
+            android:exported="true"/>
+
         <activity
             android:name=".StorePricesActivity"
             android:exported="true" />

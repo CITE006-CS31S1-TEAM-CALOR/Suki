@@ -152,7 +152,7 @@ class StoreOrderActivity : AppCompatActivity() {
 
         scnBtn.setOnClickListener {
             if(swt.isChecked){
-                val intent = Intent(this, ScannerActivity::class.java).apply {
+                val intent = Intent(this, QRScannerActivity::class.java).apply {
                     putExtra("cDoc",cDoc)
                 }
                 startActivity(intent)
