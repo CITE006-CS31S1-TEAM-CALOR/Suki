@@ -1,10 +1,40 @@
 {
   "project_info": {
     "project_number": "425084901608",
+    "firebase_url": "https://pabili-app-e5c54-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "pabili-app-e5c54",
     "storage_bucket": "pabili-app-e5c54.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425084901608:android:177e78251eaebc9771915d",
+        "android_client_info": {
+          "package_name": "com.example.freshproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425084901608-4eb202omrv8mt5cjfln7gj2q5n0d792c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPtq-XEACzYUraCRrJWOx5Y4_u5JcmXrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425084901608-4eb202omrv8mt5cjfln7gj2q5n0d792c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:425084901608:android:df4f317dd32c308871915d",

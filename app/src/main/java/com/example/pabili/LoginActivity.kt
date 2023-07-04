@@ -25,7 +25,7 @@ import kotlin.system.exitProcess
 
 var LOGIN_NAME = ""
 var LOGIN_ID = ""
-class LoginActivity : AppCompatActivity() {
+public class LoginActivity : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {

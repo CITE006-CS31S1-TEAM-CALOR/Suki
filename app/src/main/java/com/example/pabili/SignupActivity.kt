@@ -12,9 +12,20 @@ import android.util.Log
 import java.util.Random
 import android.view.View
 import TagPrice
+import android.Manifest
+import android.content.IntentSender
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.os.Build
+import android.os.Looper
 import android.view.MotionEvent
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.firebase.firestore.GeoPoint
 
 class SignupActivity : AppCompatActivity() {
 
@@ -25,10 +36,18 @@ class SignupActivity : AppCompatActivity() {
 	private lateinit var etVerifyPassword: EditText
 	private lateinit var btnCustomerSignup: Button
 	private lateinit var btnStoreSignup: Button
+	private var locationRequest: LocationRequest? = null
+	//private val userGPS = DoubleArray(2)
+	private lateinit var location: GeoPoint
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+		locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+			.setWaitForAccurateLocation(false)
+			.setIntervalMillis(10000)
+			.setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+			.build()
 
 		//set variables
 		db = FirebaseFirestore.getInstance()
@@ -77,7 +96,8 @@ class SignupActivity : AppCompatActivity() {
 			}
 			// register store
 			btnStoreSignup.setOnClickListener {
-				registerStore()
+				userLocation
+				//registerStore()
 			}
 		} catch (e: IndexOutOfBoundsException) { //if theres an error, toast
 			Toast.makeText(this@SignupActivity,"There was an error. Try again",Toast.LENGTH_SHORT).show()
@@ -171,11 +191,15 @@ fun registerCustomer(){
 			return
 		}
 
+		//get store's current location
+
+
 		//if no error, add account to store in the database
 		val account = hashMapOf(
 			"username" to username,
 			"password" to password,
-			"id" to id
+			"id" to id,
+			"geopoint" to location
 		)
 
 		//set price under SRP
@@ -219,6 +243,80 @@ fun registerCustomer(){
 				Toast.makeText(this@SignupActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
 			}
 	}
+
+	private val userLocation: Unit
+		private get() {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				println("SDK Correct")
+				if (ActivityCompat.checkSelfPermission(this@SignupActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+					println("Permission Granted")
+					if (isGPSEnabled) {
+						println("GPS Enabled")
+						//System.out.println((location));
+						LocationServices.getFusedLocationProviderClient(this@SignupActivity)
+							.requestLocationUpdates(locationRequest!!, object : LocationCallback() {
+								override fun onLocationResult(locationResult: LocationResult) {
+									super.onLocationResult(locationResult)
+									LocationServices.getFusedLocationProviderClient(this@SignupActivity)
+										.removeLocationUpdates(this)
+									println("onLocationResult method")
+									if (locationResult != null && locationResult.locations.size > 0) {
+										val index = locationResult.locations.size - 1
+										val latitude = locationResult.locations[index].latitude
+										val longtitude = locationResult.locations[index].longitude
+										println("USER GPS ACQUIRED")
+										println("$latitude | $longtitude")
+										location = GeoPoint(latitude,longtitude)
+										registerStore()
+										//userGPS[0] = latitude
+										//userGPS[1] = longtitude
+										//println(userGPS[0].toString() + " ; " + userGPS[1])
+									}
+								}
+							}, Looper.getMainLooper())
+					} else {
+						turnOnGPS()
+					}
+				} else {
+					requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+				}
+			}
+		}
+
+	private fun turnOnGPS() {
+		val builder = LocationSettingsRequest.Builder()
+			.addLocationRequest(locationRequest!!)
+		builder.setAlwaysShow(true)
+		val result = LocationServices.getSettingsClient(applicationContext)
+			.checkLocationSettings(builder.build())
+		result.addOnCompleteListener { task ->
+			try {
+				val response = task.getResult(ApiException::class.java)
+				Toast.makeText(this@SignupActivity, "GPS is already tured on", Toast.LENGTH_SHORT).show()
+			} catch (e: ApiException) {
+				when (e.statusCode) {
+					LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+						val resolvableApiException = e as ResolvableApiException
+						resolvableApiException.startResolutionForResult(this@SignupActivity, 2)
+					} catch (ex: IntentSender.SendIntentException) {
+						ex.printStackTrace()
+					}
+					LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {}
+				}
+			}
+		}
+	}
+
+	private val isGPSEnabled: Boolean
+		private get() {
+			var locMan: LocationManager? = null
+			var isEnabled = false
+			if (locMan == null) {
+				locMan = getSystemService(LOCATION_SERVICE) as LocationManager
+			}
+			isEnabled = locMan!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
+			return isEnabled
+		}
 }
 
 
