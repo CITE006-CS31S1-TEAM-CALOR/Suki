@@ -51,8 +51,8 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
     private var locationRequest: LocationRequest? = null
     private val userGPS = DoubleArray(2)
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val currentUser = intent.getStringExtra("username")
-    private val currentUserPw = intent.getStringExtra("password")
+    private lateinit var currentUser: String
+    private lateinit var currentUserPw: String
     @RequiresApi(api = Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +104,8 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
 
         //btnLocateMe = findViewById<View>(R.id.btnLocateMe) as Button
         //btnLocateMe!!.setOnClickListener(this)
+        currentUser = intent.getStringExtra("currentUser").toString()
+        currentUserPw = intent.getStringExtra("currentUserPw").toString()
         userLocation
     }
 
@@ -301,13 +303,6 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
         Log.d("showSukiStore",sukiStore.storeName)
         flyout.title = sukiStore.storeName.replace("[", "").replace("]", "").replace("\"", "")
         icon.flyout = flyout
-
-        //TODO Fix this
-        //elementLayer.addOnMapFlyoutTappedListener { fly ->
-        //    println(fly.flyout.description)
-        //    println("Flyouttapped")
-        //    false
-        //}
 
         elementLayer.elements.add(icon)
         mMapView!!.layers.add(elementLayer)
