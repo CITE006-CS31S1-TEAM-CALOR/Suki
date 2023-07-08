@@ -26,8 +26,9 @@
         android:theme="@style/splashScreenTheme"
         tools:replace="android:theme"
         tools:targetApi="31">
+
         <activity
-            android:name=".LoginActivity"
+            android:name=".StoreSelectionMap"
             android:exported="true" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -60,7 +61,7 @@
             android:value="barcode" />
 
         <activity
-            android:name=".StoreSelectionMap"
+            android:name=".LoginActivity"
             android:exported="false">
 
         </activity>

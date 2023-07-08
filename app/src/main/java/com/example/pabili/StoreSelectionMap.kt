@@ -1,28 +1,33 @@
 package com.example.pabili
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.Manifest
+import android.annotation.SuppressLint
+//import android.R
 import android.content.IntentSender.SendIntentException
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.graphics.Point
 import android.location.LocationManager
 import android.os.AsyncTask
 import android.os.Build
+import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.pabili.Model.SukiStore
 import com.example.pabili.Model.SukiStoreMap
-
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.gson.Gson
 import com.microsoft.maps.*
+import java.util.*
 
 
 class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
@@ -34,9 +39,9 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_selection_map)
-        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
             .setWaitForAccurateLocation(false)
-            .setIntervalMillis(10000)
+            //.setIntervalMillis(10000)
             .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
             .build()
         try {
@@ -50,6 +55,36 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
 
         (findViewById<View>(R.id.map_view) as FrameLayout).addView(mMapView)
         mMapView!!.onCreate(savedInstanceState)
+
+        var tempFlyout:String = ""
+        mMapView!!.addOnMapTappedListener { mapTappedEventArgs ->
+            val position: Point = mapTappedEventArgs.position
+            val elements: LinkedList<MapElement> =
+                mMapView!!.findMapElementsAtOffset(position) as LinkedList<MapElement>
+
+
+            for (mapElement in elements) {
+                println(mapElement)
+
+                if (mapElement is MapIcon) {
+
+                    val mapIcon = mapElement as MapIcon
+                    if(tempFlyout == mapIcon.flyout!!.title.toString()){
+                        println("Same Icon was clicked")
+                    }
+
+                    // Do your thing. For example set fly out visibility.
+                    //mapIcon.isVisible = !mapIcon.isVisible;
+                    //mapIcon.flyout?.description = "WOW I was clicked lmao eksdi"
+                    //println("Flyout was visible? " + (mapIcon.flyout?.isVisible))
+                    println("Icon was clicked")
+                    tempFlyout = mapIcon.flyout!!.title.toString()
+                }
+            }
+            false
+        }
+
+
         btnLocateMe = findViewById<View>(R.id.btnLocateMe) as Button
         btnLocateMe!!.setOnClickListener(this)
         userLocation
@@ -60,7 +95,7 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
             R.id.btnLocateMe -> {
                 //getUserLocation();
                 //Geoposition currentLocation = findGPSLocation(userGPS[0],userGPS[1]);
-                println(userGPS[0].toString() + " ; " + userGPS[1])
+                Log.d("Current Position:", userGPS[0].toString() + " ; " + userGPS[1])
                 val currentLocation = findGPSLocation(userGPS[0], userGPS[1])
                 mMapView!!.setScene(MapScene.createFromLocationAndRadius(Geopoint(currentLocation), 200.0), MapAnimationKind.LINEAR)
                 findNearestSukiStore()
@@ -91,10 +126,14 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
                                         val latitude = locationResult.locations[index].latitude
                                         val longtitude = locationResult.locations[index].longitude
                                         println("USER GPS ACQUIRED")
-                                        println("$latitude | $longtitude")
+                                        //println("$latitude | $longtitude")
                                         userGPS[0] = latitude
                                         userGPS[1] = longtitude
-                                        println(userGPS[0].toString() + " ; " + userGPS[1])
+
+                                        val currentLocation = findGPSLocation(userGPS[0], userGPS[1])
+                                        mMapView!!.setScene(MapScene.createFromLocationAndRadius(Geopoint(currentLocation), 200.0), MapAnimationKind.LINEAR)
+                                        findNearestSukiStore()
+                                        //println(userGPS[0].toString() + " ; " + userGPS[1])
                                     }
                                 }
                             }, Looper.getMainLooper())
@@ -144,7 +183,7 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
 
     fun findNearestSukiStore() {
         //showSukiStore(new SukiStore("My Dummy Location", 14.55836343526571, 121.0841731165051, 15));
-        showSukiStore(SukiStore("My Dummy Location", userGPS[0], userGPS[1], 15.0))
+        showSukiStore(SukiStore("YOU", userGPS[0], userGPS[1], 15.0)) //15
         //String strGPSLat = String.valueOf(findGPSLocation(14.55836343526571,121.0841731165051).getLatitude());
         //String strGPSLon = String.valueOf(findGPSLocation(14.55836343526571,121.0841731165051).getLongitude());
         //userGPS[0],userGPS[1]
@@ -157,13 +196,26 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
     fun showSukiStore(sukiStore: SukiStore) {
         val icon = MapIcon()
         icon.location = Geopoint(sukiStore.latitude, sukiStore.longitude)
+        if((sukiStore.latitude == userGPS[0]) && (sukiStore.longitude == userGPS[1])){
+            val bitmap = BitmapFactory.decodeResource(resources,R.drawable.icon_gps)
+            icon.image = MapImage(bitmap)
+        }
         val elementLayer = MapElementLayer()
-        elementLayer.elements.add(icon)
-        mMapView!!.layers.add(elementLayer)
         val flyout = MapFlyout()
+        Log.d("showSukiStore",sukiStore.storeName)
         flyout.title = sukiStore.storeName.replace("[", "").replace("]", "").replace("\"", "")
         flyout.description = "[Detail]"
         icon.flyout = flyout
+
+        //TODO Fix this
+        //elementLayer.addOnMapFlyoutTappedListener { fly ->
+        //    println(fly.flyout.description)
+        //    println("Flyouttapped")
+        //    false
+        //}
+
+        elementLayer.elements.add(icon)
+        mMapView!!.layers.add(elementLayer)
     }
 
     override fun onStart() {
@@ -201,11 +253,13 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
         mMapView!!.onLowMemory()
     }
 
+    @SuppressLint("StaticFieldLeak")
     private inner class NearestStoreTask : AsyncTask<String?, String?, String>() {
         override fun doInBackground(vararg params: String?): String {
             var responseBody = ""
 
-            responseBody = SukiStoreMap.findNearestStore(14.558505450401091, 121.08402743016885, 300.0)
+            //responseBody = SukiStoreMap.findNearestStore(14.558505450401091, 121.08402743016885, 300.0)
+            responseBody = SukiStoreMap.findNearestStore(userGPS[0], userGPS[1], 2000.0)
             // Deserializing JSON List<SukiStore>
             val arrSukiStores = Gson().fromJson(responseBody, Array<SukiStore>::class.java)
             //responseBody = arrSukiStores[0].getStoreName();
