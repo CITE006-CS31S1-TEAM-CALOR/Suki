@@ -22,6 +22,8 @@ import android.view.MotionEvent
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.app.ActivityCompat
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -162,7 +164,22 @@ fun registerCustomer(){
 			Toast.makeText(this@SignupActivity, "There was an error in the server", Toast.LENGTH_SHORT).show()
 		}
 	}
-
+	//fun SaveHash(){
+	//	db = FirebaseFirestore.getInstance()
+	//	db.collection("stores").get().addOnCompleteListener{task ->
+	//		if(task.isSuccessful){
+	//			for(doc in task.result){
+	//				val gp = doc.getGeoPoint("geopoint")
+	//				val lat = gp!!.latitude
+	//				val lng = gp!!.longitude
+	//				val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat,lng))
+	//				val updates: MutableMap<String,Any> = mutableMapOf("geohash" to hash, "lat" to lat, "lng" to lng
+	//				)
+	//				db.collection("stores").document(doc.id).update(updates).addOnSuccessListener { Log.d("GeoHash","SUCCESS SAVE FOR " + doc.getString("username")) }
+	//			}
+	//		}
+	//	}
+	//}
 	fun registerStore(){
 		//create id for store
 		var id:Int = Random().nextInt(10000);
@@ -173,6 +190,9 @@ fun registerCustomer(){
 		val username = etUsername.text.toString()
 		val password = etPassword.text.toString()
 		val verpassword = etVerifyPassword.text.toString()
+		val lat = location.latitude
+		val lng = location.longitude
+		val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat,lng))
 
 		//focus on field that is empty
 		if(password != verpassword){
@@ -199,7 +219,10 @@ fun registerCustomer(){
 			"username" to username,
 			"password" to password,
 			"id" to id,
-			"geopoint" to location
+			"geopoint" to location,
+			"geohash" to hash,
+			"lat" to lat,
+			"lng" to lng
 		)
 
 		//set price under SRP
