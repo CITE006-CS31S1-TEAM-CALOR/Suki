@@ -4,19 +4,19 @@ public class SukiStore {
     private double latitude;
     private double longitude;
     private String storeName;
-    private double distanceAwayMeters;
-    //private String description;
+    //private double distanceAwayMeters;
+    private String id;
 
     public SukiStore() {
 
     }
 
-    public SukiStore(String storeName, double latitude, double longitude, double distanceAwayMeters) {
+    public SukiStore(String storeName, double latitude, double longitude, String id) {
         super();
         this.storeName = storeName;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.distanceAwayMeters = distanceAwayMeters;
+        this.id = id;
     }
     //public SukiStore(String storeName, double latitude, double longitude, double distanceAwayMeters, String description) {
     //    super();
@@ -39,8 +39,8 @@ public class SukiStore {
         return this.longitude;
     }
 
-    public double getDistanceAwayMeters(){
-        return this.distanceAwayMeters;
+    public String getId(){
+        return this.id;
     }
 
 

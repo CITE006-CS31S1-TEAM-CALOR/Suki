@@ -65,8 +65,11 @@ public class SukiStoreMap {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 GeoPoint gPoint = document.getGeoPoint("geopoint");
+                                //Log.d("registerGeopoints", gPoint.toString());
+                                //assert gPoint != null : " NULL";
 
                                 registerGeopoints(gPoint.getLatitude(), gPoint.getLongitude());
+
                                 // System.out.println(gPoint.getLatitude() + "," +  gPoint.getLongitude());
                                 //System.out.println("initializeMAP() = "+gPoint);
 
@@ -163,7 +166,7 @@ public class SukiStoreMap {
                     double computedDistance = Location.computeDistance(lat1, lon1, lat2, lon2);
                     System.out.println(computedDistance + " <? "+rangeMeter);
                     if (computedDistance < rangeMeter){
-                        arrStores.add(new SukiStore(findStoreName(lat2, lon2), lat2, lon2,  computedDistance));
+                        //arrStores.add(new SukiStore(findStoreName(lat2, lon2), lat2, lon2,  computedDistance));
                     }
                     instances.remove(0);
                     jsonNearestStores = new Gson().toJson(arrStores);
