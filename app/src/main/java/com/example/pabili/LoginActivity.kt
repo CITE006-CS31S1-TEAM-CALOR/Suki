@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat.getAction
 import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
@@ -33,26 +34,16 @@ public class LoginActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Pabili)
         setContentView(R.layout.activity_login)
 
-        //call ID, variables and layouts
-        val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout)
-        val animationDrawable: AnimationDrawable = constraintLayout.getBackground() as AnimationDrawable
-
-
         val etUsername: EditText = findViewById(R.id.etUsername)
         val etPassword: EditText = findViewById(R.id.etPassword)
-        val btnCustomerLogin: Button = findViewById(R.id.btnCustomerLogin)
-        val btnStoreLogin: Button = findViewById(R.id.btnStoreLogin)
+        val btnCustomerLogin: ImageButton = findViewById(R.id.btnCustomerLogin)
+        val btnStoreLogin: ImageButton = findViewById(R.id.btnStoreLogin)
         val btnSignup: Button = findViewById(R.id.btnSignup)
 
         val db = FirebaseFirestore.getInstance()
 
         val scaleUp: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_up)
         val scaleDown: Animation = AnimationUtils.loadAnimation(this,R.anim.scale_down)
-
-        //set animation in background
-        animationDrawable.setEnterFadeDuration(1500);
-        animationDrawable.setExitFadeDuration(3000);
-        animationDrawable.start()
 
         //Pressing enter in username textfield transfers automatically to password textfield
         etUsername.setOnKeyListener { v, keyCode, event ->

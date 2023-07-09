@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     implementation fileTree(dir: 'D:\\PrivateProperty\\Coding\\Mobayl\\Suki\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
     implementation 'com.firebase:geofire-android-common:3.2.0'
+    implementation fileTree(dir: 'C:\\Users\\Jean\\AndroidStudioProjects\\Suki\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
     def camerax_version = "1.1.0-beta01"
     //implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'com.github.Philjay:mpandroidchart:3.1.0'

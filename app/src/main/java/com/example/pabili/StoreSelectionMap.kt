@@ -16,9 +16,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -70,6 +67,7 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
         mMapView = MapView(this, MapRenderMode.VECTOR) // or use MapRenderMode.RASTER for 2D map
 
         mMapView!!.setCredentialsKey(BuildConfig.CREDENTIALS_KEY)
+
 
         (findViewById<View>(R.id.map_view) as FrameLayout).addView(mMapView)
         mMapView!!.onCreate(savedInstanceState)

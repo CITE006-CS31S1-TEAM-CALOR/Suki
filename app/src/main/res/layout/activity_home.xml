@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainLayout3"
+    android:layout_marginBottom="5dp"
     android:background="#002FBD"
+    tools:context=".HomeActivity"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="-1dp"
-    tools:context=".HomeActivity">
+    tools:layout_editor_absoluteY="-1dp">
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/mainLayout2"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@drawable/anim_home_main_bg"
+      android:background="@drawable/new_bg_home"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +26,7 @@
         android:id="@+id/linearLayout6"
         android:layout_width="409dp"
         android:layout_height="654dp"
+        android:layout_marginTop="70dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,28 +37,34 @@
           android:id="@+id/lblWelcome"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginTop="15dp"
           android:gravity="center"
-          android:text="WELCOME BACK!"
-          android:textColor="#FFFFFF"
-          android:textSize="25dp"
+          android:text="Welcome Back,"
+          android:textColor="#145B75"
 
+          android:textSize="22dp"
           app:fontFamily="sans-serif-medium" />
 
       <TextView
           android:id="@+id/textView2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginBottom="0dp"
           android:gravity="center"
           android:text="READY TO ORDER?"
-          android:textColor="#DDFFFFFF"
-          android:textSize="15dp" />
+          android:textColor="#145B75"
+          android:textSize="13dp" />
 
       <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_margin="20dp"
-          android:background="@drawable/round_corner_plain"
-          android:backgroundTint="#ffffff"
+          android:layout_height="275dp"
+          android:layout_marginLeft="20dp"
+          android:layout_marginTop="0dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/new_btn_main"
+          android:backgroundTint="#145B75"
+          android:backgroundTintMode="src_in"
           android:gravity="center"
           android:orientation="vertical"
           android:padding="20dp">
@@ -75,8 +82,7 @@
             android:inputType="textPersonName"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textColor="#000000"
-            android:textColorHint="#BCBCBC" />
+            android:textColor="#FFFFFF" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -91,7 +97,7 @@
             android:inputType="textEmailAddress"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textColor="#000000" />
+            android:textColor="#FFFFFF" />
 
         <EditText
             android:id="@+id/etAddress"
@@ -106,13 +112,13 @@
             android:inputType="textPostalAddress"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textColor="#000000" />
+            android:textColor="#FFFFFF" />
 
         <EditText
             android:id="@+id/etPhone"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:background="@drawable/custom_input2"
             android:drawableStart="@drawable/ic_blue_phone"
             android:drawablePadding="12dp"
@@ -121,13 +127,14 @@
             android:inputType="phone"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textColor="#000000" />
+            android:textColor="#FFFFFF" />
 
       </LinearLayout>
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginTop="0dp"
           android:gravity="center"
           android:orientation="horizontal">
 
@@ -136,10 +143,10 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
-            android:text="Edit Profile"
-            android:textColor="#01167E"
             android:background="@drawable/round_corner_plain"
-            app:backgroundTint="#ffffff"
+            android:text="Edit Profile"
+            android:textColor="#ffffff"
+            app:backgroundTint="#E16F1F"
             app:backgroundTintMode="src_over" />
 
         <Button
@@ -147,9 +154,9 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
+            android:background="@drawable/round_corner_plain_3"
             android:text="Save Edit"
-            android:background="@drawable/round_corner_plain2"
-            android:textColor="#ffffff"
+            android:textColor="#E16F1F"
             app:backgroundTint="#00FFFFFF"
             app:backgroundTintMode="src_over" />
 
@@ -157,29 +164,38 @@
 
       <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="221dp"
+          android:layout_height="196dp"
+          android:layout_marginTop="0dp"
           android:gravity="center"
-          android:orientation="vertical">
+          android:orientation="vertical"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="0dp"
             android:gravity="center"
-            android:text="SELECT STORE"
-            android:textColor="#ffffff"
+            android:paddingTop="0dp"
+            android:text="CHECK MAPS"
+            android:textColor="#145B75"
+            android:textStyle="bold"
             app:fontFamily="sans-serif-light" />
 
         <ImageButton
             android:id="@+id/btnSelectStore"
-            android:layout_width="170dp"
-            android:layout_height="160dp"
-            android:background="@drawable/logo_store_button"
+            android:layout_width="121dp"
+            android:layout_height="121dp"
+            android:background="@drawable/new_btn_main"
+            android:backgroundTint="@color/mainColorBlue"
+            android:foreground="@drawable/ic_new_logo_maps"
             android:gravity="center"
-            app:backgroundTintMode="src_over"
+            android:paddingTop="10dp"
 
-            />
+            android:paddingBottom="10dp"
+            app:backgroundTintMode="src_over" />
       </LinearLayout>
 
     </LinearLayout>

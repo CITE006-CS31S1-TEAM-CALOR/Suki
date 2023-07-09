@@ -15,8 +15,6 @@ import android.graphics.drawable.AnimationDrawable
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat.getAction
 import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
@@ -32,10 +30,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val constraintLayout: ConstraintLayout = findViewById(R.id.mainLayout2)
-        val animationDrawable: AnimationDrawable =
-            constraintLayout.getBackground() as AnimationDrawable
-
         val currentUser = intent.getStringExtra("username")
         val currentUserPw = intent.getStringExtra("password")
         val db = FirebaseFirestore.getInstance()
@@ -50,12 +44,6 @@ class HomeActivity : AppCompatActivity() {
         phone.isFocusable = false
         address.isFocusable = false
         save.isEnabled = false
-
-
-        //set animation in background
-        animationDrawable.setEnterFadeDuration(2500);
-        animationDrawable.setExitFadeDuration(3000);
-        animationDrawable.start()
 
         db.collection("users").whereEqualTo("username", currentUser).get()
             .addOnSuccessListener { result ->
