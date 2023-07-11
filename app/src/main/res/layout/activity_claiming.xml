@@ -1,115 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/container"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="@drawable/new_bg_claiming_qrcode"
 	android:orientation="vertical"
-	android:background="@drawable/bg_claiming_layout"
 	tools:context=".ClaimingActivity">
 
+	<TextView
+		android:id="@+id/tvTransactionId"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp"
+		android:background="@drawable/round_corner_plain"
+		android:gravity="center"
+		android:padding="7dp"
+		app:fontFamily="sans-serif-light"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
 	<LinearLayout
-	android:id="@+id/linDetails"
-	android:layout_width="match_parent"
-	android:layout_marginTop="40dp"
-	android:layout_height="0dp"
-	android:orientation="vertical"
-	android:gravity="center"
-	app:layout_constraintTop_toTopOf="parent">
+		android:id="@+id/linDetails"
+		android:layout_width="364dp"
+		android:layout_height="169dp"
+		android:gravity="center"
+		android:orientation="vertical"
+		android:paddingTop="0dp"
+		app:layout_constraintBottom_toTopOf="@+id/linRV"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/tvTransactionId">
 
 		<ImageView
-			android:id="@+id/imageView"
-			android:layout_width="330dp"
-			android:layout_height="150dp"
-			android:layout_centerHorizontal="true"
-			android:layout_marginTop="40dp"
-			android:contentDescription="QR Code" />
-
-		<TextView
-			android:id="@+id/tvTransactionId"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:padding="7dp"
-			android:gravity="center"
-			android:background="@drawable/round_corner_plain"
-			app:fontFamily="sans-serif-light" />
+			android:id="@+id/imageView2"
+			android:layout_width="103dp"
+			android:layout_height="97dp"
+			android:layout_marginTop="5dp"
+			app:srcCompat="@drawable/new_ic_logo_qrcode" />
 
 		<TextView
 			android:id="@+id/txtStore"
 			android:layout_width="310dp"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="16dp"
-			android:layout_marginLeft="18dp"
-			android:text="STORE: "
-			android:drawablePadding="5dp"
+			android:layout_marginTop="5dp"
 			android:drawableLeft="@drawable/ic_baseline_store"
-			android:textSize="20sp"
-			app:fontFamily="sans-serif-black"
-			/>
+			android:drawablePadding="5dp"
+			android:text="STORE: "
+			android:textColor="#ffffff"
+			android:textSize="20sp" />
 
 		<TextView
 			android:id="@+id/txtStatus"
 			android:layout_width="310dp"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="18dp"
-			android:text="STATUS: "
-			android:drawablePadding="5dp"
 			android:drawableLeft="@drawable/ic_baseline_check_box"
-			android:textSize="20sp"
-			app:fontFamily="sans-serif-black"/>
-
-		<TextView
-			android:id="@+id/totalText"
-			android:layout_width="310dp"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="18dp"
-			android:text="TOTAL: "
 			android:drawablePadding="5dp"
-			android:drawableLeft="@drawable/ic_baseline_total"
-			android:textSize="20sp"
-			app:fontFamily="sans-serif-black"/>
+			android:text="STATUS: "
+			android:textColor="#ffffff"
+			android:textSize="20sp" />
 
 	</LinearLayout>
 
 	<androidx.core.widget.NestedScrollView
 		android:id="@+id/linRV"
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
+		android:layout_width="391dp"
+		android:layout_height="454dp"
 		android:orientation="vertical"
-		app:layout_constraintTop_toBottomOf="@+id/linDetails"
-		app:layout_constraintBottom_toBottomOf="parent">
+		app:layout_constraintBottom_toTopOf="@+id/constraintLayout10"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/linDetails">
 
 		<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:layout_marginTop="25dp"
-		android:orientation="vertical">
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="2dp"
+			android:gravity="center"
+			android:orientation="vertical">
+
+			<ImageView
+				android:id="@+id/imageView"
+				android:layout_width="fill_parent"
+				android:layout_height="195dp"
+				android:layout_gravity="center"
+				android:layout_marginLeft="10dp"
+				android:layout_marginTop="0dp"
+				android:contentDescription="QR Code"
+				android:paddingTop="10dp" />
 
 			<TextView
 				android:id="@+id/textView"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="LIST OF ITEMS:"
 				android:layout_marginBottom="3dp"
+				android:gravity="center"
+				android:text="LIST OF ITEMS:"
+				android:textSize="15dp"
 				app:fontFamily="sans-serif-light" />
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/storeCustomerOrderClaiming"
-				android:layout_width="320dp"
-				android:layout_height="138dp"
-				android:padding="13dp"
+				android:layout_width="288dp"
+				android:layout_gravity="center"
+				android:layout_height="112dp"
+				android:layout_marginLeft="15dp"
 				android:background="@drawable/round_corner_plain"
-				android:overScrollMode="never" />
+				android:overScrollMode="never"
+				android:padding="10dp" />
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:layout_marginBottom="5dp"
+				android:drawablePadding="5dp"
+				android:gravity="center"
+				android:text="TOTAL AMOUNT "
+				android:textColor="#777777"
+				android:textSize="15sp" />
+
+			<TextView
+				android:id="@+id/totalText"
+				android:layout_width="233dp"
+				android:layout_height="wrap_content"
+				android:drawableLeft="@drawable/ic_baseline_total"
+				android:drawablePadding="5dp"
+				android:layout_marginBottom="10dp"
+				android:layout_marginLeft="15dp"
+				android:gravity="center"
+				android:textSize="35sp"
+				app:fontFamily="sans-serif-black" />
 
 		</LinearLayout>
 	</androidx.core.widget.NestedScrollView>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
-		android:layout_width="408dp"
-		android:layout_height="159dp"
+		android:id="@+id/constraintLayout10"
+		android:layout_width="394dp"
+		android:layout_height="156dp"
+		android:paddingBottom="10dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent">
@@ -119,8 +150,9 @@
 			style="@style/Widget.MaterialComponents.Button.Icon"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
 			android:background="@drawable/round_corner_plain"
-			android:text="Save QR Code"
+			android:text="Save"
 			android:textColor="#000000"
 			android:textSize="16sp"
 			app:backgroundTint="#00FFFFFF"
@@ -135,8 +167,9 @@
 		<Button
 			android:id="@+id/btnEdit"
 			style="@style/Widget.MaterialComponents.Button.Icon"
-			android:layout_width="230dp"
+			android:layout_width="150dp"
 			android:layout_height="wrap_content"
+			android:layout_marginTop="15dp"
 			android:layout_marginBottom="10dp"
 			android:background="@drawable/round_corner_plain"
 			android:text="Edit"

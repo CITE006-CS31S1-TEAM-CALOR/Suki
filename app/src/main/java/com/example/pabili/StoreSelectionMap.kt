@@ -295,6 +295,8 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
             val bitmap = BitmapFactory.decodeResource(resources,R.drawable.icon_gps)
             icon.image = MapImage(bitmap)
         }else{
+            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_logo_small_coins)
+            icon.image = MapImage(bitmap)
             flyout.description = "id: ${sukiStore.id}"
         }
 
