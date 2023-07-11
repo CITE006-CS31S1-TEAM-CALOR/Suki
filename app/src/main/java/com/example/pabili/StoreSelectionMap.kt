@@ -399,6 +399,10 @@ class StoreSelectionMap : AppCompatActivity(), View.OnClickListener {
                     val ss = SukiStore(un,lat ,lon,id)
                     showSukiStore(ss)
                 }
+                if(matchingDocs.isNullOrEmpty()){
+                    Log.d("GeoQueries", "No Suki Nearby")
+                    Toast.makeText(this@StoreSelectionMap,"No Suki Nearby",Toast.LENGTH_LONG).show()
+                }
                 progBar = findViewById(R.id.progressBar)
                 progBar.visibility = View.GONE
             }
